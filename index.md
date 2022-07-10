@@ -6,24 +6,19 @@ callouts: home_callouts
 show_sidebar: true
 ---
 
-## Test
+## Tentative Schedule
 
-Testing
+| Week | Day | Date | Topic(s) | Lecture | Activity | Key |
+|------|-----|------|----------|---------|----------|-----|
+|  1    | M     | 08/22     | Review of Estimation and Inference         | [Lecture 1](https://samanthaseals.github.io/STA5176//slides/L01.html)        |          |     |
+|      |  W   |  08/24    |          |         |          |     |
 
-## Page Layouts
+|  1    | M     | 08/22     | Review of Estimation and Inference         | [Lecture 1](https://samanthaseals.github.io/STA5176//slides/L01.html#/title-slide)        |          |     |
+|      |  W   |  08/24    |          |         |          |     |
 
-This demo site showcases the available page layout options. 
+|  1    | M     | 08/22     | Review of Estimation and Inference         | [Lecture 1](https://samanthaseals.github.io/STA5176//slides/L01.html#/title-slide)        |          |     |
+|      |  W   |  08/24    |          |         |          |     |
 
-* Sidebar
-* Menubar
-* Tabs
-* Footer
-* Hero
-* Contents
-* Landing Page With Callouts
-* Sponsors Page
-* Image Gallery
-* Recipe Page
-* Blog
-* Post
+|  1    | M     | 08/22     | Review of Estimation and Inference         | [Lecture 1](https://samanthaseals.github.io/STA5176//slides/L01.html#/title-slide)        |          |     |
+|      |  W   |  08/24    |          |         |          |     |
 

@@ -12,7 +12,7 @@ show_sidebar: false
 |-----------|-----------|-----------|-----------|:---------:|:---------:|:---------:|
 | 1    | M   | 08/22 | Review of Estimation and Inference | [X](https://samanthaseals.github.io/STA5176/slides/L01.html) |          |     |
 |      | W   | 08/24 | One-sample *t*-test                |  [X](https://samanthaseals.github.io/STA5176/slides/L02.html)                                                             |          |     |
-| 2    | M   | 08/29 | Two-sample *t*-test                |                                                               |          |     |
+| 2    | M   | 08/29 | Two-sample *t*-test                |   [X](https://samanthaseals.github.io/STA5176/slides/L03.html)                                                             |          |     |
 |      | W   | 08/31 | Paired *t*-test                    |                                                               |          |     |
 | 3    | M   | 09/05 | Wilcoxons                          |                                                               |          |     |
 |      | W   | 09/07 | Folded *F*, Brown-Forsythe-Levine  |                                                               |          |     |

@@ -1,5 +1,5 @@
 ---
-title: "Two-Sample Means"
+title: "Two-Sample Means (Independent)"
 subtitle: "STA5176 - Lecture 3"
 author: "Dr. Seals"
 format: revealjs
@@ -8,13 +8,13 @@ editor: visual
 
 ## Introduction
 
-- In the last lecture, we covered estimation and inference on a single mean using a one-sample *t*-test.
+-   In the last lecture, we covered estimation and inference on a single mean using a one-sample *t*-test.
 
-- Today we will cover estimation and inference on two independent means using the two-sample *t*-test.
+-   Today we will cover estimation and inference on two independent means using the two-sample *t*-test.
 
-  - We will cover two cases: equal variances and unequal variances.
+    -   We will cover two cases: equal variances and unequal variances.
 
-- We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
+-   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
 
 ## Data and Packages
 
@@ -45,39 +45,39 @@ penguins <- palmerpenguins::penguins
 
 ## Confidence Interval -- Definition
 
-- The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 = \sigma_2^2$ is as follows:
+-   The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 = \sigma_2^2$ is as follows:
 
-$$ \left( \bar{x}_1-\bar{x}_2 \right) \pm t_{1-\alpha/2, \ n_1+n_2-2} s_p \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}, $$ 
+$$ \left( \bar{x}_1-\bar{x}_2 \right) \pm t_{1-\alpha/2, \ n_1+n_2-2} s_p \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}, $$
 
-- where $s_p$ is the pooled standard deviation and
+-   where $s_p$ is the pooled standard deviation and
 
 $$ s_p=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}} $$
 
 ## Confidence Interval -- Definition
 
-- The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 \ne \sigma_2^2$ is as follows:
+-   The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 \ne \sigma_2^2$ is as follows:
 
 $$ (\bar{x}_1-\bar{x}_2) \pm t_{1-\alpha/2, \text{df}} \sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}, $$
 
-- where df are *estimated* using Satterthwaite's approximation,
+-   where df are *estimated* using Satterthwaite's approximation,
 
 $$ \text{df}=\frac{ \left( \frac{s^2_1}{n_1} + \frac{s_2^2}{n_2} \right)^2 }{ \frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1} } $$
 
 ## Confidence Interval -- Comparing $s_i$
 
-- Generally, we do not need to worry about this, because R automatically assumes $\sigma^2_1 \ne \sigma^2_2$ and estimates the df.
+-   Generally, we do not need to worry about this, because R automatically assumes $\sigma^2_1 \ne \sigma^2_2$ and estimates the df.
 
-  - This is a safe approach because when we can assume $\sigma_1^2 = \sigma_2^2$, the estimated df is close to $n_1+n_2-2$.
-  
-- For now, we can "eyeball" the standard deviations to determine equivalence. 
+    -   This is a safe approach because when we can assume $\sigma_1^2 = \sigma_2^2$, the estimated df is close to $n_1+n_2-2$.
 
-  - If one is more than twice the other, we will use Satterthwaite's approximation.
-  
-  - If we want to use exact df, we can use the `var.equal` option in the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test)  function.
+-   For now, we can "eyeball" the standard deviations to determine equivalence.
+
+    -   If one is more than twice the other, we will use Satterthwaite's approximation.
+
+    -   If we want to use exact df, we can use the `var.equal` option in the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function.
 
 ## Confidence Intervals -- R Syntax
 
-- We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
 
 ```{r, echo = TRUE, eval = FALSE}
 t.test([continuous variable] ~ [grouping variable],
@@ -87,9 +87,9 @@ t.test([continuous variable] ~ [grouping variable],
 
 ## Confidence Intervals -- Penguins
 
-- Let's find a 95% CI on the average body mass for penguins, comparing females to males.
+-   Let's find a 95% CI on the average body mass for penguins, comparing females to males.
 
-- First, let's look at the standard deviations.
+-   First, let's look at the standard deviations.
 
 ```{r, echo = TRUE}
 penguins %>% 
@@ -97,11 +97,11 @@ penguins %>%
   summarize(sd(body_mass_g, na.rm = TRUE))
 ```
 
-- Thus, we can assume that $\sigma_1^2 = \sigma_2^2$.
+-   Thus, we can assume that $\sigma_1^2 = \sigma_2^2$.
 
 ## Confidence Intervals -- Penguins
 
-- Now, to find the 95% CI for $\mu_{\text{F}} - \mu_{\text{M}}$,
+-   Now, to find the 95% CI for $\mu_{\text{F}} - \mu_{\text{M}}$,
 
 ```{r, echo = TRUE}
 t.test(body_mass_g ~ sex,
@@ -110,11 +110,11 @@ t.test(body_mass_g ~ sex,
        var.equal = TRUE)
 ```
 
-- The 95% CI is (-840.80, -526.02)
+-   The 95% CI is (-840.80, -526.02)
 
 ## Confidence Intervals -- Penguins
 
-- What happens if we do not specify $\sigma_1^2 = \sigma_2^2$?
+-   What happens if we do not specify $\sigma_1^2 = \sigma_2^2$?
 
 ```{r, echo = TRUE}
 t.test(body_mass_g ~ sex,
@@ -122,17 +122,17 @@ t.test(body_mass_g ~ sex,
        conf.level = 0.95)
 ```
 
-- The 95% CI is (-840.58, -526.25)
+-   The 95% CI is (-840.58, -526.25)
 
-- Compared to (-840.80, -526.02), we can see that the CI is a hair wider (more conservative).
+-   Compared to (-840.80, -526.02), we can see that the CI is a hair wider (more conservative).
 
 ## Confidence Intervals -- Sheep
 
-- An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: half were injected with the drug and the other half were untreated. After 6 months, the worm counts were as follows:
+-   An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: half were injected with the drug and the other half were untreated. After 6 months, the worm counts were as follows:
 
-|           |       |       |       |       |       |       |
-|-----------|-------|-------|-------|-------|-------|-------|
-| Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 |  16 <br> 6 |  32 <br> 7 |
+|           |            |            |            |            |            |            |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 | 16 <br> 6  | 32 <br> 7  |
 | Control   | 40 <br> 39 | 54 <br> 23 | 26 <br> 48 | 63 <br> 58 | 21 <br> 28 | 37 <br> 39 |
 
 ## Confidence Intervals -- Sheep
@@ -152,7 +152,7 @@ head(sheep)
 
 ## Confidence Intervals -- Sheep
 
-- Let's now find a 99% CI for the average difference in worm counts between the treated and untreated sheep.
+-   Let's now find a 99% CI for the average difference in worm counts between the treated and untreated sheep.
 
 ```{r, echo = TRUE}
 t.test(worms ~ trt,
@@ -160,49 +160,49 @@ t.test(worms ~ trt,
        conf.level = 0.99)
 ```
 
-- The 99% CI for $\mu_{\text{Ctrl}} - \mu_{\text{Trt}}$ is (--3.16, 29.33).
+-   The 99% CI for $\mu_{\text{Ctrl}} - \mu_{\text{Trt}}$ is (--3.16, 29.33).
 
 ## Hypothesis Testing - Definition {.smaller}
 
-- Assuming $\sigma_1^2 = \sigma_2^2$,
+-   Assuming $\sigma_1^2 = \sigma_2^2$,
 
 **Hypotheses**
 
-|       Right Tail       |       Left Tail        |       Two Tails        |
+|          Right Tail           |           Left Tail           |           Two Tails            |
 |:----------------------:|:----------------------:|:----------------------:|
-| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 -  \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
-|  $H_1: \ \mu_1 - \mu_2 > D_0$  |  $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
 
 **Test Statistic**
 
 $$ t_0 = \frac{\left(\bar{x_1}-\bar{x_2}\right) - D_0}{s_p \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} $$
 
-- where
+-   where
 
-  - $D_0$ is the hypothesized average difference between groups 1 and 2,
-  - $s_p$ is the pooled standard deviation, as defined earlier,
-  - $t_0$ has df $= n_1+n_2-2$.
-  
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   $s_p$ is the pooled standard deviation, as defined earlier,
+    -   $t_0$ has df $= n_1+n_2-2$.
+
 ## Hypothesis Testing -- Definition {.smaller}
 
-- Assuming $\sigma_1^2 \ne \sigma_2^2$,
+-   Assuming $\sigma_1^2 \ne \sigma_2^2$,
 
 **Hypotheses**
 
-|       Right Tail       |       Left Tail        |       Two Tails        |
+|          Right Tail           |           Left Tail           |           Two Tails            |
 |:----------------------:|:----------------------:|:----------------------:|
-| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 -  \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
-|  $H_1: \ \mu_1 - \mu_2 > D_0$  |  $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
 
 **Test Statistic**
 
 $$ t_0 = \frac{\left(\bar{x_1}-\bar{x_2}\right) - D_0}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}} $$
 
-- where
+-   where
 
-  - $D_0$ is the hypothesized average difference between groups 1 and 2,
-  - the df for $t_0$'s distribution are estimated using Satterthwaite's approximation, as defined before.
-  
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   the df for $t_0$'s distribution are estimated using Satterthwaite's approximation, as defined before.
+
 ## Hypothesis Testing -- R Syntax
 
 -   We again use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the test,
@@ -212,11 +212,11 @@ t.test([continuous variable] ~ [grouping variable],
        data = [dataset])
 ```
 
-- Like before, if we want to use exact df, we can use the `var.equal` option.
+-   Like before, if we want to use exact df, we can use the `var.equal` option.
 
 ## Hypothesis Testing -- Penguins
 
-- Let's use the appropriate test to determine if the average body mass is different between male and female penguins. Test at the $\alpha=0.05$ level.
+-   Let's use the appropriate test to determine if the average body mass is different between male and female penguins. Test at the $\alpha=0.05$ level.
 
 ```{r, echo = TRUE}
 t.test(body_mass_g ~ sex,
@@ -244,7 +244,7 @@ t.test(body_mass_g ~ sex,
 
 ## Hypothesis Testing -- Sheep
 
-- Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
+-   Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
 
 ```{r, echo = TRUE}
 t.test(worms ~ trt,
@@ -270,3 +270,121 @@ t.test(worms ~ trt,
 **Conclusion/Interpretation**
 
 -   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.
+
+## Assumptions
+
+- Note that the two-sample *t*-test assumes normality.
+
+- We will assess this with a quantile-quantile (QQ) plot.
+
+  - We will create a QQ plot for the data in each group.
+
+- We want to see an approximate 45&deg; line.
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] %>% ggplot(aes(sample = [outcome])) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Assumptions -- Penguins
+
+```{r, echo = TRUE}
+penguin_m <- penguins %>% filter(sex == "male")
+
+penguin_m %>% ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Assumptions -- Penguins
+
+```{r, echo = TRUE}
+penguin_f <- penguins %>% filter(sex == "female")
+
+penguin_f %>% ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Assumptions -- Penguins
+
+```{r, echo = FALSE}
+library(ggpubr)
+
+m <- penguin_m %>% ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Males")
+
+f <- penguin_f %>% ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Females")
+
+ggarrange(m, f, ncol=2, nrow=1)
+```
+
+## Assumptions -- Sheep
+
+```{r, echo = TRUE}
+sheep_ctrl <- sheep %>% filter(trt == 0)
+
+sheep_ctrl %>% ggplot(aes(sample = worms)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Assumptions -- Sheep
+
+```{r, echo = TRUE}
+sheep_trt <- sheep %>% filter(trt == 1)
+
+sheep_trt %>% ggplot(aes(sample = worms)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Assumptions -- Sheep
+
+```{r, echo = FALSE}
+ctrl <- sheep_ctrl %>% ggplot(aes(sample = worms)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Control")
+
+trt <- sheep_trt %>% ggplot(aes(sample = worms)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Treatment")
+
+ggarrange(ctrl, trt, ncol=2, nrow=1)
+```
+

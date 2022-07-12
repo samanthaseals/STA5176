@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-0.9.647">
 
   <meta name="author" content="Dr.&nbsp;Seals">
-  <title>Two-Sample Means</title>
+  <title>Two-Sample Means (Independent)</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -383,7 +383,7 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Two-Sample Means</h1>
+  <h1 class="title">Two-Sample Means (Independent)</h1>
   <p class="subtitle">STA5176 - Lecture 3</p>
   <p class="author">Dr.&nbsp;Seals</p>
 </section>
@@ -559,13 +559,13 @@ mean in group female   mean in group male
 </ul>
 <table style="width:100%;">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
 </colgroup>
 <tbody>
 <tr class="odd">
@@ -826,7 +826,90 @@ mean in group 0 mean in group 1
 <ul>
 <li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.</li>
 </ul>
-<div class="footer footer-default">
+</section>
+<section id="assumptions" class="slide level2">
+<h2>Assumptions</h2>
+<ul>
+<li><p>Note that the two-sample <em>t</em>-test assumes normality.</p></li>
+<li><p>We will assess this with a quantile-quantile (QQ) plot.</p>
+<ul>
+<li>We will create a QQ plot for the data in each group.</li>
+</ul></li>
+<li><p>We want to see an approximate 45° line.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>[dataset] <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> [outcome])) <span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="assumptions-penguins" class="slide level2">
+<h2>Assumptions – Penguins</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>penguin_m <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">"male"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a>penguin_m <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> body_mass_g)) <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"></section>
+<section id="assumptions-penguins-1" class="slide level2">
+<h2>Assumptions – Penguins</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>penguin_f <span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> <span class="fu">filter</span>(sex <span class="sc">==</span> <span class="st">"female"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3"></a>penguin_f <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> body_mass_g)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"></section>
+<section id="assumptions-penguins-2" class="slide level2">
+<h2>Assumptions – Penguins</h2>
+
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"></section>
+<section id="assumptions-sheep" class="slide level2">
+<h2>Assumptions – Sheep</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>sheep_ctrl <span class="ot">&lt;-</span> sheep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(trt <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb22-2"><a href="#cb22-2"></a></span>
+<span id="cb22-3"><a href="#cb22-3"></a>sheep_ctrl <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> worms)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"></section>
+<section id="assumptions-sheep-1" class="slide level2">
+<h2>Assumptions – Sheep</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>sheep_trt <span class="ot">&lt;-</span> sheep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(trt <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb23-2"><a href="#cb23-2"></a></span>
+<span id="cb23-3"><a href="#cb23-3"></a>sheep_trt <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> worms)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-36-1.png" width="960" class="r-stretch"></section>
+<section id="assumptions-sheep-2" class="slide level2">
+<h2>Assumptions – Sheep</h2>
+
+<img data-src="L03_files/figure-revealjs/unnamed-chunk-38-1.png" width="960" class="r-stretch"><div class="footer footer-default">
 
 </div>
 </section>

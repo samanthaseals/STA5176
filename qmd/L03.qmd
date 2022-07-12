@@ -13,6 +13,8 @@ editor: visual
 -   Today we will cover estimation and inference on two independent means using the two-sample *t*-test.
 
     -   We will cover two cases: equal variances and unequal variances.
+    
+    - The data is independent because the two groups do not depend on one another; we cannot link observations between the groups.
 
 -   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
 
@@ -162,7 +164,7 @@ t.test(worms ~ trt,
 
 -   The 99% CI for $\mu_{\text{Ctrl}} - \mu_{\text{Trt}}$ is (--3.16, 29.33).
 
-## Hypothesis Testing - Definition {.smaller}
+## Hypothesis Testing -- Definition {.smaller}
 
 -   Assuming $\sigma_1^2 = \sigma_2^2$,
 
@@ -273,13 +275,13 @@ t.test(worms ~ trt,
 
 ## Assumptions
 
-- Note that the two-sample *t*-test assumes normality.
+-   Note that the two-sample *t*-test assumes normality.
 
-- We will assess this with a quantile-quantile (QQ) plot.
+-   We will assess this with a quantile-quantile (QQ) plot.
 
-  - We will create a QQ plot for the data in each group.
+    -   We will create a QQ plot for the data in each group.
 
-- We want to see an approximate 45&deg; line.
+-   We want to see an approximate 45° line.
 
 ```{r, echo = TRUE, eval = FALSE}
 [dataset] %>% ggplot(aes(sample = [outcome])) +
@@ -387,4 +389,3 @@ trt <- sheep_trt %>% ggplot(aes(sample = worms)) +
 
 ggarrange(ctrl, trt, ncol=2, nrow=1)
 ```
-

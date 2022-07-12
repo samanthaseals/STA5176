@@ -13,8 +13,8 @@ editor: visual
 -   Today we will cover estimation and inference on two dependent means using the paired *t*-test.
 
     -   The data is dependent because we can link the observations between the two groups.
-    
-    -   e.g., pre- and post-tests; sections of standardized tests; monthly rainfall at Pensacola Regional Airport 
+
+    -   e.g., pre- and post-tests; sections of standardized tests; monthly rainfall at Pensacola Regional Airport
 
 ## Packages
 
@@ -28,12 +28,12 @@ library(tidyverse)
 
 $$ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, $$
 
--   where 
+-   where
     -   $d_i = y_{1i} - y_{2i}$,
     -   $\bar{d}$ is the average of all $d_i$,
     -   $s_d$ is the standard deviation of all $d_i$, and
     -   $n$ is the number of paired observations
-    
+
 ## Confidence Intervals -- R Syntax
 
 -   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
@@ -42,9 +42,8 @@ $$ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, $$
 t.test([variable 1], [variable 2],
        paired = TRUE,
        conf.level = [confidence level])
-```    
+```
 
-    
 ## Confidence Interval -- Garages
 
 Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data on the next slide. Construct the 90% CI for the average difference between garages.
@@ -62,14 +61,15 @@ t.test(garage$g1, garage$g2, paired = TRUE, conf.level = 0.90)
 ```
 
 -   The 90% CI is (0.433, 0.793) $\to$ (\$433, \$793)
-  
+
     -   Is there evidence that garage I is higher than garage II?
-    
+
 ## Confidence Interval -- Hunger
 
 During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on the next slide. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.
 
 ## Confidence Interval -- Hunger
+
 ```{r, echo = TRUE}
 drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
 placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
@@ -102,7 +102,7 @@ $$ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} $$
     -   $s_d$ is the standard deviation of all $d_i$
     -   $n$ is the number of paired observations, and
     -   $t_0$ has df $= n-1$.
-    
+
 ## Hypothesis Testing -- R Syntax
 
 -   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the hypothesis test,
@@ -111,19 +111,17 @@ $$ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} $$
 t.test([variable 1], [variable 2],
        paired = TRUE,
        alternative = [alternative])
-```    
+```
 
-    
 ## Hypothesis Testing -- Garages
 
-- Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
+-   Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 t.test(garage$g1, garage$g2,
        paired = TRUE,
        alternative = "greater")
-```   
-
+```
 
 ## Hypothesis Testing -- Garages {.smaller}
 
@@ -146,13 +144,13 @@ t.test(garage$g1, garage$g2,
 
 ## Hypothesis Testing -- Hunger
 
-- Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
+-   Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 t.test(hunger$drug, hunger$placebo,
        paired = TRUE,
        alternative = "two")
-```  
+```
 
 ## Hypothesis Testing -- Hunger {.smaller}
 

@@ -562,6 +562,19 @@ mean of the differences
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">t.test</span>(garage<span class="sc">$</span>g1, garage<span class="sc">$</span>g2,</span>
 <span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb8-3"><a href="#cb8-3"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  garage$g1 and garage$g2
+t = 6.0234, df = 14, p-value = 1.563e-05
+alternative hypothesis: true difference in means is greater than 0
+95 percent confidence interval:
+ 0.4339886       Inf
+sample estimates:
+mean of the differences 
+              0.6133333 </code></pre>
+</div>
 </div>
 </section>
 <section id="hypothesis-testing-garages-1" class="slide level2 smaller">
@@ -590,9 +603,22 @@ mean of the differences
 <li>Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\(\alpha=0.01\)</span> level.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">t.test</span>(hunger<span class="sc">$</span>drug, hunger<span class="sc">$</span>placebo,</span>
-<span id="cb9-2"><a href="#cb9-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb9-3"><a href="#cb9-3"></a>       <span class="at">alternative =</span> <span class="st">"two"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">t.test</span>(hunger<span class="sc">$</span>drug, hunger<span class="sc">$</span>placebo,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb10-3"><a href="#cb10-3"></a>       <span class="at">alternative =</span> <span class="st">"two"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Paired t-test
+
+data:  hunger$drug and hunger$placebo
+t = -2.7014, df = 8, p-value = 0.02701
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -54.784709  -4.326402
+sample estimates:
+mean of the differences 
+              -29.55556 </code></pre>
+</div>
 </div>
 </section>
 <section id="hypothesis-testing-hunger-1" class="slide level2 smaller">
@@ -626,41 +652,41 @@ mean of the differences
 <li><p>We still want to see an approximate 45° line.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>[dataset] <span class="ot">&lt;-</span> [dataset] <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> [variable <span class="dv">1</span>] <span class="sc">-</span> [variable <span class="dv">2</span>])</span>
-<span id="cb10-2"><a href="#cb10-2"></a></span>
-<span id="cb10-3"><a href="#cb10-3"></a>[dataset] <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>[dataset] <span class="ot">&lt;-</span> [dataset] <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> [variable <span class="dv">1</span>] <span class="sc">-</span> [variable <span class="dv">2</span>])</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>[dataset] <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="assumptions-garages" class="slide level2">
 <h2>Assumptions – Garages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>garage <span class="ot">&lt;-</span> garage <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> g1 <span class="sc">-</span> g2)</span>
-<span id="cb11-2"><a href="#cb11-2"></a></span>
-<span id="cb11-3"><a href="#cb11-3"></a>garage <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>garage <span class="ot">&lt;-</span> garage <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> g1 <span class="sc">-</span> g2)</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a>garage <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="L04_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="assumptions-hunger" class="slide level2">
 <h2>Assumptions – Hunger</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>hunger <span class="ot">&lt;-</span> hunger <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> drug <span class="sc">-</span> placebo)</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a>hunger <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>hunger <span class="ot">&lt;-</span> hunger <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> drug <span class="sc">-</span> placebo)</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>hunger <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
 <img data-src="L04_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"><div class="footer footer-default">

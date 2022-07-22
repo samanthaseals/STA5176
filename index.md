@@ -14,7 +14,7 @@ show_sidebar: false
 |      | W   | 08/24 | One-sample *t*-test                |  [X](https://samanthaseals.github.io/STA5176/slides/L02.html)                                                             |          |     |
 | 2    | M   | 08/29 | Two-sample *t*-test                |   [X](https://samanthaseals.github.io/STA5176/slides/L03.html)                                                             |          |     |
 |      | W   | 08/31 | Paired *t*-test                    | [X](https://samanthaseals.github.io/STA5176/slides/L04.html)                                                              |          |     |
-| 3    | M   | 09/05 | Wilcoxons                          |                                                               |          |     |
+| 3    | M   | 09/05 | Wilcoxons                          |  [X](https://samanthaseals.github.io/STA5176/slides/L05.html)                                                               |          |     |
 |      | W   | 09/07 | Folded *F*, Brown-Forsythe-Levine  |                                                               |          |     |
 | 4    | M   | 09/12 | Project 1                          |                                                               |          |     |
 |      | W   | 09/14 | Project 1                          |                                                               |          |     |

@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-0.9.647">
 
   <meta name="author" content="Dr.&nbsp;Seals">
-  <title>Two-Sample Medians (Independent)</title>
+  <title>Two-Sample Medians</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -383,7 +383,7 @@
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Two-Sample Medians (Independent)</h1>
+  <h1 class="title">Two-Sample Medians</h1>
   <p class="subtitle">STA5176 - Lecture 5</p>
   <p class="author">Dr.&nbsp;Seals</p>
 </section>
@@ -399,16 +399,17 @@
 <ul>
 <li>What happens if the assumption is broken?</li>
 </ul></li>
-<li><p>Today we will cover the nonparametric alternative to the two-sample <em>t</em>-test</p>
+<li><p>Today we will cover the nonparametric alternatives to the <em>t</em>-tests for two samples</p>
 <ul>
-<li>i.e., the Wilcoxon rank sum is for <em>independent</em> data</li>
+<li>the Wilcoxon rank sum is for <em>independent</em> data</li>
+<li>the Wilcoxon signed rank is for <em>dependent</em> data</li>
 </ul></li>
 </ul>
 </section>
 <section id="ranking-data" class="slide level2">
 <h2>Ranking Data</h2>
 <ul>
-<li><p>The Wilcoxon rank sum is nonparametric – it does not impose a distributional assumption on the data.</p>
+<li><p>The Wilcoxon tests are nonparametric – they do not impose a distributional assumption on the data.</p>
 <ul>
 <li>In nonparametric tests, we often analyze the ranks instead of the raw data.</li>
 </ul></li>
@@ -420,8 +421,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="ranking-data-example" class="slide level2">
-<h2>Ranking Data – Example</h2>
+<section id="ranking-data-independent-example" class="slide level2">
+<h2>Ranking Data – Independent Example</h2>
 <ul>
 <li><p>Suppose we want to rank the data:</p>
 <ul>
@@ -441,8 +442,8 @@
 </ul></li>
 </ul>
 </section>
-<section id="hypothesis-testing-definition" class="slide level2 smaller">
-<h2>Hypothesis Testing – Definition</h2>
+<section id="hypothesis-testing-independent" class="slide level2 smaller">
+<h2>Hypothesis Testing (Independent)</h2>
 <ul>
 <li>if <span class="math inline">\(n_1 \le 10\)</span> and <span class="math inline">\(n_2 \le 10\)</span>:</li>
 </ul>
@@ -476,8 +477,8 @@
 <p><strong>Test Statistic</strong></p>
 <p><span class="math display">\[ T_0 = \sum \text{(ranks from group 1)}\]</span></p>
 </section>
-<section id="hypothesis-testing-definition-1" class="slide level2 smaller">
-<h2>Hypothesis Testing – Definition</h2>
+<section id="hypothesis-testing-independent-1" class="slide level2 smaller">
+<h2>Hypothesis Testing (Independent)</h2>
 <ul>
 <li>if <span class="math inline">\(n_1 &gt; 10\)</span> or <span class="math inline">\(n_2 &gt; 10\)</span>:</li>
 </ul>
@@ -515,8 +516,8 @@
 </ul>
 <p><span class="math display">\[ \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)\]</span></p>
 </section>
-<section id="hypothesis-testing-r-syntax" class="slide level2">
-<h2>Hypothesis Testing – R Syntax</h2>
+<section id="hypothesis-testing-independent-2" class="slide level2">
+<h2>Hypothesis Testing (Independent)</h2>
 <ul>
 <li>We will use the <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test"><code>wilcox.test()</code></a> function to perform the test,</li>
 </ul>
@@ -537,8 +538,8 @@
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">wilcox.test</span>(bill_length_mm <span class="sc">~</span> sex,</span>
-<span id="cb2-2"><a href="#cb2-2"></a>       <span class="at">data =</span> penguins,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>       <span class="at">alternative =</span> <span class="st">"less"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a>            <span class="at">data =</span> penguins,</span>
+<span id="cb2-3"><a href="#cb2-3"></a>            <span class="at">alternative =</span> <span class="st">"less"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Wilcoxon rank sum test with continuity correction
@@ -646,6 +647,235 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
 <li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.</li>
+</ul>
+</section>
+<section id="ranking-data-dependent-example" class="slide level2">
+<h2>Ranking Data – Dependent Example</h2>
+<ul>
+<li><p>Like in the paired <em>t</em>-test, we will first find the difference. e.g.,</p>
+<ul>
+<li>-8, 3, 0, 9, -1, -3</li>
+</ul></li>
+<li><p>We order the absolute value of the differences and exclude differences of 0:</p>
+<ul>
+<li><font color="orange">1</font>, 3, <font color="orange">3</font>, <font color="orange">8</font>, 9</li>
+</ul></li>
+<li><p>Then we assign the ranks, ignoring ties:</p>
+<ul>
+<li><font color="orange">1</font>, 2, <font color="orange">3</font>, <font color="orange">4</font>, 5</li>
+</ul></li>
+<li><p>Then we assign the final ranks, accounting for ties, and carry over the sign of the corresponding difference:</p>
+<ul>
+<li><font color="orange">-1</font>, 2.5, <font color="orange">-2.5</font>, <font color="orange">-4</font>, 5</li>
+</ul></li>
+</ul>
+</section>
+<section id="hypothesis-testing-dependent" class="slide level2 smaller">
+<h2>Hypothesis Testing (Dependent)</h2>
+<ul>
+<li><p>if <span class="math inline">\(n \le 50\)</span>:</p>
+<ul>
+<li><span class="math inline">\(n =\)</span> number of non-zero differences</li>
+</ul></li>
+</ul>
+<p><strong>Hypotheses</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Right Tail</th>
+<th style="text-align: center;">Left Tail</th>
+<th style="text-align: center;">Two Tails</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test Statistic</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Right Tail</th>
+<th style="text-align: center;">Left Tail</th>
+<th style="text-align: center;">Two Tails</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(T_- = \sum \text{(negative ranks)}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(T_+ = \sum \text{(positive ranks)}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\min(T_-, T_+)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hypothesis-testing-dependent-1" class="slide level2 smaller">
+<h2>Hypothesis Testing (Dependent)</h2>
+<ul>
+<li><p>if <span class="math inline">\(n &gt; 50\)</span>:</p>
+<ul>
+<li><span class="math inline">\(n =\)</span> number of non-zero differences</li>
+</ul></li>
+</ul>
+<p><strong>Hypotheses</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Right Tail</th>
+<th style="text-align: center;">Left Tail</th>
+<th style="text-align: center;">Two Tails</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Test Statistic</strong></p>
+<p><span class="math display">\[ z_0 = \frac{T_0-\mu_T}{\sigma_T}\]</span></p>
+</section>
+<section id="hypothesis-testing-dependent-2" class="slide level2 smaller">
+<h2>Hypothesis Testing (Dependent)</h2>
+<ul>
+<li>The mean is as follows,</li>
+</ul>
+<p><span class="math display">\[ \mu_T = \frac{n (n+1)}{4} \]</span></p>
+<ul>
+<li>The variance is as follows,</li>
+</ul>
+<p><span class="math display">\[\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)\]</span></p>
+<ul>
+<li>where <span class="math inline">\(t_j\)</span> is the number of ties in tied group <span class="math inline">\(j\)</span></li>
+</ul>
+</section>
+<section id="hypothesis-testing-dependent-3" class="slide level2">
+<h2>Hypothesis Testing (Dependent)</h2>
+<ul>
+<li>We will again use the <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test"><code>wilcox.test()</code></a> function to perform the test,</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">wilcox.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
+<span id="cb6-2"><a href="#cb6-2"></a>       <span class="at">data =</span> [dataset],</span>
+<span id="cb6-3"><a href="#cb6-3"></a>       <span class="at">alternative =</span> <span class="st">"[alternative]"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hypothesis-testing-garages" class="slide level2">
+<h2>Hypothesis Testing – Garages</h2>
+<ul>
+<li>Recall the car repair data from Lecture 4. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\(\alpha=0.10\)</span> level.</li>
+</ul>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">wilcox.test</span>(g1, g2,</span>
+<span id="cb7-2"><a href="#cb7-2"></a>            <span class="at">data =</span> garage,</span>
+<span id="cb7-3"><a href="#cb7-3"></a>            <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>            <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank test with continuity correction
+
+data:  g1 and g2
+V = 118.5, p-value = 0.0004854
+alternative hypothesis: true location shift is greater than 0</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing-garages-1" class="slide level2 smaller">
+<h2>Hypothesis Testing – Garages</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">\(H_0: \ M_{\text{I}} \le M_{\text{II}}\)</span></li>
+<li><span class="math inline">\(H_0: \ M_{\text{I}} &gt; M_{\text{II}}\)</span></li>
+</ul>
+<p><strong>Test Statistic</strong></p>
+<ul>
+<li><span class="math inline">\(T_0 = 118.5\)</span></li>
+</ul>
+<p><strong><em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\(p &lt; 0.001\)</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.10\)</span> level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.</li>
+</ul>
+</section>
+<section id="hypothesis-testing-hunger" class="slide level2">
+<h2>Hypothesis Testing – Hunger</h2>
+<ul>
+<li>Recall the hunger data from Lecture 4. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\(\alpha=0.01\)</span> level.</li>
+</ul>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">wilcox.test</span>(drug, placebo,</span>
+<span id="cb9-2"><a href="#cb9-2"></a>            <span class="at">data =</span> hunger,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>            <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>            <span class="at">alternative =</span> <span class="st">"two"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon signed rank exact test
+
+data:  drug and placebo
+V = 4, p-value = 0.02734
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing-hunger-1" class="slide level2 smaller">
+<h2>Hypothesis Testing – Hunger</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">\(H_0: \ M_{\text{drug}} = M_{\text{placebo}}\)</span></li>
+<li><span class="math inline">\(H_0: \ M_{\text{drug}} \ne M_{\text{placebo}}\)</span></li>
+</ul>
+<p><strong>Test Statistic</strong></p>
+<ul>
+<li><span class="math inline">\(T_0 = 4\)</span></li>
+</ul>
+<p><strong><em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\(p = 0.027\)</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.</li>
 </ul>
 <div class="footer footer-default">
 

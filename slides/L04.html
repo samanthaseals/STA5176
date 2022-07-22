@@ -428,8 +428,9 @@
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
-<span id="cb2-2"><a href="#cb2-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-3"><a href="#cb2-3"></a>       <span class="at">conf.level =</span> [confidence level])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-2"><a href="#cb2-2"></a>       <span class="at">data =</span> [dataset],</span>
+<span id="cb2-3"><a href="#cb2-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb2-4"><a href="#cb2-4"></a>       <span class="at">conf.level =</span> [confidence level])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="confidence-interval-garages" class="slide level2">
@@ -478,12 +479,12 @@ mean of the differences
 <span id="cb5-2"><a href="#cb5-2"></a>placebo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">54</span>, <span class="dv">142</span>, <span class="dv">25</span>, <span class="dv">101</span>, <span class="dv">99</span>, <span class="dv">94</span>, <span class="dv">107</span>, <span class="dv">64</span>)</span>
 <span id="cb5-3"><a href="#cb5-3"></a>hunger <span class="ot">&lt;-</span> <span class="fu">tibble</span>(drug, placebo)</span>
 <span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">t.test</span>(hunger<span class="sc">$</span>drug, hunger<span class="sc">$</span>placebo, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">t.test</span>(drug, placebo, <span class="at">data =</span> hunger, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
 
-data:  hunger$drug and hunger$placebo
+data:  drug and placebo
 t = -2.7014, df = 8, p-value = 0.02701
 alternative hypothesis: true difference in means is not equal to 0
 99 percent confidence interval:
@@ -549,8 +550,9 @@ mean of the differences
 </ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
-<span id="cb7-2"><a href="#cb7-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-3"><a href="#cb7-3"></a>       <span class="at">alternative =</span> [alternative])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2"></a>       <span class="at">data =</span> [dataset]</span>
+<span id="cb7-3"><a href="#cb7-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-4"><a href="#cb7-4"></a>       <span class="at">alternative =</span> [alternative])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="hypothesis-testing-garages" class="slide level2">
@@ -559,14 +561,15 @@ mean of the differences
 <li>Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\(\alpha=0.10\)</span> level.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">t.test</span>(garage<span class="sc">$</span>g1, garage<span class="sc">$</span>g2,</span>
-<span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">t.test</span>(g1, g2,</span>
+<span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">data =</span> data,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
 
-data:  garage$g1 and garage$g2
+data:  g1 and g2
 t = 6.0234, df = 14, p-value = 1.563e-05
 alternative hypothesis: true difference in means is greater than 0
 95 percent confidence interval:

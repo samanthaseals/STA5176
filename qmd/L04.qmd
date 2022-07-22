@@ -40,6 +40,7 @@ $$ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, $$
 
 ```{r, echo = TRUE, eval = FALSE}
 t.test([variable 1], [variable 2],
+       data = [dataset],
        paired = TRUE,
        conf.level = [confidence level])
 ```
@@ -75,7 +76,7 @@ drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
 placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
 hunger <- tibble(drug, placebo)
 
-t.test(hunger$drug, hunger$placebo, paired = TRUE, conf.level = 0.99)
+t.test(drug, placebo, data = hunger, paired = TRUE, conf.level = 0.99)
 ```
 
 -   The 99% CI is (-66.27, 7.15)
@@ -109,6 +110,7 @@ $$ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} $$
 
 ```{r, echo = TRUE, eval = FALSE}
 t.test([variable 1], [variable 2],
+       data = [dataset]
        paired = TRUE,
        alternative = [alternative])
 ```
@@ -118,7 +120,8 @@ t.test([variable 1], [variable 2],
 -   Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
 
 ```{r, echo = TRUE}
-t.test(garage$g1, garage$g2,
+t.test(g1, g2,
+       data = data,
        paired = TRUE,
        alternative = "greater")
 ```

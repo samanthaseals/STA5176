@@ -1,0 +1,344 @@
+---
+title: "Two-Sample Medians"
+subtitle: "STA5176 - Lecture 5"
+author: "Dr. Seals"
+format: revealjs
+editor: visual
+---
+
+## Introduction
+
+```{r, echo = FALSE}
+library(tidyverse)
+```
+
+-   In the last few lectures, we covered estimation and inference on means
+
+-   We also discussed assessing the normality assumption
+
+    -   What happens if the assumption is broken?
+
+-   Today we will cover the nonparametric alternatives to the *t*-tests for two samples
+
+    -   the Wilcoxon rank sum is for *independent* data
+    - the Wilcoxon signed rank is for *dependent* data
+
+## Ranking Data
+
+-   The Wilcoxon tests are nonparametric -- they do not impose a distributional assumption on the data. 
+
+    -  In nonparametric tests, we often analyze the ranks instead of the raw data.
+
+- How do we rank data?
+
+    - We rank all data, without regard to grouping
+
+    - The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of $N=n_1+n_2$. 
+    
+    - Ties are assigned the average rank.
+    
+## Ranking Data -- Independent Example
+
+-   Suppose we want to rank the data: 
+
+    -   8, 3, 9, 1, 3
+
+-   We first order the data: 
+
+    -   1, 3, 3, 8, 9
+
+-   Then we assign the ranks, ignoring ties: 
+
+    -   1, 2, 3, 4, 5
+
+-   Then we assign the final ranks, accounting for ties: 
+
+    -   1, 2.5, 2.5, 4, 5
+
+## Hypothesis Testing (Independent)  {.smaller}
+
+  -   if $n_1 \le 10$ and $n_2 \le 10$:
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ T_0 = \sum \text{(ranks from group 1)}$$
+
+## Hypothesis Testing (Independent) {.smaller}
+
+  -   if $n_1 > 10$ or $n_2 > 10$:
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**  
+
+$$ z_0 = \frac{T_0 - \mu_T}{\sigma_T},$$
+   
+   -  where
+
+$$ \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)$$
+
+## Hypothesis Testing (Independent)
+
+-   We will use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+wilcox.test([continuous variable] ~ [grouping variable],
+       data = [dataset],
+       alternative = "[alternative]",
+       paired = FALSE)
+```
+
+## Hypothesis Testing -- Penguins
+
+-   Recall the penguin data. Let's use the appropriate test to determine if the bill length of female penguins (median 42.8 mm) is shorter than male penguins (median 46.8 mm). Test at the $\alpha=0.05$ level.
+
+```{r, echo = FALSE}
+library(palmerpenguins)
+```
+
+```{r, echo = TRUE}
+wilcox.test(bill_length_mm ~ sex,
+            data = penguins,
+            alternative = "less")
+```
+
+## Hypothesis Testing -- Penguins {.smaller}
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{F}} \ge M_{\text{M}}$
+-   $H_0: \ M_{\text{F}} < M_{\text{M}}$
+
+**Test Statistic**
+
+-   $T_0 = 8178$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the median bill length of female penguins is shorter than that of male penguins.
+
+
+## Hypothesis Testing -- Sheep
+
+-   Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. After 6 months, the worm counts were as follows:
+
+|           |            |            |            |            |            |            |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 | 16 <br> 6  | 32 <br> 7  |
+| Control   | 40 <br> 39 | 54 <br> 23 | 26 <br> 48 | 63 <br> 58 | 21 <br> 28 | 37 <br> 39 |
+
+
+## Hypothesis Testing -- Sheep
+
+-   Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
+
+```{r}
+worms <- c(18, 13, 43, 35, 28, 38,
+           50, 33, 16,  6, 32,  7,
+           40, 39, 54, 23, 26, 48, 
+           63, 58, 21, 28, 37, 39)
+
+trt <- c(rep(1, 12), rep(0, 12))
+
+sheep <- tibble(worms, trt)
+```
+
+```{r, echo = TRUE, warning = FALSE}
+wilcox.test(worms ~ trt,
+            data = sheep,
+            alternative = "greater")
+```
+
+## Hypothesis Testing -- Sheep {.smaller}
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{Trt}} \ge M_{\text{Ctrl}}$
+-   $H_0: \ M_{\text{Trt}} < M_{\text{Ctrl}}$
+
+**Test Statistic**
+
+-   $T_0 = 106.5$
+
+***p*****-Value**
+
+-   $p = 0.025$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.
+
+## Ranking Data -- Dependent Example
+
+-   Like in the paired *t*-test, we will first find the difference. e.g.,
+
+    -   -8, 3, 0, 9, -1, -3
+
+-   We order the absolute value of the differences and exclude differences of 0: 
+
+    -   <font color="orange">1</font>, 3, <font color="orange">3</font>, <font color="orange">8</font>, 9
+
+-   Then we assign the ranks, ignoring ties: 
+
+    -   <font color="orange">1</font>, 2, <font color="orange">3</font>, <font color="orange">4</font>, 5
+
+-   Then we assign the final ranks, accounting for ties, and carry over the sign of the corresponding difference: 
+
+    -   <font color="orange">-1</font>, 2.5, <font color="orange">-2.5</font>, <font color="orange">-4</font>, 5
+    
+## Hypothesis Testing (Dependent)  {.smaller}
+
+  -   if $n \le 50$:
+  
+      - $n =$ number of non-zero differences 
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $T_- = \sum \text{(negative ranks)}$ | $T_+ = \sum \text{(positive ranks)}$ | $\min(T_-, T_+)$ |
+    
+## Hypothesis Testing (Dependent)  {.smaller}
+
+  -   if $n > 50$:
+  
+      - $n =$ number of non-zero differences 
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ z_0 = \frac{T_0-\mu_T}{\sigma_T}$$
+
+## Hypothesis Testing (Dependent)  {.smaller}
+
+  - The mean is as follows,
+
+$$ \mu_T = \frac{n (n+1)}{4} $$
+  - The variance is as follows,
+  
+$$\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)$$
+  - where $t_j$ is the number of ties in tied group $j$
+        
+## Hypothesis Testing (Dependent)
+
+-   We will again use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+wilcox.test([variable 1], [variable 2],
+       data = [dataset],
+       alternative = "[alternative]",
+       paired = TRUE)
+```
+
+## Hypothesis Testing -- Garages
+
+-   Recall the car repair data from Lecture 4. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
+
+```{r}
+g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 
+        22.1, 16.9, 17.6, 18.4)
+g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 
+        21.0, 16.1, 16.7, 17.5)
+garage <- tibble(g1, g2)
+```
+
+```{r, echo = TRUE, warning = FALSE}
+wilcox.test(g1, g2,
+            data = garage,
+            paired = TRUE,
+            alternative = "greater")
+```
+
+## Hypothesis Testing -- Garages {.smaller}
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{I}} \le M_{\text{II}}$
+-   $H_0: \ M_{\text{I}} > M_{\text{II}}$
+
+**Test Statistic**
+
+-   $T_0 = 118.5$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.
+    
+## Hypothesis Testing -- Hunger
+
+-   Recall the hunger data from Lecture 4. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
+
+```{r}
+drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
+placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
+hunger <- tibble(drug, placebo)
+```
+
+```{r, echo = TRUE}
+wilcox.test(drug, placebo,
+            data = hunger,
+            paired = TRUE,
+            alternative = "two")
+```
+
+## Hypothesis Testing -- Hunger {.smaller}
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{drug}} = M_{\text{placebo}}$
+-   $H_0: \ M_{\text{drug}} \ne M_{\text{placebo}}$
+
+**Test Statistic**
+
+-   $T_0 = 4$
+
+***p*****-Value**
+
+-   $p = 0.027$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.    
+    
+    
+    
+    
+    
+    
+    
+    
+
+

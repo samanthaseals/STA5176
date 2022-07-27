@@ -2,8 +2,10 @@
 title: "Two-Sample Medians"
 subtitle: "STA5176 - Lecture 5"
 author: "Dr. Seals"
-format: revealjs
-editor: visual
+format: 
+  revealjs:
+    theme: dark2
+editor: source
 ---
 
 ## Introduction
@@ -21,47 +23,47 @@ library(tidyverse)
 -   Today we will cover the nonparametric alternatives to the *t*-tests for two samples
 
     -   the Wilcoxon rank sum is for *independent* data
-    - the Wilcoxon signed rank is for *dependent* data
+    -   the Wilcoxon signed rank is for *dependent* data
 
 ## Ranking Data
 
--   The Wilcoxon tests are nonparametric -- they do not impose a distributional assumption on the data. 
+-   The Wilcoxon tests are nonparametric -- they do not impose a distributional assumption on the data.
 
-    -  In nonparametric tests, we often analyze the ranks instead of the raw data.
+    -   In nonparametric tests, we often analyze the ranks instead of the raw data.
 
-- How do we rank data?
+-   How do we rank data?
 
-    - We rank all data, without regard to grouping
+    -   We rank all data, without regard to grouping
 
-    - The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of $N=n_1+n_2$. 
-    
-    - Ties are assigned the average rank.
-    
+    -   The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of $N=n_1+n_2$.
+
+    -   Ties are assigned the average rank.
+
 ## Ranking Data -- Independent Example
 
--   Suppose we want to rank the data: 
+-   Suppose we want to rank the data:
 
     -   8, 3, 9, 1, 3
 
--   We first order the data: 
+-   We first order the data:
 
     -   1, 3, 3, 8, 9
 
--   Then we assign the ranks, ignoring ties: 
+-   Then we assign the ranks, ignoring ties:
 
     -   1, 2, 3, 4, 5
 
--   Then we assign the final ranks, accounting for ties: 
+-   Then we assign the final ranks, accounting for ties:
 
     -   1, 2.5, 2.5, 4, 5
 
-## Hypothesis Testing (Independent)  {.smaller}
+## Hypothesis Testing (Independent) {.smaller}
 
-  -   if $n_1 \le 10$ and $n_2 \le 10$:
+-   if $n_1 \le 10$ and $n_2 \le 10$:
 
 **Hypotheses**
 
-|          Right Tail           |           Left Tail           |           Two Tails            |
+|        Right Tail         |         Left Tail         |         Two Tails          |
 |:----------------------:|:----------------------:|:----------------------:|
 | $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
 | $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
@@ -72,20 +74,20 @@ $$ T_0 = \sum \text{(ranks from group 1)}$$
 
 ## Hypothesis Testing (Independent) {.smaller}
 
-  -   if $n_1 > 10$ or $n_2 > 10$:
+-   if $n_1 > 10$ or $n_2 > 10$:
 
 **Hypotheses**
 
-|          Right Tail           |           Left Tail           |           Two Tails            |
+|        Right Tail         |         Left Tail         |         Two Tails          |
 |:----------------------:|:----------------------:|:----------------------:|
 | $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
 | $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
 
-**Test Statistic**  
+**Test Statistic**
 
 $$ z_0 = \frac{T_0 - \mu_T}{\sigma_T},$$
-   
-   -  where
+
+-   where
 
 $$ \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)$$
 
@@ -133,7 +135,6 @@ wilcox.test(bill_length_mm ~ sex,
 
 -   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the median bill length of female penguins is shorter than that of male penguins.
 
-
 ## Hypothesis Testing -- Sheep
 
 -   Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. After 6 months, the worm counts were as follows:
@@ -142,7 +143,6 @@ wilcox.test(bill_length_mm ~ sex,
 |-----------|-----------|-----------|-----------|-----------|-----------|-----------|
 | Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 | 16 <br> 6  | 32 <br> 7  |
 | Control   | 40 <br> 39 | 54 <br> 23 | 26 <br> 48 | 63 <br> 58 | 21 <br> 28 | 37 <br> 39 |
-
 
 ## Hypothesis Testing -- Sheep
 
@@ -190,46 +190,46 @@ wilcox.test(worms ~ trt,
 
     -   -8, 3, 0, 9, -1, -3
 
--   We order the absolute value of the differences and exclude differences of 0: 
+-   We order the absolute value of the differences and exclude differences of 0:
 
     -   <font color="orange">1</font>, 3, <font color="orange">3</font>, <font color="orange">8</font>, 9
 
--   Then we assign the ranks, ignoring ties: 
+-   Then we assign the ranks, ignoring ties:
 
     -   <font color="orange">1</font>, 2, <font color="orange">3</font>, <font color="orange">4</font>, 5
 
--   Then we assign the final ranks, accounting for ties, and carry over the sign of the corresponding difference: 
+-   Then we assign the final ranks, accounting for ties, and carry over the sign of the corresponding difference:
 
     -   <font color="orange">-1</font>, 2.5, <font color="orange">-2.5</font>, <font color="orange">-4</font>, 5
-    
-## Hypothesis Testing (Dependent)  {.smaller}
 
-  -   if $n \le 50$:
-  
-      - $n =$ number of non-zero differences 
+## Hypothesis Testing (Dependent) {.smaller}
+
+-   if $n \le 50$:
+
+    -   $n =$ number of non-zero differences
 
 **Hypotheses**
 
-|          Right Tail           |           Left Tail           |           Two Tails            |
+|        Right Tail         |         Left Tail         |         Two Tails          |
 |:----------------------:|:----------------------:|:----------------------:|
 | $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
 | $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
 
 **Test Statistic**
 
-|          Right Tail           |           Left Tail           |           Two Tails            |
+|              Right Tail              |              Left Tail               |    Two Tails     |
 |:----------------------:|:----------------------:|:----------------------:|
 | $T_- = \sum \text{(negative ranks)}$ | $T_+ = \sum \text{(positive ranks)}$ | $\min(T_-, T_+)$ |
-    
-## Hypothesis Testing (Dependent)  {.smaller}
 
-  -   if $n > 50$:
-  
-      - $n =$ number of non-zero differences 
+## Hypothesis Testing (Dependent) {.smaller}
+
+-   if $n > 50$:
+
+    -   $n =$ number of non-zero differences
 
 **Hypotheses**
 
-|          Right Tail           |           Left Tail           |           Two Tails            |
+|        Right Tail         |         Left Tail         |         Two Tails          |
 |:----------------------:|:----------------------:|:----------------------:|
 | $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
 | $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
@@ -238,19 +238,21 @@ wilcox.test(worms ~ trt,
 
 $$ z_0 = \frac{T_0-\mu_T}{\sigma_T}$$
 
-## Hypothesis Testing (Dependent)  {.smaller}
+## Hypothesis Testing (Dependent) {.smaller}
 
-  - The mean is as follows,
+  -   The mean is as follows,
 
-$$ \mu_T = \frac{n (n+1)}{4} $$
+$$ \mu_T = \frac{n (n+1)}{4} $$ 
+
   - The variance is as follows,
-  
-$$\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)$$
+
+$$\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)$$ 
+
   - where $t_j$ is the number of ties in tied group $j$
-        
+
 ## Hypothesis Testing (Dependent)
 
--   We will again use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
+  -   We will again use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
 
 ```{r, echo = TRUE, eval = FALSE}
 wilcox.test([variable 1], [variable 2],
@@ -296,7 +298,7 @@ wilcox.test(g1, g2,
 **Conclusion/Interpretation**
 
 -   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.
-    
+
 ## Hypothesis Testing -- Hunger
 
 -   Recall the hunger data from Lecture 4. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
@@ -331,14 +333,4 @@ wilcox.test(drug, placebo,
 
 **Conclusion/Interpretation**
 
--   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.

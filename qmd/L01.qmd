@@ -2,8 +2,10 @@
 title: "Review of Estimation and Inference"
 subtitle: "STA5176 - Lecture 1"
 author: "Dr. Seals"
-format: revealjs
-editor: visual
+format: 
+  revealjs:
+    theme: dark2
+editor: source
 ---
 
 ## Data and Packages

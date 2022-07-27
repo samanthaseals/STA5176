@@ -2,8 +2,10 @@
 title: "Two-Sample Means (Independent)"
 subtitle: "STA5176 - Lecture 3"
 author: "Dr. Seals"
-format: revealjs
-editor: visual
+format: 
+  revealjs:
+    theme: dark2
+editor: source
 ---
 
 ## Introduction
@@ -13,8 +15,8 @@ editor: visual
 -   Today we will cover estimation and inference on two independent means using the two-sample *t*-test.
 
     -   We will cover two cases: equal variances and unequal variances.
-    
-    - The data is independent because the two groups do not depend on one another; we cannot link observations between the groups.
+
+    -   The data is independent because the two groups do not depend on one another; we cannot link observations between the groups.
 
 -   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
 

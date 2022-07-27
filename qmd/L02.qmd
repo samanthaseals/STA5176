@@ -2,8 +2,10 @@
 title: "One-Sample Means"
 subtitle: "STA5176 - Lecture 2"
 author: "Dr. Seals"
-format: revealjs
-editor: visual
+format: 
+  revealjs:
+    theme: dark2
+editor: source
 ---
 
 ## Introduction
@@ -95,7 +97,7 @@ t.test(error, conf.level = 0.99)
 
 ## Confidence Interval -- Salmonella
 
-```{r}
+```{r, echo = TRUE}
 salmonella <- c(0.593, 0.142, 0.329, 
                 0.691, 0.231, 0.793, 
                 0.519, 0.392, 0.418)

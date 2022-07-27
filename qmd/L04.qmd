@@ -2,8 +2,10 @@
 title: "Two-Sample Means (Dependent)"
 subtitle: "STA5176 - Lecture 4"
 author: "Dr. Seals"
-format: revealjs
-editor: visual
+format: 
+  revealjs:
+    theme: dark2
+editor: source
 ---
 
 ## Introduction

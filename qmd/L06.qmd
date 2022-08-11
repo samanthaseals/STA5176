@@ -1,10 +1,18 @@
 ---
 title: "Inference on Variances"
-subtitle: "STA5176 - Lecture 6"
+subtitle: "STA5176: Statistical Modeling"
 author: "Dr. Seals"
 format: 
   revealjs:
     theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
 editor: source
 ---
 
@@ -12,10 +20,9 @@ editor: source
 
 ```{r, echo = FALSE}
 library(tidyverse)
-library(palmerpenguins)
 library(EnvStats)
 library(car)
-penguins <- penguins
+penguins <- palmerpenguins::penguins
 ```
 
 -   In the last lecture, we covered estimation and inference on central parameters ($\mu$ and M).
@@ -52,11 +59,11 @@ varTest([variable],
 
 - The code will not run without the `conf.level` stated.
 
-- Note that if you are constructing a two-tailed test, you can find the corresponding CI in the same call of `varTest`
+- Note that if you are constructing a two-tailed test, you can find the corresponding CI in the same call of `varTest`.
 
 - If you are constructing a one-tailed test, you will see that the CI presented is a one-sided CI, while we are interested in two-sided CIs.
 
-## Hypothesis Testing -- One $\sigma^2$
+## Hypothesis Testing -- One $\sigma^2$ -- Penguins
 
 -   Recall the penguin data. Let's use the appropriate test to determine if the standard deviation of bill length for penguins (`r round(sd(penguins$bill_length_mm, na.rm = TRUE),2)` mm) is greater than 5 mm. Test at the $\alpha=0.01$ level.
 
@@ -67,7 +74,7 @@ varTest(penguins$bill_length_mm,
         sigma.squared = 25)
 ```
 
-## Hypothesis Testing -- One $\sigma^2$ {.smaller}
+## Hypothesis Testing -- One $\sigma^2$ -- Penguins
 
 **Hypotheses**
 
@@ -108,7 +115,7 @@ varTest([variable],
     - The default `alternative` is two-sided.
     - The default `sigma.squared` is 1.
 
-## Confidence Intervals -- One $\sigma^2$
+## Confidence Intervals -- One $\sigma^2$ -- Penguins
 
 -   Recall the penguin data. Find the 99% CI for the standard deviation, $\sigma$.
 
@@ -117,13 +124,12 @@ varTest(penguins$bill_length_mm,
         conf.level = 0.99)
 ```
 
-## Confidence Intervals -- One $\sigma^2$
-
-- Thus, the 99% CI for $\sigma^2$ is (24.67, 36.63)
+- The 99% CI for $\sigma^2$ is (24.67, 36.63)
 
 - However, we were asked for the 99% CI for $\sigma$, so we must take the square root.
 
-- Thus, the 99% CI for $\sigma^2$ is (`r round(sqrt(24.67),2)`, `r round(sqrt(36.63),2)`).
+    - Thus, the 99% CI for $\sigma$ is (`r round(sqrt(24.67),2)`, `r round(sqrt(36.63),2)`).
+
 
 ## Hypothesis Testing -- Two $\sigma^2$
 
@@ -157,7 +163,7 @@ var.test([var 1], [var 2],
 
 - Remember that this is typically used to verify the variance assumption of the two-sample $t$-test.
 
-## Hypothesis Testing -- Two $\sigma^2$
+## Hypothesis Testing -- Two $\sigma^2$ -- Penguins
 
 - Recall the penguins data. Determine if the variance of the bill length is the same between male and female penguins. Test at the $\alpha=0.05$ level.
 
@@ -169,7 +175,7 @@ var.test(f$bill_length_mm, m$bill_length_mm,
          ratio = 1)
 ```
 
-## Hypothesis Testing -- Two $\sigma^2$ {.smaller}
+## Hypothesis Testing -- Two $\sigma^2$ -- Penguins
 
 **Hypotheses**
 
@@ -213,7 +219,7 @@ var.test(f$bill_length_mm, m$bill_length_mm,
 
 - Thus, the 95% CI for the ratio of variances is (0.61, 1.13).
 
-## Hypothesis Testing -- > Three $\sigma^2$
+## Hypothesis Testing --  $\ge$ Three $\sigma^2$
 
 - The Brown-Forsythe-Levine test is used to assess assumptions in ANOVA (next chapter).
 
@@ -225,7 +231,7 @@ var.test(f$bill_length_mm, m$bill_length_mm,
   - $H_1:$ at least one $\sigma^2_i$ is different
   
 
-## Hypothesis Testing -- > Three $\sigma^2$
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$
 
 **Test Statistic**
 $$ F_0 = \frac{\sum_{i=1}^k n_i (\bar{z}_i - \bar{z})^2/(k-1)}{\sum_{i=1}^k \sum_{j=1}^{n_j}(z_{ij}-\bar{z}_i)^2/(n-k) }, $$
@@ -237,7 +243,7 @@ where
   - $n = \sum_{i=1}^k n_i$, and
   - $z_{ij} = |y_{ij} - \text{median}(y_i)|$
   
-## Hypothesis Testing -- Three $\sigma^2$
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$
 
 - We will use the [`leveneTest()`](https://www.rdocumentation.org/packages/car/versions/3.1-0/topics/leveneTest) function from the [`car`](https://www.rdocumentation.org/packages/car/versions/3.1-0) package.
 
@@ -247,7 +253,7 @@ leveneTest([continuous var] ~ [grouping var],
            center = median)
 ```
   
-## Hypothesis Testing -- > Three $\sigma^2$
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$ -- Penguins
 
 - Let's now determine if the variance of bill length is different between the three species of penguins.
 
@@ -255,7 +261,7 @@ leveneTest([continuous var] ~ [grouping var],
 leveneTest(bill_length_mm ~ species, data = penguins, center = median)
 ```
 
-## Hypothesis Testing -- > Three $\sigma^2$ {.smaller}
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$ -- Penguins
 
 **Hypotheses**
 

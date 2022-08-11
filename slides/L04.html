@@ -89,9 +89,27 @@
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="L04_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="L04_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="L04_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="L04_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L04_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L04_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="L04_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
@@ -377,6 +395,9 @@
       margin-right: 0; 
     }
   </style>
+  
+  <link href="L04_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L04_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -384,7 +405,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Two-Sample Means (Dependent)</h1>
-  <p class="subtitle">STA5176 - Lecture 4</p>
+  <p class="subtitle">STA5176: Statistical Modeling</p>
   <p class="author">Dr.&nbsp;Seals</p>
 </section>
 
@@ -399,25 +420,19 @@
 </ul></li>
 </ul>
 </section>
-<section id="packages" class="slide level2">
-<h2>Packages</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="confidence-interval-definition" class="slide level2">
 <h2>Confidence Interval – Definition</h2>
 <ul>
-<li>The CI for <span class="math inline">\(\mu_1 - \mu_2\)</span> is as follows:</li>
+<li>The CI for <span class="math inline">\mu_1 - \mu_2</span> is as follows:</li>
 </ul>
-<p><span class="math display">\[ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, \]</span></p>
+<p><span class="math display"> \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, </span></p>
 <ul>
 <li>where
 <ul>
-<li><span class="math inline">\(d_i = y_{1i} - y_{2i}\)</span>,</li>
-<li><span class="math inline">\(\bar{d}\)</span> is the average of all <span class="math inline">\(d_i\)</span>,</li>
-<li><span class="math inline">\(s_d\)</span> is the standard deviation of all <span class="math inline">\(d_i\)</span>, and</li>
-<li><span class="math inline">\(n\)</span> is the number of paired observations</li>
+<li><span class="math inline">d_i = y_{1i} - y_{2i}</span>,</li>
+<li><span class="math inline">\bar{d}</span> is the average of all <span class="math inline">d_i</span>,</li>
+<li><span class="math inline">s_d</span> is the standard deviation of all <span class="math inline">d_i</span>, and</li>
+<li><span class="math inline">n</span> is the number of paired observations</li>
 </ul></li>
 </ul>
 </section>
@@ -427,26 +442,25 @@
 <li>We will use the <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test"><code>t.test()</code></a> function to find the CI,</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
-<span id="cb2-2"><a href="#cb2-2"></a>       <span class="at">data =</span> [dataset],</span>
-<span id="cb2-3"><a href="#cb2-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-4"><a href="#cb2-4"></a>       <span class="at">conf.level =</span> [confidence level])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
+<span id="cb1-2"><a href="#cb1-2"></a>       <span class="at">data =</span> [dataset],</span>
+<span id="cb1-3"><a href="#cb1-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-4"><a href="#cb1-4"></a>       <span class="at">conf.level =</span> [confidence level])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="confidence-interval-garages" class="slide level2">
 <h2>Confidence Interval – Garages</h2>
-<p>Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data on the next slide. Construct the 90% CI for the average difference between garages.</p>
+<p>Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data below Construct the 90% CI for the average difference between garages. <br><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">17.6</span>, <span class="fl">20.2</span>, <span class="fl">19.5</span>, <span class="fl">11.3</span>, <span class="fl">13.0</span>, <span class="fl">16.3</span>, <span class="fl">15.3</span>, <span class="fl">16.2</span>, <span class="fl">12.2</span>, <span class="fl">14.8</span>, <span class="fl">21.3</span>, <span class="fl">22.1</span>, <span class="fl">16.9</span>, <span class="fl">17.6</span>, <span class="fl">18.4</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>g2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">17.3</span>, <span class="fl">19.1</span>, <span class="fl">18.4</span>, <span class="fl">11.5</span>, <span class="fl">12.7</span>, <span class="fl">15.8</span>, <span class="fl">14.9</span>, <span class="fl">15.3</span>, <span class="fl">12.0</span>, <span class="fl">14.2</span>, <span class="fl">21.0</span>, <span class="fl">21.0</span>, <span class="fl">16.1</span>, <span class="fl">16.7</span>, <span class="fl">17.5</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>garage <span class="ot">&lt;-</span> <span class="fu">tibble</span>(g1, g2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="confidence-interval-garages-1" class="slide level2">
 <h2>Confidence Interval – Garages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>g1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">17.6</span>, <span class="fl">20.2</span>, <span class="fl">19.5</span>, <span class="fl">11.3</span>, <span class="fl">13.0</span>, <span class="fl">16.3</span>, <span class="fl">15.3</span>, <span class="fl">16.2</span>, <span class="fl">12.2</span>, <span class="fl">14.8</span>, <span class="fl">21.3</span>, </span>
-<span id="cb3-2"><a href="#cb3-2"></a>        <span class="fl">22.1</span>, <span class="fl">16.9</span>, <span class="fl">17.6</span>, <span class="fl">18.4</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>g2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">17.3</span>, <span class="fl">19.1</span>, <span class="fl">18.4</span>, <span class="fl">11.5</span>, <span class="fl">12.7</span>, <span class="fl">15.8</span>, <span class="fl">14.9</span>, <span class="fl">15.3</span>, <span class="fl">12.0</span>, <span class="fl">14.2</span>, <span class="fl">21.0</span>, </span>
-<span id="cb3-4"><a href="#cb3-4"></a>        <span class="fl">21.0</span>, <span class="fl">16.1</span>, <span class="fl">16.7</span>, <span class="fl">17.5</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>garage <span class="ot">&lt;-</span> <span class="fu">tibble</span>(g1, g2)</span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="fu">t.test</span>(garage<span class="sc">$</span>g1, garage<span class="sc">$</span>g2, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">t.test</span>(garage<span class="sc">$</span>g1, garage<span class="sc">$</span>g2, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.90</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
@@ -462,7 +476,7 @@ mean difference
 </div>
 </div>
 <ul>
-<li><p>The 90% CI is (0.433, 0.793) <span class="math inline">\(\to\)</span> ($433, $793)</p>
+<li><p>The 90% CI is (0.433, 0.793) <span class="math inline">\to</span> ($433, $793)</p>
 <ul>
 <li>Is there evidence that garage I is higher than garage II?</li>
 </ul></li>
@@ -470,16 +484,17 @@ mean difference
 </section>
 <section id="confidence-interval-hunger" class="slide level2">
 <h2>Confidence Interval – Hunger</h2>
-<p>During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on the next slide. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.</p>
+<p>During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on below. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo. <br><br></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>drug <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">79</span>, <span class="dv">48</span>, <span class="dv">52</span>, <span class="dv">15</span>, <span class="dv">61</span>, <span class="dv">107</span>, <span class="dv">77</span>, <span class="dv">54</span>, <span class="dv">5</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>placebo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">54</span>, <span class="dv">142</span>, <span class="dv">25</span>, <span class="dv">101</span>, <span class="dv">99</span>, <span class="dv">94</span>, <span class="dv">107</span>, <span class="dv">64</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>hunger <span class="ot">&lt;-</span> <span class="fu">tibble</span>(drug, placebo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="confidence-interval-hunger-1" class="slide level2">
 <h2>Confidence Interval – Hunger</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>drug <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">79</span>, <span class="dv">48</span>, <span class="dv">52</span>, <span class="dv">15</span>, <span class="dv">61</span>, <span class="dv">107</span>, <span class="dv">77</span>, <span class="dv">54</span>, <span class="dv">5</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>placebo <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">54</span>, <span class="dv">142</span>, <span class="dv">25</span>, <span class="dv">101</span>, <span class="dv">99</span>, <span class="dv">94</span>, <span class="dv">107</span>, <span class="dv">64</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>hunger <span class="ot">&lt;-</span> <span class="fu">tibble</span>(drug, placebo)</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">t.test</span>(drug, placebo, <span class="at">data =</span> hunger, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">t.test</span>(drug, placebo, <span class="at">data =</span> hunger, <span class="at">paired =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
@@ -519,27 +534,27 @@ mean difference
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(H_0: \ \mu_1- \mu_2 \le D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ \mu_1 - \mu_2\ge D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ \mu_1 - \mu_2 = D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ \mu_1- \mu_2 \le D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ \mu_1 - \mu_2\ge D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ \mu_1 - \mu_2 = D_0</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(H_1: \ \mu_1 - \mu_2 &gt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ \mu_1 - \mu_2 &lt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ \mu_1 - \mu_2 \ne D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ \mu_1 - \mu_2 &gt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ \mu_1 - \mu_2 &lt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ \mu_1 - \mu_2 \ne D_0</span></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Test Statistic</strong></p>
-<p><span class="math display">\[ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} \]</span></p>
+<p><span class="math display"> t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} </span></p>
 <ul>
 <li><p>where</p>
 <ul>
-<li><span class="math inline">\(D_0\)</span> is the hypothesized average difference between groups 1 and 2,</li>
-<li><span class="math inline">\(\bar{d}\)</span> is the average of all <span class="math inline">\(d_i\)</span>,</li>
-<li><span class="math inline">\(s_d\)</span> is the standard deviation of all <span class="math inline">\(d_i\)</span></li>
-<li><span class="math inline">\(n\)</span> is the number of paired observations, and</li>
-<li><span class="math inline">\(t_0\)</span> has df <span class="math inline">\(= n-1\)</span>.</li>
+<li><span class="math inline">D_0</span> is the hypothesized average difference between groups 1 and 2,</li>
+<li><span class="math inline">\bar{d}</span> is the average of all <span class="math inline">d_i</span>,</li>
+<li><span class="math inline">s_d</span> is the standard deviation of all <span class="math inline">d_i</span></li>
+<li><span class="math inline">n</span> is the number of paired observations, and</li>
+<li><span class="math inline">t_0</span> has df <span class="math inline">= n-1</span>.</li>
 </ul></li>
 </ul>
 </section>
@@ -549,22 +564,22 @@ mean difference
 <li>We will use the <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test"><code>t.test()</code></a> function to perform the hypothesis test,</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
-<span id="cb7-2"><a href="#cb7-2"></a>       <span class="at">data =</span> [dataset]</span>
-<span id="cb7-3"><a href="#cb7-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-4"><a href="#cb7-4"></a>       <span class="at">alternative =</span> [alternative])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">t.test</span>([variable <span class="dv">1</span>], [variable <span class="dv">2</span>],</span>
+<span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">data =</span> [dataset]</span>
+<span id="cb8-3"><a href="#cb8-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>       <span class="at">alternative =</span> [alternative])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="hypothesis-testing-garages" class="slide level2">
 <h2>Hypothesis Testing – Garages</h2>
 <ul>
-<li>Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\(\alpha=0.10\)</span> level.</li>
+<li>Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\alpha=0.10</span> level.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">t.test</span>(g1, g2,</span>
-<span id="cb8-2"><a href="#cb8-2"></a>       <span class="at">data =</span> data,</span>
-<span id="cb8-3"><a href="#cb8-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-4"><a href="#cb8-4"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">t.test</span>(g1, g2,</span>
+<span id="cb9-2"><a href="#cb9-2"></a>       <span class="at">data =</span> data,</span>
+<span id="cb9-3"><a href="#cb9-3"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-4"><a href="#cb9-4"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
@@ -580,35 +595,35 @@ mean difference
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-garages-1" class="slide level2 smaller">
+<section id="hypothesis-testing-garages-1" class="slide level2">
 <h2>Hypothesis Testing – Garages</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}\)</span></li>
-<li><span class="math inline">\(H_0: \ \mu_{\text{I}} &gt; \mu_{\text{II}}\)</span></li>
+<li><span class="math inline">H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}</span></li>
+<li><span class="math inline">H_0: \ \mu_{\text{I}} &gt; \mu_{\text{II}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(t_0 = 6.023\)</span></li>
+<li><span class="math inline">t_0 = 6.023</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p &lt; 0.001\)</span></li>
+<li><span class="math inline">p &lt; 0.001</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.10\)</span> level. There is sufficient evidence to suggest that, on average, it costs more to have repairs done at garage I as compared to garage II.</li>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.10</span> level. There is sufficient evidence to suggest that, on average, it costs more to have repairs done at garage I as compared to garage II.</li>
 </ul>
 </section>
 <section id="hypothesis-testing-hunger" class="slide level2">
 <h2>Hypothesis Testing – Hunger</h2>
 <ul>
-<li>Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\(\alpha=0.01\)</span> level.</li>
+<li>Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\alpha=0.01</span> level.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">t.test</span>(hunger<span class="sc">$</span>drug, hunger<span class="sc">$</span>placebo,</span>
-<span id="cb10-2"><a href="#cb10-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>       <span class="at">alternative =</span> <span class="st">"two"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">t.test</span>(hunger<span class="sc">$</span>drug, hunger<span class="sc">$</span>placebo,</span>
+<span id="cb11-2"><a href="#cb11-2"></a>       <span class="at">paired =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>       <span class="at">alternative =</span> <span class="st">"two"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Paired t-test
@@ -624,24 +639,24 @@ mean difference
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-hunger-1" class="slide level2 smaller">
+<section id="hypothesis-testing-hunger-1" class="slide level2">
 <h2>Hypothesis Testing – Hunger</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}\)</span></li>
-<li><span class="math inline">\(H_0: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}\)</span></li>
+<li><span class="math inline">H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}</span></li>
+<li><span class="math inline">H_0: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(t_0 = -2.701\)</span></li>
+<li><span class="math inline">t_0 = -2.701</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p = 0.027\)</span></li>
+<li><span class="math inline">p = 0.027</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that, on average, reports of hunger are different between the drug and the placebo.</li>
+<li>Fail to reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.01</span> level. There is not sufficient evidence to suggest that, on average, reports of hunger are different between the drug and the placebo.</li>
 </ul>
 </section>
 <section id="assumptions" class="slide level2">
@@ -655,45 +670,45 @@ mean difference
 <li><p>We still want to see an approximate 45° line.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>[dataset] <span class="ot">&lt;-</span> [dataset] <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> [variable <span class="dv">1</span>] <span class="sc">-</span> [variable <span class="dv">2</span>])</span>
-<span id="cb12-2"><a href="#cb12-2"></a></span>
-<span id="cb12-3"><a href="#cb12-3"></a>[dataset] <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>[dataset] <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> [variable <span class="dv">1</span>] <span class="sc">-</span> [variable <span class="dv">2</span>]) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="assumptions-garages" class="slide level2">
 <h2>Assumptions – Garages</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>garage <span class="ot">&lt;-</span> garage <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> g1 <span class="sc">-</span> g2)</span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a>garage <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb13-7"><a href="#cb13-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>garage <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> g1 <span class="sc">-</span> g2) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>    <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>    <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="L04_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<img data-src="L04_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="assumptions-hunger" class="slide level2">
 <h2>Assumptions – Hunger</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>hunger <span class="ot">&lt;-</span> hunger <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> drug <span class="sc">-</span> placebo)</span>
-<span id="cb14-2"><a href="#cb14-2"></a></span>
-<span id="cb14-3"><a href="#cb14-3"></a>hunger <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb14-6"><a href="#cb14-6"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>hunger <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">diff =</span> drug <span class="sc">-</span> placebo) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">sample =</span> diff)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>    <span class="fu">stat_qq</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>    <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>    <span class="fu">xlab</span>(<span class="st">"Theoretical"</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>    <span class="fu">ylab</span>(<span class="st">"Sample"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="L04_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><div class="footer footer-default">
-
+<img data-src="L04_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<p><a href="https://samanthaseals.github.io/STA5176">STA5176 - Statistical Modeling</a></p>
 </div>
 </section>
     </div>
@@ -706,13 +721,13 @@ mean difference
   <script src="L04_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="L04_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="L04_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L04_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="L04_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
   <script src="L04_files/libs/revealjs/plugin/notes/notes.js"></script>
   <script src="L04_files/libs/revealjs/plugin/search/search.js"></script>
   <script src="L04_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="L04_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -727,7 +742,8 @@ mean difference
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -873,34 +889,16 @@ mean difference
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1600,
 
-        height: 700,
+        height: 900,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

@@ -1,12 +1,24 @@
 ---
-title: "One-Sample Means"
-subtitle: "STA5176 - Lecture 2"
+title: "One Sample Means"
+subtitle: "STA5176: Statistical Modeling"
 author: "Dr. Seals"
 format: 
   revealjs:
     theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
 editor: source
 ---
+
+```{r setup_environment, include = FALSE}
+library("tidyverse") 
+```
 
 ## Introduction
 
@@ -16,31 +28,15 @@ editor: source
 
 -   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
 
-## Data and Packages
+## Palmer Penguins
 
-```{r, warning = FALSE}
-library(palmerpenguins)
-library(tidyverse)
+<div style = "font-size: .75em; margin-top: 2em">
 
-penguins <- palmerpenguins::penguins %>%
-  mutate(sex = ifelse(sex == "male", "M", 
-                      ifelse(sex == "female", "F", NA))) %>%
-  filter(sex %in% c("M", "F"))
-
-# I recoded male and female and removed missing data for display purposes
-```
-
-```{r, echo = TRUE, warning = FALSE}
-library(palmerpenguins)
-library(tidyverse)
-
-head(penguins)
-```
-
-```{r, warning = FALSE}
+```{r}
 penguins <- palmerpenguins::penguins
-
-# reset the penguin dataset for examples
+set.seed(1)
+penguins |>
+ slice_sample(prop = 1)
 ```
 
 ## Confidence Interval -- Definition
@@ -137,7 +133,7 @@ t.test([dataset]$[variable],
 t.test(penguins$body_mass_g, mu=4400, alternative = "two")
 ```
 
-## Hypothesis Testing -- Penguins {.smaller}
+## Hypothesis Testing -- Penguins 
 
 **Hypotheses**
 
@@ -164,7 +160,7 @@ t.test(penguins$body_mass_g, mu=4400, alternative = "two")
 t.test(salmonella, mu=0.3, alternative = "greater")
 ```
 
-## Hypothesis Testing -- Salmonella {.smaller}
+## Hypothesis Testing -- Salmonella
 
 **Hypotheses**
 

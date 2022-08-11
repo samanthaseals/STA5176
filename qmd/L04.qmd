@@ -1,12 +1,24 @@
 ---
 title: "Two-Sample Means (Dependent)"
-subtitle: "STA5176 - Lecture 4"
+subtitle: "STA5176: Statistical Modeling"
 author: "Dr. Seals"
 format: 
   revealjs:
     theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
 editor: source
 ---
+
+```{r setup_environment, include = FALSE}
+library("tidyverse") 
+```
 
 ## Introduction
 
@@ -17,12 +29,6 @@ editor: source
     -   The data is dependent because we can link the observations between the two groups.
 
     -   e.g., pre- and post-tests; sections of standardized tests; monthly rainfall at Pensacola Regional Airport
-
-## Packages
-
-```{r, echo = TRUE}
-library(tidyverse)
-```
 
 ## Confidence Interval -- Definition
 
@@ -49,17 +55,18 @@ t.test([variable 1], [variable 2],
 
 ## Confidence Interval -- Garages
 
-Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data on the next slide. Construct the 90% CI for the average difference between garages.
+Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data below Construct the 90% CI for the average difference between garages. 
+<br><br>
+
+```{r, echo = TRUE}
+g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 22.1, 16.9, 17.6, 18.4)
+g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 21.0, 16.1, 16.7, 17.5)
+garage <- tibble(g1, g2)
+```
 
 ## Confidence Interval -- Garages
 
 ```{r, echo = TRUE}
-g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 
-        22.1, 16.9, 17.6, 18.4)
-g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 
-        21.0, 16.1, 16.7, 17.5)
-garage <- tibble(g1, g2)
-
 t.test(garage$g1, garage$g2, paired = TRUE, conf.level = 0.90)
 ```
 
@@ -69,15 +76,18 @@ t.test(garage$g1, garage$g2, paired = TRUE, conf.level = 0.90)
 
 ## Confidence Interval -- Hunger
 
-During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on the next slide. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.
-
-## Confidence Interval -- Hunger
+During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on below. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.
+<br><br>
 
 ```{r, echo = TRUE}
 drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
 placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
 hunger <- tibble(drug, placebo)
+```
 
+## Confidence Interval -- Hunger
+
+```{r, echo = TRUE}
 t.test(drug, placebo, data = hunger, paired = TRUE, conf.level = 0.99)
 ```
 
@@ -128,7 +138,7 @@ t.test(g1, g2,
        alternative = "greater")
 ```
 
-## Hypothesis Testing -- Garages {.smaller}
+## Hypothesis Testing -- Garages
 
 **Hypotheses**
 
@@ -157,7 +167,7 @@ t.test(hunger$drug, hunger$placebo,
        alternative = "two")
 ```
 
-## Hypothesis Testing -- Hunger {.smaller}
+## Hypothesis Testing -- Hunger
 
 **Hypotheses**
 
@@ -187,38 +197,38 @@ t.test(hunger$drug, hunger$placebo,
 -   We still want to see an approximate 45° line.
 
 ```{r, echo = TRUE, eval = FALSE}
-[dataset] <- [dataset] %>% mutate(diff = [variable 1] - [variable 2])
-
-[dataset] %>% ggplot(aes(sample = diff)) +
-  stat_qq(size=3) +
-  stat_qq_line() +
-  theme_minimal() +
-  xlab("Theoretical") +
-  ylab("Sample")
+[dataset] %>% 
+  mutate(diff = [variable 1] - [variable 2]) %>% 
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
 ```
 
 ## Assumptions -- Garages
 
 ```{r, echo = TRUE}
-garage <- garage %>% mutate(diff = g1 - g2)
-
-garage %>% ggplot(aes(sample = diff)) +
-  stat_qq(size=3) +
-  stat_qq_line() +
-  theme_minimal() +
-  xlab("Theoretical") +
-  ylab("Sample")
+garage %>% 
+  mutate(diff = g1 - g2) %>%
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
 ```
 
 ## Assumptions -- Hunger
 
 ```{r, echo = TRUE}
-hunger <- hunger %>% mutate(diff = drug - placebo)
-
-hunger %>% ggplot(aes(sample = diff)) +
-  stat_qq(size=3) +
-  stat_qq_line() +
-  theme_minimal() +
-  xlab("Theoretical") +
-  ylab("Sample")
+hunger %>% 
+  mutate(diff = drug - placebo) %>% 
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
 ```

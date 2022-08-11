@@ -89,9 +89,27 @@
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="L05_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="L05_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="L05_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="L05_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L05_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
   <link href="L05_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
@@ -377,6 +395,9 @@
       margin-right: 0; 
     }
   </style>
+  
+  <link href="L05_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L05_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
 <body>
   <div class="reveal">
@@ -384,7 +405,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Two-Sample Medians</h1>
-  <p class="subtitle">STA5176 - Lecture 5</p>
+  <p class="subtitle">STA5176: Statistical Modeling</p>
   <p class="author">Dr.&nbsp;Seals</p>
 </section>
 
@@ -416,7 +437,7 @@
 <li><p>How do we rank data?</p>
 <ul>
 <li><p>We rank all data, without regard to grouping</p></li>
-<li><p>The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of <span class="math inline">\(N=n_1+n_2\)</span>.</p></li>
+<li><p>The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of <span class="math inline">N=n_1+n_2</span>.</p></li>
 <li><p>Ties are assigned the average rank.</p></li>
 </ul></li>
 </ul>
@@ -445,7 +466,7 @@
 <section id="hypothesis-testing-independent" class="slide level2 smaller">
 <h2>Hypothesis Testing (Independent)</h2>
 <ul>
-<li>if <span class="math inline">\(n_1 \le 10\)</span> and <span class="math inline">\(n_2 \le 10\)</span>:</li>
+<li>if <span class="math inline">n_1 \le 10</span> and <span class="math inline">n_2 \le 10</span>:</li>
 </ul>
 <p><strong>Hypotheses</strong></p>
 <table>
@@ -463,24 +484,24 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1- M_2 \le D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2\ge D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2 = D_0</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &gt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &lt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 \ne D_0</span></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Test Statistic</strong></p>
-<p><span class="math display">\[ T_0 = \sum \text{(ranks from group 1)}\]</span></p>
+<p><span class="math display"> T_0 = \sum \text{(ranks from group 1)}</span></p>
 </section>
 <section id="hypothesis-testing-independent-1" class="slide level2 smaller">
 <h2>Hypothesis Testing (Independent)</h2>
 <ul>
-<li>if <span class="math inline">\(n_1 &gt; 10\)</span> or <span class="math inline">\(n_2 &gt; 10\)</span>:</li>
+<li>if <span class="math inline">n_1 &gt; 10</span> or <span class="math inline">n_2 &gt; 10</span>:</li>
 </ul>
 <p><strong>Hypotheses</strong></p>
 <table>
@@ -498,23 +519,23 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1- M_2 \le D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2\ge D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2 = D_0</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &gt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &lt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 \ne D_0</span></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Test Statistic</strong></p>
-<p><span class="math display">\[ z_0 = \frac{T_0 - \mu_T}{\sigma_T},\]</span></p>
+<p><span class="math display"> z_0 = \frac{T_0 - \mu_T}{\sigma_T},</span></p>
 <ul>
 <li>where</li>
 </ul>
-<p><span class="math display">\[ \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)\]</span></p>
+<p><span class="math display"> \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)</span></p>
 </section>
 <section id="hypothesis-testing-independent-2" class="slide level2">
 <h2>Hypothesis Testing (Independent)</h2>
@@ -531,7 +552,7 @@
 <section id="hypothesis-testing-penguins" class="slide level2">
 <h2>Hypothesis Testing – Penguins</h2>
 <ul>
-<li>Recall the penguin data. Let’s use the appropriate test to determine if the bill length of female penguins (median 42.8 mm) is shorter than male penguins (median 46.8 mm). Test at the <span class="math inline">\(\alpha=0.05\)</span> level.</li>
+<li>Recall the penguin data. Let’s use the appropriate test to determine if the bill length of female penguins (median 42.8 mm) is shorter than male penguins (median 46.8 mm). Test at the <span class="math inline">\alpha=0.05</span> level.</li>
 </ul>
 <div class="cell">
 
@@ -550,75 +571,40 @@ alternative hypothesis: true location shift is less than 0</code></pre>
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-penguins-1" class="slide level2 smaller">
+<section id="hypothesis-testing-penguins-1" class="slide level2">
 <h2>Hypothesis Testing – Penguins</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ M_{\text{F}} \ge M_{\text{M}}\)</span></li>
-<li><span class="math inline">\(H_0: \ M_{\text{F}} &lt; M_{\text{M}}\)</span></li>
+<li><span class="math inline">H_0: \ M_{\text{F}} \ge M_{\text{M}}</span></li>
+<li><span class="math inline">H_1: \ M_{\text{F}} &lt; M_{\text{M}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(T_0 = 8178\)</span></li>
+<li><span class="math inline">T_0 = 8178</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p &lt; 0.001\)</span></li>
+<li><span class="math inline">p &lt; 0.001</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.05\)</span> level. There is sufficient evidence to suggest that the median bill length of female penguins is shorter than that of male penguins.</li>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that the median bill length of female penguins is shorter than that of male penguins.</li>
 </ul>
 </section>
 <section id="hypothesis-testing-sheep" class="slide level2">
 <h2>Hypothesis Testing – Sheep</h2>
 <ul>
-<li>Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. After 6 months, the worm counts were as follows:</li>
-</ul>
-<table style="width:100%;">
-<colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-</colgroup>
-<tbody>
-<tr class="odd">
-<td>Treatment</td>
-<td>18 <br> 13</td>
-<td>43 <br> 35</td>
-<td>28 <br> 38</td>
-<td>50 <br> 33</td>
-<td>16 <br> 6</td>
-<td>32 <br> 7</td>
-</tr>
-<tr class="even">
-<td>Control</td>
-<td>40 <br> 39</td>
-<td>54 <br> 23</td>
-<td>26 <br> 48</td>
-<td>63 <br> 58</td>
-<td>21 <br> 28</td>
-<td>37 <br> 39</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="hypothesis-testing-sheep-1" class="slide level2">
-<h2>Hypothesis Testing – Sheep</h2>
-<ul>
-<li>Let’s now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the <span class="math inline">\(\alpha=0.01\)</span> level.</li>
+<li>Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. Let’s now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the <span class="math inline">\alpha=0.01</span> level.</li>
 </ul>
 <div class="cell">
-
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">wilcox.test</span>(worms <span class="sc">~</span> trt,</span>
-<span id="cb4-2"><a href="#cb4-2"></a>            <span class="at">data =</span> sheep,</span>
-<span id="cb4-3"><a href="#cb4-3"></a>            <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>worms <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">13</span>, <span class="dv">43</span>, <span class="dv">35</span>, <span class="dv">28</span>, <span class="dv">38</span>, <span class="dv">50</span>, <span class="dv">33</span>, <span class="dv">16</span>,  <span class="dv">6</span>, <span class="dv">32</span>,  <span class="dv">7</span>,</span>
+<span id="cb4-2"><a href="#cb4-2"></a>           <span class="dv">40</span>, <span class="dv">39</span>, <span class="dv">54</span>, <span class="dv">23</span>, <span class="dv">26</span>, <span class="dv">48</span>, <span class="dv">63</span>, <span class="dv">58</span>, <span class="dv">21</span>, <span class="dv">28</span>, <span class="dv">37</span>, <span class="dv">39</span>)</span>
+<span id="cb4-3"><a href="#cb4-3"></a>trt <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="dv">12</span>), <span class="fu">rep</span>(<span class="dv">0</span>, <span class="dv">12</span>))</span>
+<span id="cb4-4"><a href="#cb4-4"></a>sheep <span class="ot">&lt;-</span> <span class="fu">tibble</span>(worms, trt)</span>
+<span id="cb4-5"><a href="#cb4-5"></a></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="fu">wilcox.test</span>(worms <span class="sc">~</span> trt,</span>
+<span id="cb4-7"><a href="#cb4-7"></a>            <span class="at">data =</span> sheep,</span>
+<span id="cb4-8"><a href="#cb4-8"></a>            <span class="at">alternative =</span> <span class="st">"greater"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Wilcoxon rank sum test with continuity correction
@@ -629,24 +615,24 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-sheep-2" class="slide level2 smaller">
+<section id="hypothesis-testing-sheep-1" class="slide level2">
 <h2>Hypothesis Testing – Sheep</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ M_{\text{Trt}} \ge M_{\text{Ctrl}}\)</span></li>
-<li><span class="math inline">\(H_0: \ M_{\text{Trt}} &lt; M_{\text{Ctrl}}\)</span></li>
+<li><span class="math inline">H_0: \ M_{\text{Trt}} \ge M_{\text{Ctrl}}</span></li>
+<li><span class="math inline">H_1: \ M_{\text{Trt}} &lt; M_{\text{Ctrl}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(T_0 = 106.5\)</span></li>
+<li><span class="math inline">T_0 = 106.5</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p = 0.025\)</span></li>
+<li><span class="math inline">p = 0.025</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.</li>
+<li>Fail to reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.01</span> level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.</li>
 </ul>
 </section>
 <section id="ranking-data-dependent-example" class="slide level2">
@@ -670,12 +656,12 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </ul></li>
 </ul>
 </section>
-<section id="hypothesis-testing-dependent" class="slide level2 smaller">
+<section id="hypothesis-testing-dependent" class="slide level2">
 <h2>Hypothesis Testing (Dependent)</h2>
 <ul>
-<li><p>if <span class="math inline">\(n \le 50\)</span>:</p>
+<li><p>if <span class="math inline">n \le 50</span>:</p>
 <ul>
-<li><span class="math inline">\(n =\)</span> number of non-zero differences</li>
+<li><span class="math inline">n =</span> number of non-zero differences</li>
 </ul></li>
 </ul>
 <p><strong>Hypotheses</strong></p>
@@ -694,14 +680,14 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1- M_2 \le D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2\ge D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2 = D_0</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &gt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &lt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 \ne D_0</span></td>
 </tr>
 </tbody>
 </table>
@@ -721,19 +707,19 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(T_- = \sum \text{(negative ranks)}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(T_+ = \sum \text{(positive ranks)}\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(\min(T_-, T_+)\)</span></td>
+<td style="text-align: center;"><span class="math inline">T_- = \sum \text{(neg. ranks)}</span></td>
+<td style="text-align: center;"><span class="math inline">T_+ = \sum \text{(pos. ranks)}</span></td>
+<td style="text-align: center;"><span class="math inline">\min(T_-, T_+)</span></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="hypothesis-testing-dependent-1" class="slide level2 smaller">
+<section id="hypothesis-testing-dependent-1" class="slide level2">
 <h2>Hypothesis Testing (Dependent)</h2>
 <ul>
-<li><p>if <span class="math inline">\(n &gt; 50\)</span>:</p>
+<li><p>if <span class="math inline">n &gt; 50</span>:</p>
 <ul>
-<li><span class="math inline">\(n =\)</span> number of non-zero differences</li>
+<li><span class="math inline">n =</span> number of non-zero differences</li>
 </ul></li>
 </ul>
 <p><strong>Hypotheses</strong></p>
@@ -752,32 +738,32 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1- M_2 \le D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2\ge D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_0: \ M_1 - M_2 = D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1- M_2 \le D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2\ge D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_0: \ M_1 - M_2 = D_0</span></td>
 </tr>
 <tr class="even">
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &gt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 &lt; D_0\)</span></td>
-<td style="text-align: center;"><span class="math inline">\(H_1: \ M_1 - M_2 \ne D_0\)</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &gt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 &lt; D_0</span></td>
+<td style="text-align: center;"><span class="math inline">H_1: \ M_1 - M_2 \ne D_0</span></td>
 </tr>
 </tbody>
 </table>
 <p><strong>Test Statistic</strong></p>
-<p><span class="math display">\[ z_0 = \frac{T_0-\mu_T}{\sigma_T}\]</span></p>
+<p><span class="math display"> z_0 = \frac{T_0-\mu_T}{\sigma_T}</span></p>
 </section>
-<section id="hypothesis-testing-dependent-2" class="slide level2 smaller">
+<section id="hypothesis-testing-dependent-2" class="slide level2">
 <h2>Hypothesis Testing (Dependent)</h2>
 <ul>
 <li>The mean is as follows,</li>
 </ul>
-<p><span class="math display">\[ \mu_T = \frac{n (n+1)}{4} \]</span></p>
+<p><span class="math display"> \mu_T = \frac{n (n+1)}{4} </span></p>
 <ul>
 <li>The variance is as follows,</li>
 </ul>
-<p><span class="math display">\[\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)\]</span></p>
+<p><span class="math display">\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)</span></p>
 <ul>
-<li>where <span class="math inline">\(t_j\)</span> is the number of ties in tied group <span class="math inline">\(j\)</span></li>
+<li>where <span class="math inline">t_j</span> is the number of ties in tied group <span class="math inline">j</span></li>
 </ul>
 </section>
 <section id="hypothesis-testing-dependent-3" class="slide level2">
@@ -795,7 +781,7 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 <section id="hypothesis-testing-garages" class="slide level2">
 <h2>Hypothesis Testing – Garages</h2>
 <ul>
-<li>Recall the car repair data from Lecture 4. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\(\alpha=0.10\)</span> level.</li>
+<li>Recall the car repair data from Lecture 4. Determine if garage I has higher cost for repairs than garage II. Test at the <span class="math inline">\alpha=0.10</span> level.</li>
 </ul>
 <div class="cell">
 
@@ -815,30 +801,30 @@ alternative hypothesis: true location shift is greater than 0</code></pre>
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-garages-1" class="slide level2 smaller">
+<section id="hypothesis-testing-garages-1" class="slide level2">
 <h2>Hypothesis Testing – Garages</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ M_{\text{I}} \le M_{\text{II}}\)</span></li>
-<li><span class="math inline">\(H_0: \ M_{\text{I}} &gt; M_{\text{II}}\)</span></li>
+<li><span class="math inline">H_0: \ M_{\text{I}} \le M_{\text{II}}</span></li>
+<li><span class="math inline">H_1: \ M_{\text{I}} &gt; M_{\text{II}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(T_0 = 118.5\)</span></li>
+<li><span class="math inline">T_0 = 118.5</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p &lt; 0.001\)</span></li>
+<li><span class="math inline">p &lt; 0.001</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.10\)</span> level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.</li>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.10</span> level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.</li>
 </ul>
 </section>
 <section id="hypothesis-testing-hunger" class="slide level2">
 <h2>Hypothesis Testing – Hunger</h2>
 <ul>
-<li>Recall the hunger data from Lecture 4. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\(\alpha=0.01\)</span> level.</li>
+<li>Recall the hunger data from Lecture 4. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the <span class="math inline">\alpha=0.01</span> level.</li>
 </ul>
 <div class="cell">
 
@@ -858,27 +844,27 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
 </section>
-<section id="hypothesis-testing-hunger-1" class="slide level2 smaller">
+<section id="hypothesis-testing-hunger-1" class="slide level2">
 <h2>Hypothesis Testing – Hunger</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">\(H_0: \ M_{\text{drug}} = M_{\text{placebo}}\)</span></li>
-<li><span class="math inline">\(H_0: \ M_{\text{drug}} \ne M_{\text{placebo}}\)</span></li>
+<li><span class="math inline">H_0: \ M_{\text{drug}} = M_{\text{placebo}}</span></li>
+<li><span class="math inline">H_1: \ M_{\text{drug}} \ne M_{\text{placebo}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
-<li><span class="math inline">\(T_0 = 4\)</span></li>
+<li><span class="math inline">T_0 = 4</span></li>
 </ul>
 <p><strong><em>p</em>-Value</strong></p>
 <ul>
-<li><span class="math inline">\(p = 0.027\)</span></li>
+<li><span class="math inline">p = 0.027</span></li>
 </ul>
 <p><strong>Conclusion/Interpretation</strong></p>
 <ul>
-<li>Fail to reject <span class="math inline">\(H_0\)</span> at the <span class="math inline">\(\alpha=0.01\)</span> level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.</li>
+<li>Fail to reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.01</span> level. There is not sufficient evidence to suggest that reports of hunger are different between the drug and the placebo.</li>
 </ul>
 <div class="footer footer-default">
-
+<p><a href="https://samanthaseals.github.io/STA5176">STA5176 - Statistical Modeling</a></p>
 </div>
 </section>
     </div>
@@ -891,13 +877,13 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
   <script src="L05_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
   <script src="L05_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="L05_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L05_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
   <script src="L05_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
   <script src="L05_files/libs/revealjs/plugin/notes/notes.js"></script>
   <script src="L05_files/libs/revealjs/plugin/search/search.js"></script>
   <script src="L05_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="L05_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -912,7 +898,8 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1058,34 +1045,16 @@ alternative hypothesis: true location shift is not equal to 0</code></pre>
         // The "normal" size of the presentation, aspect ratio will be preserved
         // when the presentation is scaled to fit different resolutions. Can be
         // specified using percentage units.
-        width: 1050,
+        width: 1600,
 
-        height: 700,
+        height: 900,
 
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom

@@ -1,10 +1,18 @@
 ---
 title: "Two-Sample Medians"
-subtitle: "STA5176 - Lecture 5"
+subtitle: "STA5176: Statistical Modeling"
 author: "Dr. Seals"
 format: 
   revealjs:
     theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
 editor: source
 ---
 
@@ -116,12 +124,12 @@ wilcox.test(bill_length_mm ~ sex,
             alternative = "less")
 ```
 
-## Hypothesis Testing -- Penguins {.smaller}
+## Hypothesis Testing -- Penguins
 
 **Hypotheses**
 
 -   $H_0: \ M_{\text{F}} \ge M_{\text{M}}$
--   $H_0: \ M_{\text{F}} < M_{\text{M}}$
+-   $H_1: \ M_{\text{F}} < M_{\text{M}}$
 
 **Test Statistic**
 
@@ -137,40 +145,25 @@ wilcox.test(bill_length_mm ~ sex,
 
 ## Hypothesis Testing -- Sheep
 
--   Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. After 6 months, the worm counts were as follows:
+-   Recall the sheep data from Lecture 3. An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: treatment and control. Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
 
-|           |            |            |            |            |            |            |
-|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
-| Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 | 16 <br> 6  | 32 <br> 7  |
-| Control   | 40 <br> 39 | 54 <br> 23 | 26 <br> 48 | 63 <br> 58 | 21 <br> 28 | 37 <br> 39 |
-
-## Hypothesis Testing -- Sheep
-
--   Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
-
-```{r}
-worms <- c(18, 13, 43, 35, 28, 38,
-           50, 33, 16,  6, 32,  7,
-           40, 39, 54, 23, 26, 48, 
-           63, 58, 21, 28, 37, 39)
-
+```{r, echo = TRUE}
+worms <- c(18, 13, 43, 35, 28, 38, 50, 33, 16,  6, 32,  7,
+           40, 39, 54, 23, 26, 48, 63, 58, 21, 28, 37, 39)
 trt <- c(rep(1, 12), rep(0, 12))
-
 sheep <- tibble(worms, trt)
-```
 
-```{r, echo = TRUE, warning = FALSE}
 wilcox.test(worms ~ trt,
             data = sheep,
             alternative = "greater")
 ```
 
-## Hypothesis Testing -- Sheep {.smaller}
+## Hypothesis Testing -- Sheep
 
 **Hypotheses**
 
 -   $H_0: \ M_{\text{Trt}} \ge M_{\text{Ctrl}}$
--   $H_0: \ M_{\text{Trt}} < M_{\text{Ctrl}}$
+-   $H_1: \ M_{\text{Trt}} < M_{\text{Ctrl}}$
 
 **Test Statistic**
 
@@ -202,7 +195,7 @@ wilcox.test(worms ~ trt,
 
     -   <font color="orange">-1</font>, 2.5, <font color="orange">-2.5</font>, <font color="orange">-4</font>, 5
 
-## Hypothesis Testing (Dependent) {.smaller}
+## Hypothesis Testing (Dependent) 
 
 -   if $n \le 50$:
 
@@ -219,9 +212,9 @@ wilcox.test(worms ~ trt,
 
 |              Right Tail              |              Left Tail               |    Two Tails     |
 |:----------------------:|:----------------------:|:----------------------:|
-| $T_- = \sum \text{(negative ranks)}$ | $T_+ = \sum \text{(positive ranks)}$ | $\min(T_-, T_+)$ |
+| $T_- = \sum \text{(neg. ranks)}$ | $T_+ = \sum \text{(pos. ranks)}$ | $\min(T_-, T_+)$ |
 
-## Hypothesis Testing (Dependent) {.smaller}
+## Hypothesis Testing (Dependent) 
 
 -   if $n > 50$:
 
@@ -238,7 +231,7 @@ wilcox.test(worms ~ trt,
 
 $$ z_0 = \frac{T_0-\mu_T}{\sigma_T}$$
 
-## Hypothesis Testing (Dependent) {.smaller}
+## Hypothesis Testing (Dependent)
 
   -   The mean is as follows,
 
@@ -280,12 +273,12 @@ wilcox.test(g1, g2,
             alternative = "greater")
 ```
 
-## Hypothesis Testing -- Garages {.smaller}
+## Hypothesis Testing -- Garages
 
 **Hypotheses**
 
 -   $H_0: \ M_{\text{I}} \le M_{\text{II}}$
--   $H_0: \ M_{\text{I}} > M_{\text{II}}$
+-   $H_1: \ M_{\text{I}} > M_{\text{II}}$
 
 **Test Statistic**
 
@@ -316,12 +309,12 @@ wilcox.test(drug, placebo,
             alternative = "two")
 ```
 
-## Hypothesis Testing -- Hunger {.smaller}
+## Hypothesis Testing -- Hunger
 
 **Hypotheses**
 
 -   $H_0: \ M_{\text{drug}} = M_{\text{placebo}}$
--   $H_0: \ M_{\text{drug}} \ne M_{\text{placebo}}$
+-   $H_1: \ M_{\text{drug}} \ne M_{\text{placebo}}$
 
 **Test Statistic**
 

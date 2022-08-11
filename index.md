@@ -10,12 +10,12 @@ show_sidebar: false
 
 | Week | Day | Date  | Topic(s)                           |                            Lecture                            | Activity | Key | Due |
 |:-:|:-:|:-:|-|:-:|:-:|:-:|:-:|
-| 1    | M   | 08/22 | Review of estimation and inference | [X](https://samanthaseals.github.io/STA5176/slides/L01.html) | | | 08/23 |
-|      | W   | 08/24 | One-sample *t*-test                | [X](https://samanthaseals.github.io/STA5176/slides/L02.html) | | | 08/25 |
-| 2    | M   | 08/29 | Two-sample *t*-test                | [X](https://samanthaseals.github.io/STA5176/slides/L03.html) | | | 08/30 |
-|      | W   | 08/31 | Paired *t*-test                    | [X](https://samanthaseals.github.io/STA5176/slides/L04.html) | | | 09/01 |
-| 3    | M   | 09/05 | Wilcoxons                          | [X](https://samanthaseals.github.io/STA5176/slides/L05.html) | | | 09/06 |
-|      | W   | 09/07 | Tests for variances                | [X](https://samanthaseals.github.io/STA5176/slides/L06.html) | | | 09/08 |
+| 1    | M   | 08/22 | Review of estimation and inference | [slides](https://samanthaseals.github.io/STA5176/slides/L01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L01.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A01.qmd)  | | 08/23 |
+|      | W   | 08/24 | One-sample *t*-test                | [slides](https://samanthaseals.github.io/STA5176/slides/L02.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L02.qmd) | | | 08/25 |
+| 2    | M   | 08/29 | Two-sample *t*-test                | [slides](https://samanthaseals.github.io/STA5176/slides/L03.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L03.qmd) | | | 08/30 |
+|      | W   | 08/31 | Paired *t*-test                    | [slides](https://samanthaseals.github.io/STA5176/slides/L04.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L04.qmd) | | | 09/01 |
+| 3    | M   | 09/05 | Wilcoxons                          | [slides](https://samanthaseals.github.io/STA5176/slides/L05.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L05.qmd) | | | 09/06 |
+|      | W   | 09/07 | Tests for variances                | [slides](https://samanthaseals.github.io/STA5176/slides/L06.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L06.qmd) | | | 09/08 |
 | 4    | M   | 09/12 | Project 1                          |                                                              | | | |
 |      | W   | 09/14 | Project 1                          |                                                              | | | 09/21 |
 | 5    | M   | 09/19 | One-way ANOVA                      |                                                              | | | |

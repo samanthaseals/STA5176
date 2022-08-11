@@ -8,7 +8,7 @@
 
 <meta name="author" content="Your Name Here">
 
-<title>Summarizing Data - Week 1, Lecture 1</title>
+<title>One Sample Means - Week 1, Lecture 2</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -82,17 +82,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="A01_files/libs/clipboard/clipboard.min.js"></script>
-<script src="A01_files/libs/quarto-html/quarto.js"></script>
-<script src="A01_files/libs/quarto-html/popper.min.js"></script>
-<script src="A01_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="A01_files/libs/quarto-html/anchor.min.js"></script>
-<link href="A01_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="A01_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="A01_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="A01_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="A01_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+<script src="A02_files/libs/clipboard/clipboard.min.js"></script>
+<script src="A02_files/libs/quarto-html/quarto.js"></script>
+<script src="A02_files/libs/quarto-html/popper.min.js"></script>
+<script src="A02_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="A02_files/libs/quarto-html/anchor.min.js"></script>
+<link href="A02_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="A02_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="A02_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="A02_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="A02_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -104,7 +105,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Summarizing Data - Week 1, Lecture 1</h1>
+<h1 class="title">One Sample Means - Week 1, Lecture 2</h1>
 </div>
 
 
@@ -128,42 +129,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gsheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>Consider the data from the abstract of research study (beginning on page 62). We have data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.</strong></p>
+<p><strong>Recall the data from the abstract of research study (beginning on page 62). We examined data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">gsheet2tbl</span>(<span class="st">"https://docs.google.com/spreadsheets/d/1cVGLLdILMI34xjnzHfJNHua6fJROJwCzUBFgV22OLT4/edit#gid=0"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="a.-what-are-the-average-math-and-reading-scores-for-each-grade" class="level4">
-<h4 class="anchored" data-anchor-id="a.-what-are-the-average-math-and-reading-scores-for-each-grade">a. What are the average math and reading scores for each grade?</h4>
+<section id="a.-from-last-class-what-are-the-average-math-and-reading-scores-for-each-grade" class="level4">
+<h4 class="anchored" data-anchor-id="a.-from-last-class-what-are-the-average-math-and-reading-scores-for-each-grade">a. From last class, what are the average math and reading scores for each grade?</h4>
 <div class="cell">
 
 </div>
 </section>
-<section id="b.-what-are-the-median-math-scores-for-each-grade" class="level4">
-<h4 class="anchored" data-anchor-id="b.-what-are-the-median-math-scores-for-each-grade">b. What are the median math scores for each grade?</h4>
+<section id="b.-construct-the-95-confidence-interval-for-the-mean-math-score-for-3rd-grade-students." class="level4">
+<h4 class="anchored" data-anchor-id="b.-construct-the-95-confidence-interval-for-the-mean-math-score-for-3rd-grade-students.">b. Construct the 95% confidence interval for the mean math score for 3rd grade students.</h4>
 <div class="cell">
 
 </div>
 </section>
-<section id="c.-challenge-use-ggplot-to-construct-histograms-of-the-math-and-reading-scores-and-determine-if-we-should-report-the-mean-or-median." class="level4">
-<h4 class="anchored" data-anchor-id="c.-challenge-use-ggplot-to-construct-histograms-of-the-math-and-reading-scores-and-determine-if-we-should-report-the-mean-or-median.">c.&nbsp;(Challenge!) Use <code>ggplot()</code> to construct histograms of the math and reading scores and determine if we should report the mean or median.</h4>
+<section id="c.-if-school-districts-should-aim-for-an-average-greater-than-165-points-how-is-this-school-district-doing" class="level4">
+<h4 class="anchored" data-anchor-id="c.-if-school-districts-should-aim-for-an-average-greater-than-165-points-how-is-this-school-district-doing">c.&nbsp;If school districts should aim for an average greater than 165 points, how is this school district doing?</h4>
+</section>
+<section id="d.-use-the-appropriate-hypothesis-test-to-determine-if-the-average-math-score-for-3rd-grade-students-is-above-165-points.-test-at-the-alpha0.05-level." class="level4">
+<h4 class="anchored" data-anchor-id="d.-use-the-appropriate-hypothesis-test-to-determine-if-the-average-math-score-for-3rd-grade-students-is-above-165-points.-test-at-the-alpha0.05-level.">d.&nbsp;Use the appropriate hypothesis test to determine if the average math score for 3rd grade students is above 165 points. Test at the <span class="math inline">\(\alpha\)</span>=0.05 level.</h4>
 <div class="cell">
 
 </div>
 </section>
-<section id="d.-what-is-the-average-percent-in-poverty-for-each-grade" class="level4">
-<h4 class="anchored" data-anchor-id="d.-what-is-the-average-percent-in-poverty-for-each-grade">d.&nbsp;What is the average percent in poverty for each grade?</h4>
+<section id="e.-challenge-use-ggplot-to-graph-the-confidence-intervals-for-the-average-reading-scores-for-each-grade." class="level4">
+<h4 class="anchored" data-anchor-id="e.-challenge-use-ggplot-to-graph-the-confidence-intervals-for-the-average-reading-scores-for-each-grade.">e. (Challenge!) Use <code>ggplot()</code> to graph the confidence intervals for the average reading scores for each grade.</h4>
 <div class="cell">
 
 </div>
-</section>
-<section id="e.-challenge-why-should-we-be-careful-when-reporting-an-average-percentage-of-students-in-poverty-note-i-am-asking-for-a-mathematical-answer." class="level4">
-<h4 class="anchored" data-anchor-id="e.-challenge-why-should-we-be-careful-when-reporting-an-average-percentage-of-students-in-poverty-note-i-am-asking-for-a-mathematical-answer.">e. (Challenge!) Why should we be careful when reporting an average percentage of students in poverty? (Note: I am asking for a mathematical answer.)</h4>
-</section>
-<section id="f.-challenge-use-ggplot-to-construct-side-by-side-box-plots-for-reading-and-separately-math-scores-by-grade-level-i.e.-reconstruct-figure-3.33-from-the-textbook." class="level4">
-<h4 class="anchored" data-anchor-id="f.-challenge-use-ggplot-to-construct-side-by-side-box-plots-for-reading-and-separately-math-scores-by-grade-level-i.e.-reconstruct-figure-3.33-from-the-textbook.">f.&nbsp;(Challenge!) Use <code>ggplot()</code> to construct side-by-side box plots for reading and, separately, math scores by grade level (i.e., reconstruct Figure 3.33 from the textbook).</h4>
-</section>
-<section id="g.-challenge-use-ggplot-to-construct-a-scatterplot-of-reading-vs.-math-scores-for-each-grade-level-i.e.-create-a-different-version-of-figure-3.34-from-the-textbook." class="level4">
-<h4 class="anchored" data-anchor-id="g.-challenge-use-ggplot-to-construct-a-scatterplot-of-reading-vs.-math-scores-for-each-grade-level-i.e.-create-a-different-version-of-figure-3.34-from-the-textbook.">g. (Challenge!) Use <code>ggplot()</code> to construct a scatterplot of reading vs.&nbsp;math scores for each grade level (i.e., create a different version of Figure 3.34 from the textbook).</h4>
 </section>
 
 </main>

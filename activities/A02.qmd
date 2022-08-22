@@ -2,6 +2,7 @@
 title: "One Sample Means - Week 1, Lecture 2"
 author: "Your Name Here"
 format: html
+self-contained: true
 editor: source
 ---
 
@@ -16,27 +17,27 @@ library(gsheet)
 data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI34xjnzHfJNHua6fJROJwCzUBFgV22OLT4/edit#gid=0"))
 ```
 
-#### a. From last class, what are the average math and reading scores for each grade?
+#### 1. From last class, what are the average math and reading scores for each grade?
 
 ```{r}
 
 ```
 
-#### b. Construct the 95% confidence interval for the mean math score for 3rd grade students.
+#### 2. Construct the 95% confidence interval for the mean math score for 3rd grade students.
 
 ```{r}
 
 ```
 
-#### c. If school districts should aim for an average greater than 165 points, how is this school district doing?
+#### 3. If school districts should aim for an average greater than 165 points, how is this school district doing?
 
-#### d. Use the appropriate hypothesis test to determine if the average math score for 3rd grade students is above 165 points. Test at the $\alpha$=0.05 level.
+#### 4. Use the appropriate hypothesis test to determine if the average math score for 3rd grade students is above 165 points. Test at the $\alpha$=0.05 level.
 
 ```{r}
 
 ```
 
-#### e. (Challenge!) Use `ggplot()` to graph the confidence intervals for the average reading scores for each grade.
+#### 5. (Challenge!) Use `ggplot()` to graph the confidence intervals for the average reading scores for each grade.
 
 ```{r}
 

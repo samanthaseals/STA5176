@@ -19,13 +19,13 @@ data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI
 
 #### 1. From last class, what are the average math and reading scores for each grade?
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
 #### 2. Construct the 95% confidence interval for the mean math score for 3rd grade students.
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
@@ -33,13 +33,13 @@ data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI
 
 #### 4. Use the appropriate hypothesis test to determine if the average math score for 3rd grade students is above 165 points. Test at the $\alpha$=0.05 level.
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
 #### 5. (Challenge!) Use `ggplot()` to graph the confidence intervals for the average reading scores for each grade.
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 

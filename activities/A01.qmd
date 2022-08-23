@@ -19,25 +19,25 @@ data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI
 
 #### 1. What are the average math and reading scores for each grade?
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
 #### 2. What are the median math scores for each grade?
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
 #### 3. (Challenge!) Use `ggplot()` to construct histograms of the math and reading scores and determine if we should report the mean or median. 
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 
 #### 4. What is the average percent in poverty for each grade?
 
-```{r}
+```{r, echo=TRUE}
 
 ```
 

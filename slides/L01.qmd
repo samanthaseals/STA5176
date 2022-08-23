@@ -207,7 +207,7 @@ penguins %>%
 
 -   Example:
 
-    -   Are the orange trees producing more fruit than the apple trees?
+    -   Are the orange trees and apple trees producing a different number of fruit?
 
         -   $H_0$: $\mu_{\text{orange}} = \mu_{\text{apple}}$
         -   $H_1$: $\mu_{\text{orange}} \ne \mu_{\text{apple}}$

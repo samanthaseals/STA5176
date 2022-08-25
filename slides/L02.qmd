@@ -137,8 +137,8 @@ t.test(penguins$body_mass_g, mu=4400, alternative = "two")
 
 **Hypotheses**
 
--   $H_0: \ \mu = 4100$ grams
--   $H_0: \ \mu \ne 4100$ grams
+-   $H_0: \ \mu = 4400$ grams
+-   $H_1: \ \mu \ne 4400$ grams
 
 **Test Statistic**
 
@@ -150,7 +150,7 @@ t.test(penguins$body_mass_g, mu=4400, alternative = "two")
 
 **Conclusion/Interpretation**
 
--   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average body mass of penguins is greater than 4100 grams.
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average body mass of penguins is different from 4400 grams.
 
 ## Hypothesis Testing -- Salmonella
 
@@ -165,7 +165,7 @@ t.test(salmonella, mu=0.3, alternative = "greater")
 **Hypotheses**
 
 -   $H_0: \ \mu \le 0.3$
--   $H_0: \ \mu > 0.3$
+-   $H_1: \ \mu > 0.3$
 
 **Test Statistic**
 

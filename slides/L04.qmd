@@ -143,7 +143,7 @@ t.test(g1, g2,
 **Hypotheses**
 
 -   $H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}$
--   $H_0: \ \mu_{\text{I}} > \mu_{\text{II}}$
+-   $H_1: \ \mu_{\text{I}} > \mu_{\text{II}}$
 
 **Test Statistic**
 
@@ -172,7 +172,7 @@ t.test(hunger$drug, hunger$placebo,
 **Hypotheses**
 
 -   $H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}$
--   $H_0: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}$
+-   $H_1: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}$
 
 **Test Statistic**
 

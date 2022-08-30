@@ -5,9 +5,9 @@
 <script src="L04_files/libs/quarto-html/popper.min.js"></script>
 <script src="L04_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="L04_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="L04_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="L04_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="L04_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-0.9.647">
+  <meta name="generator" content="quarto-1.0.38">
 
   <meta name="author" content="Dr.&nbsp;Seals">
   <title>Two-Sample Means (Dependent)</title>
@@ -399,7 +399,7 @@
   <link href="L04_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
   <script src="L04_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
-<body>
+<body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
@@ -600,7 +600,7 @@ mean difference
 <p><strong>Hypotheses</strong></p>
 <ul>
 <li><span class="math inline">H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}</span></li>
-<li><span class="math inline">H_0: \ \mu_{\text{I}} &gt; \mu_{\text{II}}</span></li>
+<li><span class="math inline">H_1: \ \mu_{\text{I}} &gt; \mu_{\text{II}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
@@ -644,7 +644,7 @@ mean difference
 <p><strong>Hypotheses</strong></p>
 <ul>
 <li><span class="math inline">H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}</span></li>
-<li><span class="math inline">H_0: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}</span></li>
+<li><span class="math inline">H_1: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}</span></li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <ul>
@@ -949,6 +949,24 @@ mean difference
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
       const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);

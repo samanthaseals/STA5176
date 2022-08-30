@@ -9,6 +9,7 @@ editor: source
 ```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
 library(tidyverse)
 library(gsheet)
+library(googlesheets4)
 ```
 
 **Consider the data from the abstract of research study (beginning on page 62). We have data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.**
@@ -22,6 +23,8 @@ data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI
 ```{r, echo=TRUE}
 
 ```
+
+The mean for percent in poverty is 56.41.
 
 #### 2. What are the median math scores for each grade?
 

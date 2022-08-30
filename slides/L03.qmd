@@ -223,7 +223,7 @@ t.test(body_mass_g ~ sex,
 **Hypotheses**
 
 -   $H_0: \ \mu_{\text{F}} = \mu_{\text{M}}$
--   $H_0: \ \mu_{\text{F}} \ne \mu_{\text{M}}$
+-   $H_1: \ \mu_{\text{F}} \ne \mu_{\text{M}}$
 
 **Test Statistic**
 
@@ -252,7 +252,7 @@ t.test(worms ~ trt,
 **Hypotheses**
 
 -   $H_0: \ \mu_{\text{Trt}} \ge \mu_{\text{Ctrl}}$
--   $H_0: \ \mu_{\text{Trt}} < \mu_{\text{Ctrl}}$
+-   $H_1: \ \mu_{\text{Trt}} < \mu_{\text{Ctrl}}$
 
 **Test Statistic**
 

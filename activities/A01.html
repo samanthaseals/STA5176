@@ -2522,7 +2522,8 @@ vertical-align: -.125em;
 
 <div class="cell" data-warnings="false">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gsheet)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gsheet)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(googlesheets4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Consider the data from the abstract of research study (beginning on page 62). We have data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.</strong></p>
 <div class="cell">
@@ -2531,8 +2532,12 @@ vertical-align: -.125em;
 <section id="what-are-the-average-math-and-reading-scores-for-each-grade" class="level4">
 <h4 class="anchored" data-anchor-id="what-are-the-average-math-and-reading-scores-for-each-grade">1. What are the average math and reading scores for each grade?</h4>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(data<span class="sc">$</span><span class="st">`</span><span class="at">%Poverty</span><span class="st">`</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 56.40635</code></pre>
 </div>
+</div>
+<p>The mean for percent in poverty is 56.41.</p>
 </section>
 <section id="what-are-the-median-math-scores-for-each-grade" class="level4">
 <h4 class="anchored" data-anchor-id="what-are-the-median-math-scores-for-each-grade">2. What are the median math scores for each grade?</h4>

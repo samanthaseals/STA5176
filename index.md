@@ -18,7 +18,7 @@ show_sidebar: false
 |      | W   | 09/07 | Wilcoxons                 | [slides](https://samanthaseals.github.io/STA5176/slides/L05.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L05.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A05.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A05.qmd) | | 09/11 |
 | 4    | M   | 09/12 | Tests for variances            | [slides](https://samanthaseals.github.io/STA5176/slides/L06.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L06.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A06.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A06.qmd)  | | 09/11 |
 |      | W   | 09/14 | Project 1 - no class                        |                                                              | | | 09/19 |
-| 5    | M   | 09/19 | One-way ANOVA                      |                                                              | | | 09/25 |
+| 5    | M   | 09/19 | One-way ANOVA                      | [slides](https://samanthaseals.github.io/STA5176/slides/L07.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L07.qmd)                                                              | | | 09/25 |
 |      | W   | 09/21 | ANOVA assumptions, Kruskal-Wallis  |                                                               | | | 09/25 |
 | 6    | M   | 09/26 | Post-hoc testing                   |                                                               | | | 10/02 |
 |      | W   | 09/28 | Two-way ANOVA, Interactions        |                                                               | | | 10/02 |

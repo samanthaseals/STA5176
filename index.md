@@ -19,16 +19,16 @@ show_sidebar: false
 | 4    | M   | 09/12 | Tests for variances            | [slides](https://samanthaseals.github.io/STA5176/slides/L06.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L06.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A06.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A06.qmd)  | | 09/11 |
 |      | W   | 09/14 | Project 1 - no class                        |                                                              | | | 09/19 |
 | 5    | M   | 09/19 | One-way ANOVA                      | [slides](https://samanthaseals.github.io/STA5176/slides/L07.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L07.qmd)                                                              |[html](https://samanthaseals.github.io/STA5176/activities/A07.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A07.qmd) | | 09/25 |
-|      | W   | 09/21 | ANOVA assumptions, Kruskal-Wallis  |                                                               | | | 09/25 |
-| 6    | M   | 09/26 | Post-hoc testing                   |                                                               | | | 10/02 |
-|      | W   | 09/28 | Two-way ANOVA, Interactions        |                                                               | | | 10/02 |
-| 7    | M   | 10/03 | Post-hoc testing, profile plots    |                                                               | | | 10/09 |
+|      | W   | 09/21 | ANOVA assumptions, Kruskal-Wallis  | [slides](https://samanthaseals.github.io/STA5176/slides/L08.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L08.qmd)                                                                | | | 09/25 |
+| 6    | M   | 09/26 | Two-way ANOVA, Interactions                   |                                                               | | | 10/02 |
+|      | W   | 09/28 | Post-hoc testing, profile plots        |                                                               | | | 10/02 |
+| 7    | M   | 10/03 | Project 2 - no class    |                                                               | | | 10/10 |
 |      | W   | 10/05 | Project 2 - no class                         |                                                               | | | 10/10 |
 | 8    | M   | 10/10 | Simple linear regression           |                                                               | | | 10/16 |
 |      | W   | 10/12 | Simple linear regression           |                                                               | | | 10/16 |
 | 9    | M   | 10/17 | Multiple regression                |                                                               | | | 10/23 |
 |      | W   | 10/19 | Multiple regression                |                                                               | | | 10/23 |
-| 10   | M   | 10/24 | Multiple regression                |                                                               | | | 10/30 |
+| 10   | M   | 10/24 | Project 3 - no class               |                                                               | | | 10/31 |
 |      | W   | 10/26 | Project 3 - no class                         |                                                               | | | 10/31 |
 | 11   | M   | 10/31 | One and two proportions            |                                                               | | | 11/06 |
 |      | W   | 11/02 | Goodness of fit                    |                                                               | | | 11/06 |

@@ -21,7 +21,7 @@ show_sidebar: false
 | 5    | M   | 09/19 | One-way ANOVA                      | [slides](https://samanthaseals.github.io/STA5176/slides/L07.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L07.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A07.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A07.qmd) | | 09/25 |
 |      | W   | 09/21 | ANOVA assumptions, Kruskal-Wallis  | [slides](https://samanthaseals.github.io/STA5176/slides/L08.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L08.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A08.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A08.qmd)  | | 09/25 |
 | 6    | M   | 09/26 | Two-way ANOVA, Interactions | [slides](https://samanthaseals.github.io/STA5176/slides/L09.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L09.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A09.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A09.qmd) | | 10/02 |
-|      | W   | 09/28 | Post-hoc testing, profile plots | | | | 10/02 |
+|      | W   | 09/28 | Post-hoc testing, profile plots | [slides](https://samanthaseals.github.io/STA5176/slides/L10.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L10.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A10.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A10.qmd) | | 10/02 |
 | 7    | M   | 10/03 | Project 2 - no class | | | | 10/10 |
 |      | W   | 10/05 | Project 2 - no class | | | | 10/10 |
 | 8    | M   | 10/10 | Simple linear regression | | | | 10/16 |

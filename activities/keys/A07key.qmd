@@ -1,0 +1,62 @@
+---
+title: "One-Way ANOVA - Week 5, Lecture 1"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+library(pgirmess)
+library(car)
+```
+
+**An agricultural researcher investigated two new herbicides and their effects on crop yields of tomatoes, which can be demolished by the [tomato hornworm](https://extension.umn.edu/yard-and-garden-insects/tomato-hornworms) in mere hours. There were three areas for the experiment: an area for herbicide A, an area for herbicide B, and an area for no herbicide at all (control). At the end of the growing season, the yields (in bushels per acre) were measured and are available in the following [Google Sheet](https://docs.google.com/spreadsheets/d/1CFyuuWy-4YmVU3wkYuC8Uf3xW3qkpCnpF468NjBAhbY/edit#gid=0).**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1CFyuuWy-4YmVU3wkYuC8Uf3xW3qkpCnpF468NjBAhbY/edit#gid=0"))
+long <- data %>%                                
+  pivot_longer(cols = c("Herbicide1", "Herbicide2", "Control"),
+               names_to = "Group",
+               values_to = "Yield")
+summary(aov(Yield ~ Group, data = long))
+kruskal.test(Yield ~ Group, data = long)
+kruskalmc(Yield ~ Group, data = long)
+
+m2 <- lm(Yield ~ Group, data = long)
+plot(fitted(m2), resid(m2))
+long %>%group_by(Group) %>% summarize(sd(Yield, na.rm = TRUE)) %>% ungroup()
+leveneTest(Yield ~ Group, data = long, center = median)
+hist(resid(m2))
+qqnorm(resid(m2))
+qqline(resid(m2)) 
+```
+
+#### 1. Construct the 95% confidence interval for the average yield for each group (A, B, control).
+
+```{r, echo=TRUE}
+
+```
+
+#### 2. Challenge! Construct a graph to display all confidence intervals.
+
+#### 3. Challenge! Why should we be cautious when using the individual CIs found in Q1 and displayed in Q2 to directly compare the three groups?
+
+#### 4. Use the appropriate hypothesis test to show that there is a difference in the average yield between the three groups.
+
+#### 5. Construct and test the following contrasts for the following comparisons:
+
+##### a. Herbicide A vs. Herbicide B.
+
+##### b. Herbicide A and Herbicide B vs. Control
+
+#### 6. Use the appropriate posthoc test to perform all pairwise comparisons of yield.
+
+#### 7. Use the appropriate posthoc test to only compare the individual herbicides to the control.
+
+
+
+
+

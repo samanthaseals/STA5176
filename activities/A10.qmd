@@ -16,6 +16,8 @@ b. (Challenge!) Perform Tukey's test to determine which treatment groups are sig
 
 c. Write a short paragraph to explain your results to the advertising researchers.
 
+d. Graphically assess the ANOVA assumptions -- is ANOVA appropriate here?
+
 ## Q2:
 
 **Recall the tomato data from the last activity; you showed that there was not an interaction between shading and phase of growth and that there was at least one main effect.**
@@ -27,3 +29,5 @@ b. If there is a main effect of shading, perform Tukey's test to determine which
 c.  If there is a main effect of phase of growth, perform Tukey's test to determine which phases of growth are significantly different. Test at the $\alpha=0.10$ level.
 
 d. Write a short paragraph to explain your results to the horticulturist. 
+
+e. Graphically assess the ANOVA assumptions -- is ANOVA appropriate here?

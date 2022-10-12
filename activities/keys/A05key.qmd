@@ -110,8 +110,8 @@ t.test(data$Post, data$Pre, mu = 5, alternative = "greater", paired = TRUE)
 
 **Hypotheses**
 
--   $H_0: \ \mu_{\text{Post}} \le \mu_{\text{Pre}}$
--   $H_1: \ \mu_{\text{Post}} > \mu_{\text{Pre}}$
+-   $H_0: \ \mu_{\text{Post}} - \mu_{\text{Pre}} \le 5$
+-   $H_1: \ \mu_{\text{Post}} - \mu_{\text{Pre}} > 5$
 
 **Test Statistic**
 
@@ -133,8 +133,8 @@ wilcox.test(data$Post, data$Pre, paired = TRUE, mu = 5, alternative = "greater",
 
 **Hypotheses**
 
--   $H_0: \ M_{\text{Post}} \le M_{\text{Pre}}$
--   $H_1: \ M_{\text{Post}} > M_{\text{Pre}}$
+-   $H_0: \ M_{\text{Post}} - M_{\text{Pre}} \le 5$
+-   $H_1: \ M_{\text{Post}} -M_{\text{Pre}} > 5$
 
 **Test Statistic**
 

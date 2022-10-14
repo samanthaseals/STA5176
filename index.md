@@ -24,16 +24,16 @@ show_sidebar: false
 |      | W   | 09/28 | Post-hoc testing, profile plots | [slides](https://samanthaseals.github.io/STA5176/slides/L10.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L10.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A10.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A10.qmd) | | 10/02 |
 | 7    | M   | 10/03 | Project 2 - no class | | | | 10/10 |
 |      | W   | 10/05 | Project 2 - no class | | | | 10/10 |
-| 8    | M   | 10/10 | Simple linear regression | | | | 10/16 |
-|      | W   | 10/12 | Simple linear regression | | | | 10/16 |
-| 9    | M   | 10/17 | Multiple regression | | | | 10/23 |
+| 8    | M   | 10/10 | Catch up | | | | 10/16 |
+|      | W   | 10/12 | Catch up | | | | 10/16 |
+| 9    | M   | 10/17 | Simple linear regression | | | | 10/23 |
 |      | W   | 10/19 | Multiple regression | | | | 10/23 |
-| 10   | M   | 10/24 | Project 3 - no class | | | | 10/31 |
-|      | W   | 10/26 | Project 3 - no class | | | | 10/31 |
-| 11   | M   | 10/31 | One and two proportions | | | | 11/06 |
-|      | W   | 11/02 | Goodness of fit | | | | 11/06 |
-| 12   | M   | 11/07 | Contingency tables | | | | 11/13 |
-|      | W   | 11/09 | Logistic regression | | | | 11/13 |
+| 10   | M   | 10/24 | Multiple regression | | | | 10/31 |
+|      | W   | 10/26 | Project 3 - no class | | | | 11/06 |
+| 11   | M   | 10/31 | Project 3 - no class | | | | 11/06 |
+|      | W   | 11/02 | One and two proportions | | | | 11/13 |
+| 12   | M   | 11/07 | Goodness of fit | | | | 11/13 |
+|      | W   | 11/09 | Contingency tables | | | | 11/13 |
 | 13   | M   | 11/14 | Logistic regression | | | | 11/20 |
 |      | W   | 11/16 | Logistic regression | | | | 11/20 |
 | 14   | M   | 11/21 | Project 4 - no class | | | | 11/28 |

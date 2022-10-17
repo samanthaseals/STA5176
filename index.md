@@ -26,9 +26,9 @@ show_sidebar: false
 |      | W   | 10/05 | Project 2 - no class | | | | 10/10 |
 | 8    | M   | 10/10 | Catch up | | | | 10/16 |
 |      | W   | 10/12 | Catch up | | | | 10/16 |
-| 9    | M   | 10/17 | Simple linear regression | | | | 10/23 |
+| 9    | M   | 10/17 | Simple linear regression | [slides](https://samanthaseals.github.io/STA5176/slides/L11.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L11.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A11.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A11.qmd)  | | 10/23 |
 |      | W   | 10/19 | Multiple regression | | | | 10/23 |
-| 10   | M   | 10/24 | Multiple regression | | | | 10/31 |
+| 10   | M   | 10/24 | Multiple regression | | | | 10/30 |
 |      | W   | 10/26 | Project 3 - no class | | | | 11/06 |
 | 11   | M   | 10/31 | Project 3 - no class | | | | 11/06 |
 |      | W   | 11/02 | One and two proportions | | | | 11/13 |

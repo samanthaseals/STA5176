@@ -374,4 +374,62 @@ data %>% ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
   theme_bw()
 ```
 
+## Model Visualization: Example 2
 
+- Let's create a model using the penguin data,
+
+```{r, echo = TRUE}
+c1 <- coefficients(m1)
+c1
+```    
+    
+- Let's have bill length on the *x*-axis. This means we will plug in for flipper length,
+
+```{r, echo = TRUE}
+quantile(data$flipper_length_mm, na.rm = TRUE)
+```
+
+- Let's create lines for bill lengths of 35, 45, and 55 mm.
+
+```{r, echo = TRUE}
+library(tidyverse)
+data <- data %>%
+  mutate(f175 = c1[1] + c1[2]*bill_length_mm + c1[3]*175,
+         f200 = c1[1] + c1[2]*bill_length_mm + c1[3]*200,
+         f225 = c1[1] + c1[2]*bill_length_mm + c1[3]*225)
+``` 
+
+## Model Visualization: Example 2
+
+- Now we can construct the graph using ``ggplot()``:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = f175), color = "pink") +
+  geom_line(aes(y = f200), color = "purple") +
+  geom_line(aes(y = f225), color = "blue") +
+  labs(x = "Bill Length (mm)",
+       y = "Body Mass (g)") +
+  theme_bw()
+```
+
+
+## Model Visualization: Example 2
+
+- We can further tweak the graph:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = f175), color = "black") +
+  geom_line(aes(y = f200), color = "black") +
+  geom_line(aes(y = f225), color = "black") +
+  labs(x = "Bill Length (mm)",
+       y = "Body Mass (g)") +
+  geom_text(aes(x = 65, y = 3010, label = "175 mm")) +
+  geom_text(aes(x = 65, y = 4230, label = "200 mm")) +
+  geom_text(aes(x = 65, y = 5480, label = "225 mm")) +
+  geom_text(aes(x = 63, y = 5900, label = "Flipper Length")) +
+  theme_bw()
+```

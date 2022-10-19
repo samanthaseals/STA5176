@@ -230,6 +230,23 @@ $$ t_0 = \frac{\hat{\beta}_1 - \beta_1^{(0)}}{\text{SE}_{\hat{\beta}_1}} $$
 summary(m1)
 ```
 
+## Linear Regression: Example
+
+**Hypotheses**
+
+- $H_0: \beta_1 = 0$
+- $H_1: \beta_1 \ne 0$
+
+**Test Statistic and *p*-value**
+
+- $t_0 = 3.503$
+
+- $p = 0.0394$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that mileage is a significant predictor of cost.
+
 ## Linear Regression: Confidence Interval for Slope
 
 **Confidence Interval for $\beta_1$:**

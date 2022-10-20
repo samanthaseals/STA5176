@@ -1,6 +1,6 @@
 ---
 title: "Two-Way ANOVA - Week 6, Lecture 1"
-author: "Your Name Here"
+author: "Dr. Seals"
 format: html
 self-contained: true
 editor: source

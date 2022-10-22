@@ -76,14 +76,17 @@ m1 <- aov(attn ~ age + product + age:product, data = long)
 round(TukeyHSD(m1)$`age:product`, 3)
 ```
 Within cereal: 
+
 - none of the age groups are significantly different (all *p* > 0.05)
 
 Within video game: 
+
 - 5-6 years are not different from 7-8 years (*p* = 0.748)
 - 5-6 years are different from 9-10 years (*p* = 0.002)
 - 7-8 years are not different from 9-10 years (*p* = 0.076)
 
 Within age groups:
+
 - In 5-6 years, there is not a difference between cereal and video games (*p* > 0.999)
 - In 7-8 years, there is not a difference between cereal and video games (*p* = 0.351)
 - In 9-10 years, there is a difference between cereal and video games (*p* = 0.001)
@@ -91,7 +94,6 @@ Within age groups:
 c. Write a short paragraph to explain your results to the advertising researchers.
 
 d. Graphically assess the ANOVA assumptions -- is ANOVA appropriate here?
-
 
 ```{r, echo=TRUE}
 plot(fitted(m1), resid(m1))

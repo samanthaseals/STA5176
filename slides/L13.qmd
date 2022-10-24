@@ -287,6 +287,8 @@ $$ \hat{y} = -5752.56 + 5.48 \text{ bill} + 48.29 \text{ flipper} $$
 - Bill length is not significant (*p* = 0.281).
 - Flipper length is significant (*p* < 0.001).
 
+## Don't Delete this Slide
 
+More playing with GitHub branches
 
 

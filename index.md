@@ -28,7 +28,7 @@ show_sidebar: false
 |      | W   | 10/12 | Catch up | | | | 10/16 |
 | 9    | M   | 10/17 | Simple linear regression | [slides](https://samanthaseals.github.io/STA5176/slides/L11.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L11.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A11.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A11.qmd)  | | 10/23 |
 |      | W   | 10/19 | Multiple regression | [slides](https://samanthaseals.github.io/STA5176/slides/L12.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L12.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A12.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A12.qmd) | | 10/23 |
-| 10   | M   | 10/24 | Multiple regression [slides](https://samanthaseals.github.io/STA5176/slides/L13.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L13.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A13.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A13.qmd) | | 10/30 |
+| 10   | M   | 10/24 | Multiple regression | [slides](https://samanthaseals.github.io/STA5176/slides/L13.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L13.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A13.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A13.qmd) | | 10/30 |
 |      | W   | 10/26 | Project 3 - no class | | | | 11/06 |
 | 11   | M   | 10/31 | Project 3 - no class | | | | 11/06 |
 |      | W   | 11/02 | One and two proportions | | | | 11/13 |

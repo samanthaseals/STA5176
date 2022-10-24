@@ -1,0 +1,509 @@
+---
+title: "Simple Linear Regression"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+- Previously discussed analyzing continuous data
+
+    - Two-sample *t*-test
+    - One-way ANOVA
+    - Two-way ANOVA
+    
+- Commonality: comparing groups
+
+- New: thinking about this in model form; continuous predictor
+
+## Introduction
+
+- **Response variable (outcome)**: the dependent variable; what we are trying to model the outcome of; *y*
+
+- **Explanatory variable (predictor)**: the independent variable; what we are using to model the outcome; *x*
+
+- Nomenclature: 
+
+    - -variate: describes number of outcomes
+    - -variable: describes number of predictors
+
+- This week: simple linear regression
+
+    - One continuous outcome
+    - One continuous predictor
+    
+## Prediction Equation: Population
+
+- The prediction equation for the **population**:
+$$ y = \beta_0 + \beta_1 x $$
+
+- $\beta_0$ and $\beta_1$ are **parameters**
+
+    - $\beta_0$ is the $y$-intercept
+    - $\beta_1$ is the slope
+
+- $y$ is the observed outcome
+    
+## Prediction Equation: Sample
+
+- The prediction equation for the **sample**:
+$$ \hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x $$
+
+- $\hat{\beta}_0$ and $\hat{\beta}_1$ are **statistics**
+
+    - $\hat{\beta}_0$ is the estimate of the $y$-intercept
+    - $\hat{\beta}_1$ is the estimate of the slope
+
+- $y$ is the predicted outcome
+
+## Prediction Equation: Graphically
+
+<center><img src="images/L11a.png" width = 1200></center><br>
+
+- "line of best fit"
+
+## Linear Regression: Introduction
+
+- We are using data to quantitatively explain the relationship between $x$ and $y$.
+
+    - As $x$ increases, what happens to $y$?
+    
+- Linear regression assumes linearity. 
+
+    - $\beta_1$ is constaint: as $x$ increases, the slope does not change.
+    
+## Linear Regression: Introduction
+
+- Note that $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$ is an exact function.
+
+    - There is no room for error!
+
+<center><img src="images/L11b.png" width = 1000></center>
+
+## Linear Regression: Introduction
+
+- Thus, we will add an error term:
+
+\begin{align*}
+  \text{Population: } & y = \beta_0 + \beta_1 x + \varepsilon \\
+  \text{Sample: } & y = \hat{\beta}_0 + \hat{\beta}_1 x + e
+\end{align*}
+
+- where $\varepsilon$ and $e$ are the error terms that measure the difference between the expected/predicted value and the observed value.
+
+- Note that:
+
+    - ($\beta_0 + \beta_1 x$) and ($\hat{\beta}_0 + \hat{\beta}_1 x$) are the predictable parts of the model,
+    - $\varepsilon$ and $e$ are the unpredictable parts of the models,
+    - and $\varepsilon \overset{\text{iid}}{\sim} N(0, \sigma^2)$
+
+## Linear Regression: Assumptions
+
+- Remember the ANOVA assumptions? (ANOVA = regression!)
+
+$$\varepsilon \overset{\text{iid}}{\sim} N(0, \sigma^2)$$
+
+- The <u>**residuals**</u> follow a normal distribution
+
+    - Mean, $\mu=0$
+    - Common variance, $\sigma^2$
+
+- In R, we assess the assumptions as we did in ANOVA.
+
+## Linear Regression: Example
+
+- Consider a basic example: the cost of road resurfacing. 
+
+    - *y* is the cost in thousands of dollars,
+    - *x* is the mileage
+    
+<center><img src="images/L11c.png" width = 800></center>
+
+## Linear Regression: Computation
+
+- We will estimate the population regression line using the sample regression line,
+
+$$\hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x$$
+
+- We will use ordinary least squares to estimate regression coefficients.
+
+$$ \hat{\beta}_1 = \frac{S_{xy}}{S_{xx}} \ \ \ \text{ and} \ \ \ \hat{\beta}_0 = \bar{y} - \hat{\beta}_1 \bar{x} $$
+
+- where
+
+$$ S_{xx} = \sum_{i=1}^n x_i^2 - \frac{(\sum_{i=1}^n x_i)^2}{n} \ \ \ \text{ and} \ \ \ S_{xy} = \sum_{i=1}^n x_i y_i - \frac{\sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n} $$
+
+## Linear Regression: R Syntax
+
+- We used the `lm()` function in ANOVA -- we will use it again for linear regression (ANOVA = regression!)
+
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([outcome] ~ [predictor],
+        data = [dataset])
+```
+
+- To see the regression information, we will run the result through the `summary()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+summary(m)
+```
+
+## Linear Regression: Example
+
+- Let's find the regression line for the road resurfacing data. 
+
+```{r}
+library(tidyverse)
+x <- c(1, 3, 4, 5, 7)
+y <- c(6, 14, 10, 14, 26)
+data <- tibble(x, y)
+```
+
+```{r, echo = TRUE}
+m1 <- lm(y ~ x, data = data)
+summary(m1)
+```
+
+$$ \hat{y} = 2 + 3x $$
+
+## Linear Regression: Example
+
+<center><img src="images/L11d.png" width = 1200></center>
+
+## Linear Regression: Interpretations
+
+- We must interpret the regression coefficients. 
+
+    - Intercept: when [predictor = 0], the average [outcome] is [$\hat{\beta}_0$].
+
+    - Slope: For a 1 [units of predictor] increase in [predictor], we expect [outcome] to [increase or decrease] by [$|\hat{\beta}_1|$] [units of outcome].
+    
+        - If $\hat{\beta}_1 > 0$, there is an increase.
+        - If $\hat{\beta}_1 < 0$, there is a decrease.
+        
+## Linear Regression: Example
+
+- From the road surfacing example,
+
+$$ \hat{y} = 2 + 3x $$
+
+- Intercept: before considering mileage, we expect road resurfacing will cost $2,000.
+
+- Slope: for every mile resurfaced, we expect the cost to increase by $3,000.
+
+- Slope: for every 10 miles resurfaced, we expect the cost to increase by $30,000.
+
+## Linear Regression: Testing Slope
+
+**Hypotheses**
+
+- $H_0: \beta_1 = \beta_1^{(0)}$
+- $H_1: \beta_1 \ne \beta_1^{(0)}$
+
+
+**Test Statistic**
+
+$$ t_0 = \frac{\hat{\beta}_1 - \beta_1^{(0)}}{\text{SE}_{\hat{\beta}_1}} $$
+
+-   where
+
+    -   $\beta_1^{(0)}$ is the hypothesized value (often 0)
+    -   SE$_{\hat{\beta}_1} = \sqrt{\text{MSE}/S_{xx}}$
+    
+## Linear Regression: Example
+
+- Recall the road resurfacing example.
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+## Linear Regression: Example
+
+**Hypotheses**
+
+- $H_0: \beta_1 = 0$
+- $H_1: \beta_1 \ne 0$
+
+**Test Statistic and *p*-value**
+
+- $t_0 = 3.503$
+
+- $p = 0.0394$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that mileage is a significant predictor of cost.
+
+## Linear Regression: Confidence Interval for Slope
+
+**Confidence Interval for $\beta_1$:**
+
+$$\hat{\beta}_1 \pm t_{\alpha/2, n-2} \text{SE}_{\hat{\beta}_1}$$
+
+- We will use the `confint()` function to find the confidence interval.
+
+```{r, echo = TRUE}
+confint(m1)
+```
+
+- The 95% CI for $\beta_1$ is (0.27, 5.73)
+
+```{r, echo = TRUE}
+confint(m1, level = 0.99)
+```
+
+- The 99% CI for $\beta_1$ is (-2.00, 8.00)
+
+## Correlation: Pearson's Introduction
+
+- Unfortunately, $\beta_1$ does not tell us the *strength* of the relationship between *x* and *y*.
+
+    - This is because of the units involved both on *x* and *y*.
+
+- We will now look at a unitless measurement, called correlation.
+
+    - Correlation: a unitless measurement of the strength of the **linear** relationship between two variables.
+    
+- The stronger the relationship, the better *x* predicts *y* in $\hat{y} = \hat{\beta}_0 + \hat{\beta}_1x$.
+
+## Correlation: Pearson's Introduction
+
+- The population correlation is $\rho$ ("rho").
+
+- The sample correlation is $r$.
+
+- Correlation $\in$ [-1, 1]
+
+    - The closer to +/- 1, the stronger the relationship.
+    - $\rho>0$: positive correlation; as *x* increases, *y* increases
+    - $\rho<0$: negative correlation; as *x* increases, *y* decreases
+    - $\rho=0$: no correlation; as *x* increases, *y* is constant
+
+## Correlation: Pearson's Computation
+
+- Given $n$ pairs of observations $(x_i, y_i)$, Pearson's correlation is as follows:
+
+$$ r = \frac{S_{xy}}{\sqrt{S_{xx}S_{yy}}}, $$
+
+- where:
+
+$$ S_{xx} = \sum_{i=1}^n x_i^2 - \frac{(\sum_{i=1}^n x_i)^2}{n} \ \ \ \text{ and} \ \ \ S_{yy} = \sum_{i=1}^n y_i^2 - \frac{(\sum_{i=1}^n y_i)^2}{n}  $$
+
+$$S_{xy} = \sum_{i=1}^n x_i y_i - \frac{\sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n} $$
+
+## Correlation: Pearson's R Syntax
+
+- We will use the `cor()` function to find the correlation.
+
+```{r, echo = TRUE, eval = FALSE}
+cor([dataset]$[var1], [dataset]$[var2], 
+    use = "complete.obs") # single correlation
+
+cor(dataset, 
+    use = "complete.obs") # correlation matrix
+```
+
+- While we can find the correlation matrix for 
+
+- Note that there are several other packages/functions out there to help with visualization of correlation!
+
+## Correlation: Example
+
+- Let's revisit the penguins dataset and find the correlation matrix.
+
+```{r, echo = TRUE}
+data <- palmerpenguins::penguins %>%
+  select(bill_length_mm, bill_depth_mm, flipper_length_mm, body_mass_g)
+cor(data, use = "complete.obs") 
+```
+
+- Let's look at just the correlation between bill length and flipper length.
+
+```{r, echo = TRUE}
+cor(data$bill_length_mm, data$flipper_length_mm, use = "complete.obs")
+```
+
+
+## Correlation: Confidence Interval
+
+**Confidence Interval for $\rho$**
+
+$$ \left(\frac{e^{2z_1}-1}{e^{2z_1}+1}, \frac{e^{2z_2}-1}{e^{2z_2}+1} \right), $$
+
+- where:
+
+$$ z_1 = z- \frac{z_{\alpha/2}}{\sqrt{n-3}} \ \ \ \text{ and} \ \ \ z_2 = z+ \frac{z_{\alpha/2}}{\sqrt{n-3}} $$
+
+- and: 
+
+$$ z = \frac{1}{2} \ln\left(\frac{1+r}{1-r} \right)$$
+
+## Correlation: R Syntax
+
+- We will now use the `cor.test()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+cor.test([dataset]$[var1], [dataset]$[var2], 
+         conf.level = [level],
+         use = "complete.obs")
+```
+
+## Correlation: Example
+
+```{r, echo = TRUE}
+cor.test(data$bill_length_mm, data$flipper_length_mm, use = "complete.obs")
+```
+
+- The 95% CI for $\rho$ is (0.59, 0.71).
+
+```{r, echo = TRUE}
+cor.test(data$bill_length_mm, data$flipper_length_mm, conf.level = 0.99, use = "complete.obs")
+```
+
+- The 99% CI for $\rho$ is (0.57, 0.73).
+
+## Correlation: Assumptions
+
+- Note that the assumption on Pearson's correlation is that **both** variables are normally distributed.
+
+    - But... in regression, I don't "care" about the distribution of *x*!
+    
+    - And... we also don't "care" about the distribution of *y*.
+    
+    - (We only care about the distribution of the residuals.)
+    
+- Thus, need to check assumption of normality.
+
+    - I use histograms for quick and dirty check. 
+    
+    - We could use q-q plots...
+    
+## Correlation: Example
+
+```{r}
+library(ggpubr)
+p1 <- data %>% ggplot(aes(sample = bill_length_mm)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Bill Length") +
+  theme(text = element_text(size=20))
+p2 <- data %>% ggplot(aes(sample = flipper_length_mm)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Flipper Length") +
+  theme(text = element_text(size=20))
+ggarrange(p1, p2, nrow = 1)
+```
+
+
+## Correlation: Spearman's Introduction
+
+- If we do not meet the assumption for Pearson's correlation, we can use Spearman's correlation.
+
+    - This is a nonparametric method to finding the corerlation coefficient.
+    
+- Algorithm:
+
+    - 1. Sort by *x*, assign ranks (*R<sub>x</sub>*)
+    - 2. Sort by *y*, assign ranks (*R<sub>y</sub>*)
+    - 3. Compute Pearson's on (*R<sub>x</sub>*, *R<sub>y</sub>*)
+    
+- Note that we are transforming (*x*, *y*) $\to$ (*R<sub>x</sub>*, *R<sub>y</sub>*)
+
+## Correlation: Spearman's R Syntax
+
+- We again use the `cor.test()` function, but specify Spearman's.
+
+```{r, echo = TRUE, eval = FALSE}
+cor([dataset]$[var1], [dataset]$[var2], 
+    use = "complete.obs", 
+    method = "spearman") # single correlation
+
+cor(dataset, 
+    use = "complete.obs", 
+    method = "spearman") # correlation matrix
+```
+
+
+## Correlation: Example
+
+- Let's revisit the penguins dataset and find the correlation matrix.
+
+```{r, echo = TRUE}
+cor(data, use = "complete.obs", method = "spearman") 
+```
+
+- Let's look at just the correlation between bill length and flipper length.
+
+```{r, echo = TRUE}
+cor(data$bill_length_mm, data$flipper_length_mm, use = "complete.obs", method = "spearman")
+```
+
+## Model Visualization
+
+- While we are in simple linear regression, visualization is easy. 
+
+- We will first plot a scatterplot, then overlay the regression line.
+
+    - The predictor will be on the *x*-axis.
+    - The outcome will be on the *y* axis.
+    - We will create predicted values to construct the line.
+    
+## Model Visualization: Example
+
+- Let's create a model using the penguin data,
+
+```{r, echo = TRUE}
+m2 <- lm(flipper_length_mm ~ bill_length_mm, data = data)
+c2 <- coefficients(m2)
+c2
+```
+
+- Let's create the predicted values,
+
+```{r, echo = TRUE}
+data <- data %>%
+  mutate(yhat = c2[1] + c2[2]*bill_length_mm)
+head(data, n = 2)
+```
+
+## Model Visualization: Example
+
+- Now, let's build our `ggplot()`
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = bill_length_mm, y = flipper_length_mm)) +
+  geom_point(size=4, color = "darkgray") + 
+  geom_line(aes(y = yhat)) +
+  labs(x = "Bill Length (mm)",
+       y = "Flipper Length (mm)") +
+  theme_bw()
+```
+
+
+
+
+
+
+
+
+

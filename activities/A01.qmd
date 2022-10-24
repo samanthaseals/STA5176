@@ -1,0 +1,57 @@
+---
+title: "Summarizing Data - Week 1, Lecture 1"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+library(googlesheets4)
+```
+
+**Consider the data from the abstract of research study (beginning on page 62). We have data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI34xjnzHfJNHua6fJROJwCzUBFgV22OLT4/edit#gid=0"))
+```
+
+#### 1. What are the average math and reading scores for each grade?
+
+```{r, echo=TRUE}
+
+```
+
+The mean for percent in poverty is 56.41.
+
+#### 2. What are the median math scores for each grade?
+
+```{r, echo=TRUE}
+
+```
+
+#### 3. (Challenge!) Use `ggplot()` to construct histograms of the math and reading scores and determine if we should report the mean or median. 
+
+```{r, echo=TRUE}
+
+```
+
+#### 4. What is the average percent in poverty for each grade?
+
+```{r, echo=TRUE}
+
+```
+
+#### 5. (Challenge!) Why should we be careful when reporting an average percentage of students in poverty? (Note: I am asking for a mathematical answer.)
+
+#### 6. (Challenge!) Use `ggplot()` to construct side-by-side box plots for reading and, separately, math scores by grade level (i.e., reconstruct Figure 3.33 from the textbook).
+
+#### 7. (Challenge!) Use `ggplot()` to construct a scatterplot of reading vs. math scores for each grade level (i.e., create a different version of Figure 3.34 from the textbook).
+
+
+
+
+
+

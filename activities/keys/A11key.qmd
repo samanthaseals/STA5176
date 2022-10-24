@@ -1,0 +1,146 @@
+---
+title: "Simple Linear Regression - Week 9, Lecture 1"
+author: "Dr. Seals"
+format: html
+self-contained: true
+editor: source
+---
+
+**An online retailer needs to manage the amount of time needed to select the ordered items and assemble them for shipping. In order to assess the amount of time (Time) his assemblers devote to this task, the retailer takes a random sample of 100 orders and records the number of items in each order (Noltems) and the time needed to assemble the shipment. The data are given here: [Google Sheet](https://docs.google.com/spreadsheets/d/1xAsE0KmspC0dP4Uuyym33uU1G8ahI6z7wPVwts7BTRM/edit?usp=sharing).**
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+library(DescTools)
+library(ggpubr)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1xAsE0KmspC0dP4Uuyym33uU1G8ahI6z7wPVwts7BTRM/edit?usp=sharing"))
+```
+
+1. Summarize the data using appropriate summary statistics.
+
+```{r, echo = TRUE}
+data %>% summarize(items_mean = mean(NoItems), items_sd = sd(NoItems),
+                   time_mean = mean(Time), time_sd = sd(Time))
+
+quantile(data$NoItems)
+quantile(data$Time)
+```
+The average number of items is 11.8 with a standard deviation of 10.7. The minimum number of items is 1 and the maximum number of items is 46.
+
+The average time is 27.1 with a standard deviation of 12.3. The minimum time is 2.4 and the maximum time is 57.1.
+
+2. Model the amount of time as a function of the number of items in the order.
+
+```{r, echo = TRUE}
+m1 <- lm(Time ~ NoItems, data = data)
+summary(m1)
+```
+
+$$ \hat{y} = 14.59 + 1.07 x $$
+
+3. Find the 95% confidence interval for $\beta_1$.
+
+```{r, echo = TRUE}
+confint(m1)
+```
+
+The 95% CI for $\beta_1$ is (0.98, 1.15).
+
+4. Use the appropriate hypothesis test to determine if the number of items in the order is a significant predictor of the amount of time to pick and ship the order. Test at the $\alpha=0.05$ level.
+
+**Hypotheses**
+
+- $H_0: \ \beta_1 = 0$
+- $H_1: \ \beta_1 \ne 0$
+
+**Test Statistic and *p*-value**
+
+- $t_0 = 25.71$
+- $p < 0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$.
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the number of items significantly predicts the amount of time needed.
+
+5. State and assess the assumptions of linear regression. Is our model valid?
+
+$$ \varepsilon_{ij} \sim N(0, \sigma^2) $$ 
+```{r, echo=TRUE}
+plot(fitted(m1), resid(m1))
+```
+
+The variance assumption looks okay.
+
+```{r, echo = TRUE}
+hist(resid(m1))
+```
+
+The histogram looks mostly okay
+
+```{r, echo = TRUE}
+qqnorm(resid(m1))
+qqline(resid(m1)) 
+```
+
+The qq plot looks okay.
+
+Yes, the model is valid.
+
+6. Find Pearson's correlation between the amount of time and the number of items and the corresponding 95% confidence interval.
+
+```{r, echo = TRUE}
+cor.test(data$Time, data$NoItems)
+```
+
+$r = 0.933$; the 95\% CI for $\rho$ is (0.90, 0.95).
+
+7. Find Spearman's correlation between the amount of time and the number of items and the corresponding 95% confidence interval.
+
+```{r, echo = TRUE}
+SpearmanRho(data$NoItems, data$Time,conf.level=0.95 )
+```
+
+$r = 0.931$; the 95\% CI for $\rho$ is (0.90, 0.95).
+
+8. State and assess the assumptions for Pearson's correlation. Is Pearson's correlation valid for this data?
+
+Both $x$ and $y$ are normally distributed.
+
+```{r}
+p1 <- data %>% ggplot(aes(sample = NoItems)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Number of Items") +
+  theme(text = element_text(size=20))
+p2 <- data %>% ggplot(aes(sample = Time)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Time") +
+  theme(text = element_text(size=20))
+ggarrange(p1, p2, nrow = 1)
+```
+
+No, number of items does not have a normal distribution. We should report Spearman's correlation.
+
+9. Construct a visualization for the model. At the very least, you should have a scatterplot with a regression line overlaid.
+
+```{r, echo = TRUE}
+c1 <- coefficients(m1)
+data <- data %>%
+  mutate(yhat = c1[1] + c1[2]*NoItems)
+data %>% ggplot(aes(x = NoItems, y = Time)) +
+  geom_point(color = "gray") + 
+  geom_line(aes(y = yhat)) +
+  theme_bw()
+```
+

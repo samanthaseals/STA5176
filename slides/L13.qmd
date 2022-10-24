@@ -132,8 +132,9 @@ data <- data %>% mutate(outlier = abs(rstandard(m1))>2.5)
 library(tidyverse)
 data2 <- palmerpenguins::penguins %>% 
   select(body_mass_g, bill_length_mm, flipper_length_mm) %>%
-  mutate(obs = row_number()) %>%
-  na.omit()
+  na.omit() %>%
+  mutate(obs = row_number())
+
 m1 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data2)
 summary(m1)
 ```
@@ -192,9 +193,9 @@ gg_cooksd([m])
 
 - Let's find the Cook's distance graph for the penguin model.
 
-```{r, echo = TRUE, eval = FALSE}
+```{r, echo = TRUE}
 library(lindia)
-gg_cooksd(m1) + theme_bw() 
+gg_cooksd(m1) + theme_bw()
 ```
 
 - I would investigate points 39, 169, 292, and 313.
@@ -271,7 +272,7 @@ m3 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data4)
 summary(m3)
 ```
 
-$$ \hat{y} = -5733.78 + 6.77 \text{ bill} + 47.93 \text{ flipper} $$
+$$ \hat{y} = -5752.56 + 5.48 \text{ bill} + 48.29 \text{ flipper} $$
 
 ## Sensitivity Analysis
 
@@ -281,13 +282,8 @@ $$ \hat{y} = -5536.90 + 6.05 \text{ bill} + 48.15 \text{ flipper} $$
 - Flipper length is significant (*p* < 0.001).
 
 
-$$ \hat{y} = -5733.78 + 6.77 \text{ bill} + 47.93 \text{ flipper} $$
+$$ \hat{y} = -5752.56 + 5.48 \text{ bill} + 48.29 \text{ flipper} $$
 
-- Bill length is not significant (*p* = 0.174).
+- Bill length is not significant (*p* = 0.281).
 - Flipper length is significant (*p* < 0.001).
-
-
-## Delete this Slide
-
-Testing for branches
 

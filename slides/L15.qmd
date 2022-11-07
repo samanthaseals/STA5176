@@ -77,11 +77,11 @@ $$ \text{P}[n_1, n_2, ..., n_k] = \frac{n!}{n_1! n_2! ... n_k!} \pi_1^{n_1} \pi_
 
 | College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
 |---------| :------------: | :-----------: | :-----: |
-| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round(3297+2697+3265+1554+2094/5,1)` | 3297  |
-| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2697 |
-| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 3265 |
-| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 1554 |
-| [COB](https://uwf.edu/cob/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2094 |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round((3297+2697+3265+1554+2094)/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2094 |
 
 
 ## Hypothesis Test: Definition
@@ -116,11 +116,11 @@ chisq.test(counts, p = probs)
 
 | College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
 |---------| :------------: | :-----------: | :-----: |
-| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round(3297+2697+3265+1554+2094/5,1)` | 3297  |
-| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2697 |
-| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 3265 |
-| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 1554 |
-| [COB](https://uwf.edu/cob/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2094 |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round((3297+2697+3265+1554+2094)/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2094 |
 
 ```{r, echo = TRUE}
 counts <- c(3297, 2697, 3265, 1554, 2094)

@@ -1,0 +1,276 @@
+---
+title: "Goodness of Fit"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+```{r}
+options(scipen=999) 
+```
+
+## Introduction
+
+- Last lecture, we discussed having two possible outcomes (binary variable).
+
+- Let us now consider *k* possible outcomes, where *k* > 2.
+
+- This is a multinomial experiment.
+
+    - There are *n* independent and identical trials.
+    - Each trial results in one of *k* outcomes.
+    - P[outcome $i$] = $\pi_i$ for $i = 1, 2, ... , k$
+    
+        - $\sum_{i} \pi_i = 1$
+    
+## Multinomial Probability Distribution
+
+- We are now interested in $n_i$, the number of trials resulting in outcome $i$
+
+    - $\sum_i n_i = n$
+    
+- The multinomial probability distribution is as follows,
+
+$$ \text{P}[n_1, n_2, ..., n_k] = \frac{n!}{n_1! n_2! ... n_k!} \pi_1^{n_1} \pi_2^{n_2} ... \pi_k^{n_k} $$
+
+## Goodness of Fit
+
+- Conceptually:
+
+    - We have a *single* categorical variable with multiple categories.
+    
+        - e.g., student classification: non-degree, undergraduate, master's, doctoral
+    
+    - Every category has a specified probability, $\pi_i$
+    
+- We can list the data in table form. Take, for example, the [UWF enrollment data](https://uwf.edu/academic-affairs/departments/institutional-research/enrollment-fact-book/enrollment-overview/):
+
+| College |  Fall 2021 |
+|---------|:-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 3297 |
+| [CEPS](https://uwf.edu/ceps/) | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/) | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 1554 |
+| [COB](https://uwf.edu/cob/) | 2094 |
+| None | 358 |
+
+## Goodness of Fit
+
+- For all tables, we will have
+
+    - cell probabilities for the known distribution: $\pi_i$
+    - observed cell counts: $O_i = n_i$
+    - expected cell counts: $E_i = n \pi_i$
+    
+- Consider the UWF data. Let's assume a uniform distribution,
+
+| College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
+|---------| :------------: | :-----------: | :-----: |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round(3297+2697+3265+1554+2094/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2094 |
+
+
+## Hypothesis Test: Definition
+
+**Hypotheses**
+
+- $H_0$: The data come from the specified distribution.
+- $H_1$: The data do not come from the specified distribution.
+
+**Test Statistic**
+
+$$\chi_0^2 = \sum_{i=1}^k \frac{(O_i-E_i)^2}{E_i} $$
+
+**p-Value**
+
+- $p = \text{P}[\chi^2_{k-1} \ge \chi^2_0]$
+
+## Hypothesis Test: R Syntax
+
+```{r, echo = TRUE, eval = FALSE}
+# create O_i vector
+counts <- c(O_1, O_2, ..., O_k)
+# create pi_i vector
+probs <- c(pi_1, pi_2, ..., pi_k)
+
+chisq.test(counts, p = probs)
+```
+
+## Hypothesis Test: Uniform Distribution
+
+- Recall the UWF data,
+
+| College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
+|---------| :------------: | :-----------: | :-----: |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round(3297+2697+3265+1554+2094/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round(3297+2697+3265+1554+2094/5,4)` | 2094 |
+
+```{r, echo = TRUE}
+counts <- c(3297, 2697, 3265, 1554, 2094)
+probs <- c(0.2, 0.2, 0.2, 0.2, 0.2)
+chisq.test(counts, p = probs)
+```
+
+## Hypothesis Test: Uniform Distribution 
+
+**Hypotheses**
+
+- $H_0$: The data follows a uniform distribution
+- $H_1$: The data does not follow a uniform distribution
+
+**Test Statistic and *p*-Value**
+
+- $\chi_0^2=885.51$; $\ p < 0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the data does not follow a uniform distribution.
+
+## Hypothesis Test: Unnamed Distributions
+
+- Let's consider comparing the UWF data against the historical distribution,
+
+| College | Historical ($\pi_i$) | Fall 2021 ($O_i$) |
+|---------|------------:|-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 23.3% | 3297 (`r round(329700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CEPS](https://uwf.edu/ceps/) | 22.3% | 2697 (`r round(269700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [HMCSE](https://uwf.edu/hmcse/)  | 20.9% | 3265 (`r round(326500/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CASSH](https://uwf.edu/cassh/) | 13.4% | 1554 (`r round(155400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [COB](https://uwf.edu/cob/) | 13.1% | 2094 (`r round(209400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| None | 7.0% | 358 (`r round(35800/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+
+```{r, echo = TRUE}
+counts <- c(3297, 2697, 3265, 1554, 2094, 358)
+probs <- c(0.233, 0.223, 0.209, 0.134, 0.131, 0.070)
+chisq.test(counts, p = probs)
+```
+    
+
+## Hypothesis Test: Unnamed Distribution 
+
+**Hypotheses**
+
+- $H_0$: The data follows the historical distribution
+- $H_1$: The data does not follow the historical distribution
+
+**Test Statistic and *p*-Value**
+
+- $\chi_0^2=576.07$; $\ p < 0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the data does not follow the historical distribution.
+
+## Interpretation
+
+
+| College | Historical ($\pi_i$) | Fall 2021 ($O_i$) |
+|---------|------------:|-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 23.3% | 3297 (`r round(329700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CEPS](https://uwf.edu/ceps/) | 22.3% | 2697 (`r round(269700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [HMCSE](https://uwf.edu/hmcse/)  | 20.9% | 3265 (`r round(326500/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CASSH](https://uwf.edu/cassh/) | 13.4% | 1554 (`r round(155400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [COB](https://uwf.edu/cob/) | 13.1% | 2094 (`r round(209400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| None | 7.0% | 358 (`r round(35800/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+
+  - UKCOH enrollment has increased,
+  - CEPS enrollment has decreased,
+  - HMCSE enrollment has increased,
+  - CASSH enrollment has decreased,
+  - COB enrollment has increased,
+  - Fewer students do not have a college designation
+    
+## Other Uses
+
+- We can use the $\chi^2$ goodness of fit test to determine fit to other probability models.
+
+- This requires knowledge of expected probabilities.
+
+    - See pages 505-507 for an example 
+  
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

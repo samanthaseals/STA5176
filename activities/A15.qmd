@@ -6,7 +6,7 @@ self-contained: true
 editor: source
 ---
 
-**1. The quality control department of a motorcycle company classifies new motorcycles according to the number of defective components per motorcycle at an initial inspection. An improvement to the production process has been implemented, and, hopefully, there will be a change from the historical defective distribution: $\pi_1 = 0.80$, $\pi_2 = 0.10$, $\pi_3 = .05$, $\pi_4 = .03$, and $\pi_5 = 0.02$. A random sample of 300 motorcycles produced under the new system is classified as follows:**
+**1. The quality control department of a motorcycle company classifies new motorcycles according to the number of defective components per motorcycle at an initial inspection. An improvement to the production process has been implemented, and, hopefully, there will be a change from the historical defective distribution: $\pi_1 = 0.80,$ $\pi_2 = 0.10,$ $\pi_3 = .05,$ $\pi_4 = .03,$ and $\pi_5 = 0.02$. A random sample of 300 motorcycles produced under the new system is classified as follows:**
 
 | No. Defective | No. Motorcycles |
 |---|---|
@@ -41,7 +41,7 @@ editor: source
 
 ```
 
-**3. Challenge! A study examining bomb hits in South London during World War II is documented in the following table. The bomb hits were recorded in the 576 grids in a map of a region in South London. The study contended that certain areas were less likely to be hit with a bomb because of certain geographi- cal features. If the bomb hits were purely random, a Poisson model would produce the number of hits per grid.**
+**3. Challenge! A study examining bomb hits in South London during World War II is documented in the following table. The bomb hits were recorded in the 576 grids in a map of a region in South London. The study contended that certain areas were less likely to be hit with a bomb because of certain geographical features. If the bomb hits were purely random, a Poisson model would produce the number of hits per grid.**
 
 | No. Bomb Hits | No. Grids |
 |---|---|

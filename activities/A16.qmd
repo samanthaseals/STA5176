@@ -17,7 +17,7 @@ editor: source
 
 **Is there evidence to suggest there is age discrimination? Test at the $\alpha=0.05$ level.**
 
-**1b. Consider the following data:
+**1b. Consider the following data:**
 
 | | 39 or Younger | 40 or Older | 
 |--|--|--|

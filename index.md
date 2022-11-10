@@ -33,7 +33,7 @@ show_sidebar: false
 | 11   | M   | 10/31 | Project 3 - no class | | | | 11/06 |
 |      | W   | 11/02 | One and two proportions | [slides](https://samanthaseals.github.io/STA5176/slides/L14.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L14.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A14.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A14.qmd) | | 11/13 |
 | 12   | M   | 11/07 | Goodness of fit | [slides](https://samanthaseals.github.io/STA5176/slides/L15.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L15.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A15.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A15.qmd) | | 11/13 |
-|      | W   | 11/09 | Contingency tables | | | | 11/13 |
+|      | W   | 11/09 | Contingency tables | [slides](https://samanthaseals.github.io/STA5176/slides/L16.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L16.qmd)  | [html](https://samanthaseals.github.io/STA5176/activities/A16.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A16.qmd) | | 11/13 |
 | 13   | M   | 11/14 | Logistic regression | | | | 11/20 |
 |      | W   | 11/16 | Logistic regression | | | | 11/20 |
 | 14   | M   | 11/21 | Project 4 - no class | | | | 11/28 |

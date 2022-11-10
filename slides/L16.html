@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="L15_files/libs/clipboard/clipboard.min.js"></script>
-<script src="L15_files/libs/quarto-html/tabby.min.js"></script>
-<script src="L15_files/libs/quarto-html/popper.min.js"></script>
-<script src="L15_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="L15_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="L15_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
-<link href="L15_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="L16_files/libs/clipboard/clipboard.min.js"></script>
+<script src="L16_files/libs/quarto-html/tabby.min.js"></script>
+<script src="L16_files/libs/quarto-html/popper.min.js"></script>
+<script src="L16_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="L16_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="L16_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet">
+<link href="L16_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-0.9.647">
 
   <meta name="author" content="Dr.&nbsp;Seals">
-  <title>Goodness of Fit</title>
+  <title>Contingency Tables</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="L15_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="L15_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="L16_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="L16_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -88,7 +88,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="L15_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="L16_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -105,12 +105,12 @@
 }}});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
-  <link href="L15_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="L15_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="L15_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="L15_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="L15_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="L15_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="L16_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -396,395 +396,477 @@
     }
   </style>
   
-  <link href="L15_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
-  <script src="L15_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
+  <link href="L16_files/libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet">
+  <script src="L16_files/libs/pagedtable-1.1/js/pagedtable.js"></script>
 </head>
 <body>
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Goodness of Fit</h1>
+  <h1 class="title">Contingency Tables</h1>
   <p class="subtitle">STA5176: Statistical Modeling</p>
   <p class="author">Dr.&nbsp;Seals</p>
 </section>
 
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
-<div class="cell">
-
-</div>
 <ul>
-<li><p>Last lecture, we discussed having two possible outcomes (binary variable).</p></li>
-<li><p>Let us now consider <em>k</em> possible outcomes, where <em>k</em> &gt; 2.</p></li>
-<li><p>This is a multinomial experiment.</p>
+<li><p>In the categorical data analysis module, we have discussed:</p>
 <ul>
-<li><p>There are <em>n</em> independent and identical trials.</p></li>
-<li><p>Each trial results in one of <em>k</em> outcomes.</p></li>
-<li><p>P[outcome <span class="math inline">i</span>] = <span class="math inline">\pi_i</span> for <span class="math inline">i = 1, 2, ... , k</span></p>
-<ul>
-<li><span class="math inline">\sum_{i} \pi_i = 1</span></li>
+<li>One proportion</li>
+<li>Two proportions</li>
+<li>Goodness of fit (multiple proportions)</li>
 </ul></li>
+<li><p>Today, we will expand into contingency tables.</p></li>
+</ul>
+</section>
+<section id="contingency-tables" class="slide level2">
+<h2>Contingency Tables</h2>
+<ul>
+<li><p>A <em>R</em> <span class="math inline">\times</span> <em>C</em> contingency table is a table with <em>R</em> rows and <em>C</em> columns</p>
+<ul>
+<li><p>The variable in the rows has <em>R</em> categories</p></li>
+<li><p>The variable in the columns has <em>C</em> categories</p></li>
+</ul></li>
+<li><p>Assignment to <em>R</em> or <em>C</em> is arbitrary.</p>
+<ul>
+<li>The test statistic for a <em>R</em> <span class="math inline">\times</span> <em>C</em> is the same as the test statistic for a <em>C</em> <span class="math inline">\times</span> <em>R</em></li>
 </ul></li>
 </ul>
 </section>
-<section id="multinomial-probability-distribution" class="slide level2">
-<h2>Multinomial Probability Distribution</h2>
-<ul>
-<li><p>We are now interested in <span class="math inline">n_i</span>, the number of trials resulting in outcome <span class="math inline">i</span></p>
-<ul>
-<li><span class="math inline">\sum_i n_i = n</span></li>
-</ul></li>
-<li><p>The multinomial probability distribution is as follows,</p></li>
-</ul>
-<p><span class="math display"> \text{P}[n_1, n_2, ..., n_k] = \frac{n!}{n_1! n_2! ... n_k!} \pi_1^{n_1} \pi_2^{n_2} ... \pi_k^{n_k} </span></p>
+<section id="contingency-tables-1" class="slide level2">
+<h2>Contingency Tables</h2>
+<center>
+<img src="images/L16a.png" width="800">
+</center>
 </section>
-<section id="goodness-of-fit" class="slide level2">
-<h2>Goodness of Fit</h2>
+<section id="test-for-independence" class="slide level2">
+<h2>Test for Independence</h2>
 <ul>
-<li><p>Conceptually:</p>
+<li><p>We will now extend the <span class="math inline">\chi^2</span> test to examine independence of two variables.</p>
 <ul>
-<li><p>We have a <em>single</em> categorical variable with multiple categories.</p>
-<ul>
-<li>e.g., student classification: non-degree, undergraduate, master’s, doctoral</li>
+<li>e.g., does ice cream flavor preference depend on hair color?</li>
 </ul></li>
-<li><p>Every category has a specified probability, <span class="math inline">\pi_i</span></p></li>
-</ul></li>
-<li><p>We can list the data in table form. Take, for example, the <a href="https://uwf.edu/academic-affairs/departments/institutional-research/enrollment-fact-book/enrollment-overview/">UWF enrollment data</a>:</p></li>
+<li><p>We will again use observed values and expected values.</p></li>
+<li><p>The calculation of the expected value is now different:</p></li>
 </ul>
-<table>
-<thead>
-<tr class="header">
-<th>College</th>
-<th style="text-align: center;">Fall 2021</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://uwf.edu/ukcoh/">UKCOH</a></td>
-<td style="text-align: center;">3297</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/ceps/">CEPS</a></td>
-<td style="text-align: center;">2697</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/hmcse/">HMCSE</a></td>
-<td style="text-align: center;">3265</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/cassh/">CASSH</a></td>
-<td style="text-align: center;">1554</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/cob/">COB</a></td>
-<td style="text-align: center;">2094</td>
-</tr>
-<tr class="even">
-<td>None</td>
-<td style="text-align: center;">358</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="goodness-of-fit-1" class="slide level2">
-<h2>Goodness of Fit</h2>
+<p><span class="math display"> E_{ij} = \frac{\text{row total} \times \text{column total}}{\text{grand total}} </span></p>
 <ul>
-<li><p>For all tables, we will have</p>
-<ul>
-<li>cell probabilities for the known distribution: <span class="math inline">\pi_i</span></li>
-<li>observed cell counts: <span class="math inline">O_i = n_i</span></li>
-<li>expected cell counts: <span class="math inline">E_i = n \pi_i</span></li>
-</ul></li>
-<li><p>Consider the UWF data. Let’s assume a uniform distribution,</p></li>
+<li>The assumption to apply the <span class="math inline">\chi^2</span> distribution is now that <span class="math inline">E_{ij} \ge 5</span> <span class="math inline">\forall \ i</span>.</li>
 </ul>
-<table>
-<thead>
-<tr class="header">
-<th>College</th>
-<th style="text-align: center;">Uniform (<span class="math inline">\pi_i</span>)</th>
-<th style="text-align: center;">Expected (<span class="math inline">E_i</span>)</th>
-<th style="text-align: center;">Fall 2021 (<span class="math inline">O_i</span>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://uwf.edu/ukcoh/">UKCOH</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">3297</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/ceps/">CEPS</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">2697</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/hmcse/">HMCSE</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">3265</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/cassh/">CASSH</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">1554</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/cob/">COB</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">2094</td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="hypothesis-test-definition" class="slide level2">
 <h2>Hypothesis Test: Definition</h2>
 <p><strong>Hypotheses</strong></p>
 <ul>
-<li><span class="math inline">H_0</span>: The data come from the specified distribution.</li>
-<li><span class="math inline">H_1</span>: The data do not come from the specified distribution.</li>
+<li><span class="math inline">H_0</span>: There is not a relationship between [var 1] and [var 2].</li>
+<li><span class="math inline">H_1</span>: There is a relationship between [var 1] and [var 2].</li>
 </ul>
 <p><strong>Test Statistic</strong></p>
 <p><span class="math display">\chi_0^2 = \sum_{i=1}^k \frac{(O_i-E_i)^2}{E_i} </span></p>
 <p><strong>p-Value</strong></p>
 <ul>
-<li><span class="math inline">p = \text{P}[\chi^2_{k-1} \ge \chi^2_0]</span></li>
+<li><span class="math inline">p = \text{P}[\chi^2_{(r-1)(c-1)} \ge \chi^2_0]</span></li>
 </ul>
 </section>
 <section id="hypothesis-test-r-syntax" class="slide level2">
 <h2>Hypothesis Test: R Syntax</h2>
+<ul>
+<li>If given the contingency table, we can enter it in a <code>matrix()</code> (see example) and use the <code>chisq.test()</code> function.</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># create O_i vector</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(O_1, O_2, ..., O_k)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># create pi_i vector</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>probs <span class="ot">&lt;-</span> <span class="fu">c</span>(pi_1, pi_2, ..., pi_k)</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">chisq.test</span>(counts, <span class="at">p =</span> probs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">chisq.test</span>([matrix name])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="hypothesis-test-uniform-distribution" class="slide level2">
-<h2>Hypothesis Test: Uniform Distribution</h2>
 <ul>
-<li>Recall the UWF data,</li>
-</ul>
-<table>
-<thead>
-<tr class="header">
-<th>College</th>
-<th style="text-align: center;">Uniform (<span class="math inline">\pi_i</span>)</th>
-<th style="text-align: center;">Expected (<span class="math inline">E_i</span>)</th>
-<th style="text-align: center;">Fall 2021 (<span class="math inline">O_i</span>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://uwf.edu/ukcoh/">UKCOH</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">3297</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/ceps/">CEPS</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">2697</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/hmcse/">HMCSE</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">3265</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/cassh/">CASSH</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">1554</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/cob/">COB</a></td>
-<td style="text-align: center;">0.20</td>
-<td style="text-align: center;">2581.4</td>
-<td style="text-align: center;">2094</td>
-</tr>
-</tbody>
-</table>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3297</span>, <span class="dv">2697</span>, <span class="dv">3265</span>, <span class="dv">1554</span>, <span class="dv">2094</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">chisq.test</span>(counts, <span class="at">p =</span> probs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Chi-squared test for given probabilities
-
-data:  counts
-X-squared = 885.51, df = 4, p-value &lt; 0.00000000000000022</code></pre>
-</div>
-</div>
-</section>
-<section id="hypothesis-test-uniform-distribution-1" class="slide level2">
-<h2>Hypothesis Test: Uniform Distribution</h2>
-<p><strong>Hypotheses</strong></p>
+<li><p>If given raw data, we can use the <a href="https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1/topics/CrossTable"><code>CrossTable()</code></a> function in the <a href="https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1"><code>gmodels</code></a> package.</p>
 <ul>
-<li><span class="math inline">H_0</span>: The data follows a uniform distribution</li>
-<li><span class="math inline">H_1</span>: The data does not follow a uniform distribution</li>
-</ul>
-<p><strong>Test Statistic and <em>p</em>-Value</strong></p>
-<ul>
-<li><span class="math inline">\chi_0^2=885.51</span>; <span class="math inline">\ p &lt; 0.001</span></li>
-</ul>
-<p><strong>Rejection Region</strong></p>
-<ul>
-<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
-</ul>
-<p><strong>Conclusion/Interpretation</strong></p>
-<ul>
-<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that the data does not follow a uniform distribution.</li>
-</ul>
-</section>
-<section id="hypothesis-test-unnamed-distributions" class="slide level2">
-<h2>Hypothesis Test: Unnamed Distributions</h2>
-<ul>
-<li>Let’s consider comparing the UWF data against the historical distribution,</li>
-</ul>
-<table>
-<thead>
-<tr class="header">
-<th>College</th>
-<th style="text-align: right;">Historical (<span class="math inline">\pi_i</span>)</th>
-<th style="text-align: right;">Fall 2021 (<span class="math inline">O_i</span>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://uwf.edu/ukcoh/">UKCOH</a></td>
-<td style="text-align: right;">23.3%</td>
-<td style="text-align: right;">3297 (24.9%)</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/ceps/">CEPS</a></td>
-<td style="text-align: right;">22.3%</td>
-<td style="text-align: right;">2697 (20.3%)</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/hmcse/">HMCSE</a></td>
-<td style="text-align: right;">20.9%</td>
-<td style="text-align: right;">3265 (24.6%)</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/cassh/">CASSH</a></td>
-<td style="text-align: right;">13.4%</td>
-<td style="text-align: right;">1554 (11.7%)</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/cob/">COB</a></td>
-<td style="text-align: right;">13.1%</td>
-<td style="text-align: right;">2094 (15.8%)</td>
-</tr>
-<tr class="even">
-<td>None</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">358 (2.7%)</td>
-</tr>
-</tbody>
-</table>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">3297</span>, <span class="dv">2697</span>, <span class="dv">3265</span>, <span class="dv">1554</span>, <span class="dv">2094</span>, <span class="dv">358</span>)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>probs <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.233</span>, <span class="fl">0.223</span>, <span class="fl">0.209</span>, <span class="fl">0.134</span>, <span class="fl">0.131</span>, <span class="fl">0.070</span>)</span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">chisq.test</span>(counts, <span class="at">p =</span> probs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Chi-squared test for given probabilities
-
-data:  counts
-X-squared = 576.07, df = 5, p-value &lt; 0.00000000000000022</code></pre>
-</div>
-</div>
-</section>
-<section id="hypothesis-test-unnamed-distribution" class="slide level2">
-<h2>Hypothesis Test: Unnamed Distribution</h2>
-<p><strong>Hypotheses</strong></p>
-<ul>
-<li><span class="math inline">H_0</span>: The data follows the historical distribution</li>
-<li><span class="math inline">H_1</span>: The data does not follow the historical distribution</li>
-</ul>
-<p><strong>Test Statistic and <em>p</em>-Value</strong></p>
-<ul>
-<li><span class="math inline">\chi_0^2=576.07</span>; <span class="math inline">\ p &lt; 0.001</span></li>
-</ul>
-<p><strong>Rejection Region</strong></p>
-<ul>
-<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
-</ul>
-<p><strong>Conclusion/Interpretation</strong></p>
-<ul>
-<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that the data does not follow the historical distribution.</li>
-</ul>
-</section>
-<section id="interpretation" class="slide level2">
-<h2>Interpretation</h2>
-<table>
-<thead>
-<tr class="header">
-<th>College</th>
-<th style="text-align: right;">Historical (<span class="math inline">\pi_i</span>)</th>
-<th style="text-align: right;">Fall 2021 (<span class="math inline">O_i</span>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="https://uwf.edu/ukcoh/">UKCOH</a></td>
-<td style="text-align: right;">23.3%</td>
-<td style="text-align: right;">3297 (24.9%)</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/ceps/">CEPS</a></td>
-<td style="text-align: right;">22.3%</td>
-<td style="text-align: right;">2697 (20.3%)</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/hmcse/">HMCSE</a></td>
-<td style="text-align: right;">20.9%</td>
-<td style="text-align: right;">3265 (24.6%)</td>
-</tr>
-<tr class="even">
-<td><a href="https://uwf.edu/cassh/">CASSH</a></td>
-<td style="text-align: right;">13.4%</td>
-<td style="text-align: right;">1554 (11.7%)</td>
-</tr>
-<tr class="odd">
-<td><a href="https://uwf.edu/cob/">COB</a></td>
-<td style="text-align: right;">13.1%</td>
-<td style="text-align: right;">2094 (15.8%)</td>
-</tr>
-<tr class="even">
-<td>None</td>
-<td style="text-align: right;">7.0%</td>
-<td style="text-align: right;">358 (2.7%)</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>UKCOH enrollment has increased,</li>
-<li>CEPS enrollment has decreased,</li>
-<li>HMCSE enrollment has increased,</li>
-<li>CASSH enrollment has decreased,</li>
-<li>COB enrollment has increased,</li>
-<li>Fewer students do not have a college designation</li>
-</ul>
-</section>
-<section id="other-uses" class="slide level2">
-<h2>Other Uses</h2>
-<ul>
-<li><p>We can use the <span class="math inline">\chi^2</span> goodness of fit test to determine fit to other probability models.</p></li>
-<li><p>This requires knowledge of expected probabilities.</p>
-<ul>
-<li>See pages 505-507 for an example</li>
+<li>Note: this function replicates PROC FREQ from SAS :)</li>
 </ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">CrossTable</span>([dataset<span class="sc">$</span>row var], [dataset<span class="sc">$</span>col var], </span>
+<span id="cb2-2"><a href="#cb2-2"></a>           <span class="at">prop.chisq=</span> <span class="cn">FALSE</span>,  <span class="co"># turn off proportion contributed to chi-square statistic</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>           <span class="at">prop.r =</span> <span class="cn">FALSE</span>,  <span class="co"># turn off row proportions</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>           <span class="at">prop.t =</span> <span class="cn">FALSE</span>, <span class="co"># turn off total proportions</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>           <span class="at">chisq =</span> <span class="cn">TRUE</span>) <span class="co"># request chi-square test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hypothesis-test-marriage" class="slide level2">
+<h2>Hypothesis Test: Marriage</h2>
+<ul>
+<li>Consider the following data on happiness in a marriage,</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Married</th>
+<th>Widowed</th>
+<th>Div./Sep.</th>
+<th>Never Married</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Very Happy</td>
+<td>600</td>
+<td>63</td>
+<td>112</td>
+<td>114</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Pretty Happy</td>
+<td>720</td>
+<td>142</td>
+<td>355</td>
+<td>459</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Not Too Happy</td>
+<td>93</td>
+<td>51</td>
+<td>119</td>
+<td>127</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Use the <span class="math inline">\chi^2</span> test for independence to determine if happiness depends on marital status.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>observed_table <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">600</span>, <span class="dv">63</span>, <span class="dv">112</span>, <span class="dv">144</span>,</span>
+<span id="cb3-2"><a href="#cb3-2"></a>                           <span class="dv">720</span>, <span class="dv">142</span>, <span class="dv">355</span>, <span class="dv">459</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                           <span class="dv">93</span>, <span class="dv">51</span>, <span class="dv">119</span>, <span class="dv">127</span>), </span>
+<span id="cb3-4"><a href="#cb3-4"></a>                         <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">chisq.test</span>(observed_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  observed_table
+X-squared = 224.12, df = 6, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-test-marriage-1" class="slide level2">
+<h2>Hypothesis Test: Marriage</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">H_0</span>: Happiness does not depend on relationship status.</li>
+<li><span class="math inline">H_1</span>: Happiness depends on relationship status.</li>
+</ul>
+<p><strong>Test Statistic and <em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\chi_0^2=224.12</span>; <span class="math inline">\ p &lt; 0.001</span></li>
+</ul>
+<p><strong>Rejection Region</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that happiness depends on relationship status.</li>
+</ul>
+</section>
+<section id="hypothesis-test-jackson-heart-study" class="slide level2">
+<h2>Hypothesis Test: Jackson Heart Study</h2>
+<ul>
+<li>Recall the Jackson Heart Study dataset.</li>
+</ul>
+<div class="cell">
+
+</div>
+<ul>
+<li>Let’s determine if there is a difference between the proportion of male and female drinkers.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(gmodels)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">CrossTable</span>(data<span class="sc">$</span>alc, data<span class="sc">$</span>sex, <span class="at">prop.chisq=</span> <span class="cn">FALSE</span>, <span class="at">prop.r =</span> <span class="cn">FALSE</span>, <span class="at">prop.t =</span> <span class="cn">FALSE</span>, <span class="at">chisq =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 
+   Cell Contents
+|-------------------------|
+|                       N |
+|           N / Col Total |
+|-------------------------|
+
+ 
+Total Observations in Table:  2643 
+
+ 
+             | data$sex 
+    data$alc |    Female |      Male | Row Total | 
+-------------|-----------|-----------|-----------|
+          No |       982 |       390 |      1372 | 
+             |     0.589 |     0.399 |           | 
+-------------|-----------|-----------|-----------|
+         Yes |       684 |       587 |      1271 | 
+             |     0.411 |     0.601 |           | 
+-------------|-----------|-----------|-----------|
+Column Total |      1666 |       977 |      2643 | 
+             |     0.630 |     0.370 |           | 
+-------------|-----------|-----------|-----------|
+
+ 
+Statistics for All Table Factors
+
+
+Pearson's Chi-squared test 
+------------------------------------------------------------
+Chi^2 =  89.29712     d.f. =  1     p =  3.397543e-21 
+
+Pearson's Chi-squared test with Yates' continuity correction 
+------------------------------------------------------------
+Chi^2 =  88.53661     d.f. =  1     p =  4.990272e-21 
+
+ </code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-test-jackson-heart-study-1" class="slide level2">
+<h2>Hypothesis Test: Jackson Heart Study</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">H_0</span>: The proportion of males and females that drink is equal</li>
+<li><span class="math inline">H_1</span>: The proportion of males and females that drink is not equal.</li>
+</ul>
+<p><strong>Test Statistic and <em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\chi_0^2=89.297</span>; <span class="math inline">\ p &lt; 0.001</span></li>
+</ul>
+<p><strong>Rejection Region</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that the proportion of male and female drinkers is different.</li>
+</ul>
+</section>
+<section id="fishers-exact" class="slide level2">
+<h2>Fisher’s Exact</h2>
+<ul>
+<li><p>What happens if we do not meet the assumption for the <span class="math inline">\chi^2</span> test?</p></li>
+<li><p>We can use Fisher’s Exact test.</p></li>
+<li><p>This directly computes a probability using the contingency table.</p>
+<ul>
+<li>i.e., we will not have a test statistic.</li>
+</ul></li>
+<li><p>These are difficult to calculate by hand due to large factorials.</p>
+<ul>
+<li>We will skip formulae and trust R :)</li>
+</ul></li>
+</ul>
+</section>
+<section id="hypothesis-test-r-syntax-1" class="slide level2">
+<h2>Hypothesis Test: R Syntax</h2>
+<ul>
+<li>If given the contingency table, we can enter it in a <code>matrix()</code> (see example) and use the <code>fisher.test()</code> function.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">chisq.test</span>([matrix name])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p>If given raw data, we can use the <a href="https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1/topics/CrossTable"><code>CrossTable()</code></a> function in the <a href="https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1"><code>gmodels</code></a> package.</p>
+<ul>
+<li>Note: this function replicates PROC FREQ from SAS :)</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">CrossTable</span>([dataset<span class="sc">$</span>row var], [dataset<span class="sc">$</span>col var], </span>
+<span id="cb8-2"><a href="#cb8-2"></a>           <span class="at">prop.chisq=</span> <span class="cn">FALSE</span>,  <span class="co"># turn off proportion contributed to chi-square statistic</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>           <span class="at">prop.r =</span> <span class="cn">FALSE</span>,  <span class="co"># turn off row proportions</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>           <span class="at">prop.t =</span> <span class="cn">FALSE</span>, <span class="co"># turn off total proportions</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>           <span class="at">fisher =</span> <span class="cn">TRUE</span>) <span class="co"># request chi-square test</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="hypothesis-test-cvd-death-and-diet" class="slide level2">
+<h2>Hypothesis Test: CVD Death and Diet</h2>
+<ul>
+<li>Consider the following data from a retrospective study examining cause of death (CVD vs.&nbsp;not CVD) and the type of diet the person ate (high vs.&nbsp;low salt).</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>High Salt</th>
+<th>Low Salt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Non-CVD</td>
+<td>2</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td>CVD</td>
+<td>5</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Is there a relationship between the two?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>observed_table <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">23</span>,</span>
+<span id="cb9-2"><a href="#cb9-2"></a>                           <span class="dv">5</span>, <span class="dv">30</span>), </span>
+<span id="cb9-3"><a href="#cb9-3"></a>                         <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">chisq.test</span>(observed_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<center>
+<img src="images/L16b.png" width="800">
+</center>
+</section>
+<section id="hypothesis-test-cvd-death-and-diet-1" class="slide level2">
+<h2>Hypothesis Test: CVD Death and Diet</h2>
+<ul>
+<li>Consider the following data from a retrospective study examining cause of death (CVD vs.&nbsp;not CVD) and the type of diet the person ate (high vs.&nbsp;low salt).</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>High Salt</th>
+<th>Low Salt</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Non-CVD</td>
+<td>2</td>
+<td>23</td>
+</tr>
+<tr class="even">
+<td>CVD</td>
+<td>5</td>
+<td>30</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Is there a relationship between the two?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>observed_table <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">23</span>,</span>
+<span id="cb10-2"><a href="#cb10-2"></a>                           <span class="dv">5</span>, <span class="dv">30</span>), </span>
+<span id="cb10-3"><a href="#cb10-3"></a>                         <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> T)</span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="fu">fisher.test</span>(observed_table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Fisher's Exact Test for Count Data
+
+data:  observed_table
+p-value = 0.6882
+alternative hypothesis: true odds ratio is not equal to 1
+95 percent confidence interval:
+ 0.04625243 3.58478157
+sample estimates:
+odds ratio 
+  0.527113 </code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-test-cvd-death-and-diet-2" class="slide level2">
+<h2>Hypothesis Test: CVD Death and Diet</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">H_0</span>: CVD death does not depend on low or high salt diet.</li>
+<li><span class="math inline">H_1</span>: CVD death does depend on low or high salt diet.</li>
+</ul>
+<p><strong><em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\ p = 0.688</span></li>
+</ul>
+<p><strong>Rejection Region</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Fail to reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is not sufficient evidence to suggest that CVD death depends on amount of salt in diet.</li>
+</ul>
+</section>
+<section id="hypothesis-test-jackson-heart-study-2" class="slide level2">
+<h2>Hypothesis Test: Jackson Heart Study</h2>
+<ul>
+<li>Let’s apply the Fisher’s exact test to the JHS data (even though it is not needed):</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">CrossTable</span>(data<span class="sc">$</span>alc, data<span class="sc">$</span>sex, <span class="at">prop.chisq=</span> <span class="cn">FALSE</span>, <span class="at">prop.r =</span> <span class="cn">FALSE</span>, <span class="at">prop.t =</span> <span class="cn">FALSE</span>, <span class="at">fisher =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ 
+   Cell Contents
+|-------------------------|
+|                       N |
+|           N / Col Total |
+|-------------------------|
+
+ 
+Total Observations in Table:  2643 
+
+ 
+             | data$sex 
+    data$alc |    Female |      Male | Row Total | 
+-------------|-----------|-----------|-----------|
+          No |       982 |       390 |      1372 | 
+             |     0.589 |     0.399 |           | 
+-------------|-----------|-----------|-----------|
+         Yes |       684 |       587 |      1271 | 
+             |     0.411 |     0.601 |           | 
+-------------|-----------|-----------|-----------|
+Column Total |      1666 |       977 |      2643 | 
+             |     0.630 |     0.370 |           | 
+-------------|-----------|-----------|-----------|
+
+ 
+Fisher's Exact Test for Count Data
+------------------------------------------------------------
+Sample estimate odds ratio:  2.160236 
+
+Alternative hypothesis: true odds ratio is not equal to 1
+p =  2.970522e-21 
+95% confidence interval:  1.83351 2.547062 
+
+Alternative hypothesis: true odds ratio is less than 1
+p =  1 
+95% confidence interval:  0 2.481628 
+
+Alternative hypothesis: true odds ratio is greater than 1
+p =  2.020743e-21 
+95% confidence interval:  1.881406 Inf 
+
+
+ </code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-test-jackson-heart-study-3" class="slide level2">
+<h2>Hypothesis Test: Jackson Heart Study</h2>
+<p><strong>Hypotheses</strong></p>
+<ul>
+<li><span class="math inline">H_0</span>: The proportion of males and females that drink is equal</li>
+<li><span class="math inline">H_1</span>: The proportion of males and females that drink is not equal.</li>
+</ul>
+<p><strong>Test Statistic and <em>p</em>-Value</strong></p>
+<ul>
+<li><span class="math inline">\ p &lt; 0.001</span></li>
+</ul>
+<p><strong>Rejection Region</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> if <span class="math inline">p &lt; \alpha</span>; <span class="math inline">\alpha=0.05</span></li>
+</ul>
+<p><strong>Conclusion/Interpretation</strong></p>
+<ul>
+<li>Reject <span class="math inline">H_0</span> at the <span class="math inline">\alpha=0.05</span> level. There is sufficient evidence to suggest that the proportion of male and female drinkers is different.</li>
 </ul>
 <div class="footer footer-default">
 <p><a href="https://samanthaseals.github.io/STA5176">STA5176 - Statistical Modeling</a></p>
@@ -794,19 +876,19 @@ X-squared = 576.07, df = 5, p-value &lt; 0.00000000000000022</code></pre>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="L15_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="L16_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="L15_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="L15_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="L15_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="L16_files/libs/revealjs/plugin/zoom/zoom.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

@@ -16,11 +16,11 @@ format:
 editor: source
 ---
 
+## Introduction
+
 ```{r}
 options(scipen=999) 
 ```
-
-## Introduction
 
 - Last lecture, we discussed having two possible outcomes (binary variable).
 

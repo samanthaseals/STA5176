@@ -1,0 +1,285 @@
+---
+title: "Inference on Variances"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+```{r, echo = FALSE}
+library(tidyverse)
+library(EnvStats)
+library(car)
+penguins <- palmerpenguins::penguins
+```
+
+-   In the last lecture, we covered estimation and inference on central parameters ($\mu$ and M).
+
+-   Today we will cover estimation and inference on $\sigma^2$
+
+-   We will learn the tests for one, two, and more than two variances
+
+    -   Typically, these are used to check assumptions of either the $t$-test (two variances) or ANOVA (more than two variances).
+    
+## Hypothesis Testing -- One $\sigma^2$
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \sigma^2 \le \sigma^2_0$ | $H_0: \sigma^2 \ge \sigma^2_0$ |  $H_0: \ \sigma^2 = \sigma^2_0$  |
+| $H_1: \ \sigma^2 > \sigma^2_0$  | $H_1: \ \sigma^2 < \sigma^2_0$  | $H_1: \ \sigma^2 \ne \sigma^2_0$ |
+
+**Test Statistic**
+
+$$ \chi^2_0 = \frac{(n-1)s^2}{\sigma^2_0} $$
+
+## Hypothesis Testing -- One $\sigma^2$
+
+  -   We will  use the [`varTest()`](https://www.rdocumentation.org/packages/EnvStats/versions/2.3.1/topics/varTest) function from the [`EnvStats`](https://www.rdocumentation.org/packages/EnvStats/versions/2.7.0/topics/EnvStats-package) package to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+varTest([variable], 
+        alternative = "[alternative]", 
+        conf.level = [level],
+        sigma.squared = [hypothesized value])
+```
+
+- The code will not run without the `conf.level` stated.
+
+- Note that if you are constructing a two-tailed test, you can find the corresponding CI in the same call of `varTest`.
+
+- If you are constructing a one-tailed test, you will see that the CI presented is a one-sided CI, while we are interested in two-sided CIs.
+
+## Hypothesis Testing -- One $\sigma^2$ -- Penguins
+
+-   Recall the penguin data. Let's use the appropriate test to determine if the standard deviation of bill length for penguins (`r round(sd(penguins$bill_length_mm, na.rm = TRUE),2)` mm) is greater than 5 mm. Test at the $\alpha=0.01$ level.
+
+```{r, warning = FALSE, echo = TRUE}
+varTest(penguins$bill_length_mm, 
+        alternative = "greater", 
+        conf.level = 0.95, 
+        sigma.squared = 25)
+```
+
+## Hypothesis Testing -- One $\sigma^2$ -- Penguins
+
+**Hypotheses**
+
+-   $H_0: \ \sigma \le 5$ OR $\sigma^2 \le 25$
+-   $H_1: \ \sigma > 5$ OR $\sigma^2 > 25$
+
+**Test Statistic**
+
+-   $\chi^2_0 = 406.57$
+
+***p*****-Value**
+
+-   $p = 0.008$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.01$ level. There is sufficient evidence to suggest that the standard deviation of bill length is larger than 5 mm.
+
+## Confidence Intervals -- One $\sigma^2$
+
+  - For variance:
+$$ \left( \frac{(n-1)s^2}{\chi^2_{1-\alpha/2, n-1}}, \frac{(n-1)s^2}{\chi^2_{\alpha/2, n-1}} \right) $$
+
+  - For standard deviation:
+$$ \left( \sqrt{\frac{(n-1)s^2}{\chi^2_{1-\alpha/2, n-1}}}, \sqrt{\frac{(n-1)s^2}{\chi^2_{\alpha/2, n-1}}} \right) $$
+
+## Confidence Intervals -- One $\sigma^2$
+
+  -   We will use the [`varTest()`](https://www.rdocumentation.org/packages/EnvStats/versions/2.3.1/topics/varTest) function to find the CI,
+
+```{r, echo = TRUE, eval = FALSE}
+varTest([variable], 
+        conf.level = [level])
+```
+
+- Note that we now have removed the `alternative` and `sigma.squared` options.
+  
+    - The default `alternative` is two-sided.
+    - The default `sigma.squared` is 1.
+
+## Confidence Intervals -- One $\sigma^2$ -- Penguins
+
+-   Recall the penguin data. Find the 99% CI for the standard deviation, $\sigma$.
+
+```{r, warning = FALSE, echo = TRUE}
+varTest(penguins$bill_length_mm, 
+        conf.level = 0.99)
+```
+
+- The 99% CI for $\sigma^2$ is (24.67, 36.63)
+
+- However, we were asked for the 99% CI for $\sigma$, so we must take the square root.
+
+    - Thus, the 99% CI for $\sigma$ is (`r round(sqrt(24.67),2)`, `r round(sqrt(36.63),2)`).
+
+
+## Hypothesis Testing -- Two $\sigma^2$
+
+  - This is known as the folded $F$ test.
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \sigma_1^2 \le \sigma^2_2$ | $H_0: \sigma_1^2 \ge \sigma^2_2$ |  $H_0: \ \sigma_1^2 = \sigma^2_2$  |
+| $H_1: \ \sigma_1^2 > \sigma^2_2$  | $H_1: \ \sigma_1^2 < \sigma_2^2$  | $H_1: \ \sigma_1^2 \ne \sigma_2^2$ |
+
+**Test Statistic**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $F_0 = \frac{s_1^2}{s_2^2}$ | $F_0 = \frac{s_2^2}{s_1^2}$ |  $F_0 = \frac{s_1^2}{s_2^2}$  |
+
+## Hypothesis Testing -- Two $\sigma^2$
+
+- We will use the [`var.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/var.test) function from the [`stats`](https://www.rdocumentation.org/packages/stats/versions/3.6.2) package.
+
+```{r, echo = TRUE, eval = FALSE}
+var.test([var 1], [var 2], 
+         alternative = [alternative], 
+         conf.level = [level], 
+         ratio = [ratio (normally 1)])
+```
+
+- We do not have to specify the `conf.level` if only interested in the hypothesis test.
+
+- Remember that this is typically used to verify the variance assumption of the two-sample $t$-test.
+
+## Hypothesis Testing -- Two $\sigma^2$ -- Penguins
+
+- Recall the penguins data. Determine if the variance of the bill length is the same between male and female penguins. Test at the $\alpha=0.05$ level.
+
+```{r, echo = TRUE}
+f <- penguins %>% filter(sex == "female")
+m <- penguins %>% filter(sex == "male")
+var.test(f$bill_length_mm, m$bill_length_mm,
+         alternative = "two",
+         ratio = 1)
+```
+
+## Hypothesis Testing -- Two $\sigma^2$ -- Penguins
+
+**Hypotheses**
+
+-   $H_0: \ \sigma^2_{\text{M}} = \sigma^2_{\text{F}}$
+-   $H_1: \ \sigma^2_{\text{M}} \ne \sigma^2_{\text{F}}$
+
+**Test Statistic**
+
+-   $F_0 = 0.83$
+
+***p*****-Value**
+
+-   $p = 0.247$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the variances are different.
+
+## Confidence Intervals -- Two $\sigma^2$
+
+- For the ratio of two variances:
+$$ \left( \frac{s_1^2}{s_2^2} F_{1-\alpha/2, n_2-1, n_1-1}, \frac{s_1^2}{s_2^2} F_{\alpha/2, n_2-1, n_1-1} \right)$$
+
+## Confidence Intervals -- Two $\sigma^2$
+
+- We again use the [`var.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/var.test) function from the [`stats`](https://www.rdocumentation.org/packages/stats/versions/3.6.2) package.
+
+```{r, echo = TRUE, eval = FALSE}
+var.test([var 1], [var 2], 
+         conf.level = [level])
+```
+
+## Confidence Intervals -- Two $\sigma^2$
+
+- Let's find the 95% CI for the ratio of variances between male and female penguins.
+
+```{r, echo = TRUE}
+var.test(f$bill_length_mm, m$bill_length_mm,
+         conf.level = 0.95)
+```
+
+- Thus, the 95% CI for the ratio of variances is (0.61, 1.13).
+
+## Hypothesis Testing --  $\ge$ Three $\sigma^2$
+
+- The Brown-Forsythe-Levine test is used to assess assumptions in ANOVA (next chapter).
+
+    - In fact, it is transforming the data, then performing ANOVA on the transformed data.
+
+**Hypotheses**
+
+  - $H_0: \ \sigma^2_1 = ... = \sigma^2_k$
+  - $H_1:$ at least one $\sigma^2_i$ is different
+  
+
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$
+
+**Test Statistic**
+$$ F_0 = \frac{\sum_{i=1}^k n_i (\bar{z}_i - \bar{z})^2/(k-1)}{\sum_{i=1}^k \sum_{j=1}^{n_j}(z_{ij}-\bar{z}_i)^2/(n-k) }, $$
+
+where
+
+  - $k$ is the number of groups,
+  - $n_i$ is the sample size of group i,
+  - $n = \sum_{i=1}^k n_i$, and
+  - $z_{ij} = |y_{ij} - \text{median}(y_i)|$
+  
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$
+
+- We will use the [`leveneTest()`](https://www.rdocumentation.org/packages/car/versions/3.1-0/topics/leveneTest) function from the [`car`](https://www.rdocumentation.org/packages/car/versions/3.1-0) package.
+
+```{r, echo = TRUE, eval = FALSE}
+leveneTest([continuous var] ~ [grouping var], 
+           data = [dataset], 
+           center = median)
+```
+  
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$ -- Penguins
+
+- Let's now determine if the variance of bill length is different between the three species of penguins.
+
+```{r, echo = TRUE}
+leveneTest(bill_length_mm ~ species, data = penguins, center = median)
+```
+
+## Hypothesis Testing -- $\ge$ Three $\sigma^2$ -- Penguins
+
+**Hypotheses**
+
+-   $H_0: \ \sigma^2_{\text{Adelie}} = \sigma^2_{\text{Chinstrap}} = \sigma^2_{\text{Gentoo}}$
+-   $H_1:$ at least one $\sigma^2_i$ is different
+
+**Test Statistic**
+
+-   $F_0 = 2.24$
+
+***p*****-Value**
+
+-   $p = 0.108$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the variances are different.
+
+
+
+

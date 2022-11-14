@@ -1,0 +1,191 @@
+---
+title: "Logistic Regression"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+- We have learned multiple regression for continuous outcomes.
+
+- We also have started learning categorical data analysis.
+
+- Let's now consider binary outcomes in regression.
+
+- The normal distribution is not appropriate!
+
+    - Residuals do not meet assumption for using the normal distribution
+    
+    - Linear regression using the normal distribution assumes that $\hat{y} \in \mathbb{R}$
+    
+        - We are interested in the probability of an event happening... $\text{P}[\text{Y = 1}] \in [0, 1]$.
+    
+## Binary Logistic Regression
+
+- We model binary outcomes using logistic regression,
+
+$$\ln \left( \frac{\pi}{1-\pi} \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k,$$
+
+- where $\pi = \text{P}[Y = 1]$ = the probability of the outcome/event.
+
+- How is this different from linear regression?
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+## Binary Logistic Regression: Odds Ratios
+
+- Recall the binary logistic regression model,
+$$\ln \left( \frac{\pi}{1-\pi} \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k, $$
+
+- We are modeling the log odds, which are not intuitive with interpretations.
+
+- To be able to discuss the odds, we will "undo" the natural log by exponentiation. 
+
+    - i.e., if we want to interpret the slope for $X_i$, we will look at $e^{\hat{\beta}_i}$.
+
+- When interpreting $\hat{\beta}_i$, it is an *additive* effect on the log odds. 
+
+- When interpreting $e^{\hat{\beta}_i}$, it is a *multiplicative* effect on the odds.
+
+## Binary Logistic Regression: R Syntax
+
+- We will use the [`glm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/glm) function and specify the binomial [`family`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/family).
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+         data = [dataset], 
+         family = "binomial")
+```
+
+## Survival Data from the Titanic
+
+- Consider [survival data from the Titanic](https://www.kaggle.com/code/parulpandey/deep-dive-into-logistic-regression-for-beginners), 
+
+```{r, echo = TRUE, warning = FALSE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1TrJ6jZ3hP6gQk6FvqbMrFUysEUEqle7XfuLnAkZsHYI/edit"))
+head(data)
+```
+
+## Example: Titanic
+
+- Let's take a basic example,
+
+```{r, echo = TRUE}
+m1 <- glm(Survived ~ Age + Fare + Pclass, 
+          data = data, 
+          family = binomial)
+summary(m1)
+```
+```{r}
+c <- coefficients(m1)
+```
+
+$$
+\ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = `r round(c[1],3)` `r round(c[2],3)` \text{ age} + `r round(c[3],3)` \text{ fare} `r round(c[4],3)`0 \text{ class}
+$$
+
+
+## Example: Titanic
+
+```{r, echo = TRUE}
+round(exp(coefficients(m1)[-1]), 3)
+```
+
+- Let's interpret the odds ratios:
+
+    - For a 1 year increase in age, the odds of a traveler surviving  is multiplied by 0.96, which is a 4% decrease.
+    
+    - For a $1 increase in fare paid, the odds of a traveler surviving is multiplied by 1.003, which is a 0.3% increase. 
+    
+        - For a $5 increase in fare paid, the odds of a traveler surviving is multiplied by `r round(exp(c[3]*5),3)`, which is a 1.6% increase.
+        
+    - For a 1 unit increase in class (going to a different level), the odds of a traveler surviving is multiplied by 0.323, which is a 68% decrease.
+    
+## Tests for Significant Predictors
+
+- What we've learned so far re: significance of predictors holds true with logistic regression
+
+- We now are looking at the Wald *z* test
+
+    - Test statistic is found in the usual manner,
+    
+$$ 
+z_i = \frac{\hat{\beta}_i}{\text{SE}_{\hat{\beta}_i}}
+$$
+
+- We could construct tests against non-zero hypothesized values or one-sided tests.
+
+    - We will focus on a two-sided test against 0 (i.e., that there is a general relationship).
+
+## Example: Titanic
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+- Age (*p*<0.001) and class (*p*<0.001) are significant predictors of survival. 
+
+- Fare is not a significant predictor (*p*=0.167) of survival.
+
+## Example: Titanic {.smaller}
+
+**Hypotheses**
+
+- $H_0: \ \beta_{\text{age}} = 0$
+- $H_1: \ \beta_{\text{age}} \ne 0$
+
+**Test Statistic and *p*-Value**
+
+- $z_0 = -5.99$
+- $p < 0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that there is a relationship between age and survival.
+
+## Confidence Intervals
+
+- Like before, we can find confidence intervals. 
+
+$$ \hat{\beta}_i \pm z_{\alpha/2} \text{SE}_{\hat{\beta}_i} \ \ \text{ or } \ \ \exp\left\{\hat{\beta}_i \pm z_{\alpha/2} \text{SE}_{\hat{\beta}_i}\right\}$$
+
+- We will run our model results through the `confint()` function,
+
+```{r, echo = TRUE, eval = FALSE}
+confint([m])
+```
+
+- If we want the confidence intervals of odds ratios,
+
+```{r, echo = TRUE, eval = FALSE}
+exp(confint([m]))
+```
+
+## Example: Titanic
+
+- Let's find the 95% CI for both $\beta$ and the odds ratios
+
+```{r, echo = TRUE}
+confint(m1)
+```
+
+```{r, echo = TRUE}
+round(exp(confint(m1)),3)
+```

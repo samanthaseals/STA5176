@@ -1,0 +1,234 @@
+---
+title: "Two-Sample Means (Dependent)"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+```{r setup_environment, include = FALSE}
+library("tidyverse") 
+```
+
+## Introduction
+
+-   In the last lecture, we covered estimation and inference on two independent means using the two-sample *t*-test.
+
+-   Today we will cover estimation and inference on two dependent means using the paired *t*-test.
+
+    -   The data is dependent because we can link the observations between the two groups.
+
+    -   e.g., pre- and post-tests; sections of standardized tests; monthly rainfall at Pensacola Regional Airport
+
+## Confidence Interval -- Definition
+
+-   The CI for $\mu_1 - \mu_2$ is as follows:
+
+$$ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, $$
+
+-   where
+    -   $d_i = y_{1i} - y_{2i}$,
+    -   $\bar{d}$ is the average of all $d_i$,
+    -   $s_d$ is the standard deviation of all $d_i$, and
+    -   $n$ is the number of paired observations
+
+## Confidence Intervals -- R Syntax
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([variable 1], [variable 2],
+       data = [dataset],
+       paired = TRUE,
+       conf.level = [confidence level])
+```
+
+## Confidence Interval -- Garages
+
+Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data below Construct the 90% CI for the average difference between garages. 
+<br><br>
+
+```{r, echo = TRUE}
+g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 22.1, 16.9, 17.6, 18.4)
+g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 21.0, 16.1, 16.7, 17.5)
+garage <- tibble(g1, g2)
+```
+
+## Confidence Interval -- Garages
+
+```{r, echo = TRUE}
+t.test(garage$g1, garage$g2, paired = TRUE, conf.level = 0.90)
+```
+
+-   The 90% CI is (0.433, 0.793) $\to$ (\$433, \$793)
+
+    -   Is there evidence that garage I is higher than garage II?
+
+## Confidence Interval -- Hunger
+
+During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on below. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.
+<br><br>
+
+```{r, echo = TRUE}
+drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
+placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
+hunger <- tibble(drug, placebo)
+```
+
+## Confidence Interval -- Hunger
+
+```{r, echo = TRUE}
+t.test(drug, placebo, data = hunger, paired = TRUE, conf.level = 0.99)
+```
+
+-   The 99% CI is (-66.27, 7.15)
+
+    -   Is there evidence that the active drug changes reported feeling of hunger?
+
+## Hypothesis Testing -- Definition {.smaller}
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} $$
+
+-   where
+
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   $\bar{d}$ is the average of all $d_i$,
+    -   $s_d$ is the standard deviation of all $d_i$
+    -   $n$ is the number of paired observations, and
+    -   $t_0$ has df $= n-1$.
+
+## Hypothesis Testing -- R Syntax
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the hypothesis test,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([variable 1], [variable 2],
+       data = [dataset]
+       paired = TRUE,
+       alternative = [alternative])
+```
+
+## Hypothesis Testing -- Garages
+
+-   Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
+
+```{r, echo = TRUE}
+t.test(g1, g2,
+       data = data,
+       paired = TRUE,
+       alternative = "greater")
+```
+
+## Hypothesis Testing -- Garages
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}$
+-   $H_1: \ \mu_{\text{I}} > \mu_{\text{II}}$
+
+**Test Statistic**
+
+-   $t_0 = 6.023$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that, on average, it costs more to have repairs done at garage I as compared to garage II.
+
+## Hypothesis Testing -- Hunger
+
+-   Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
+
+```{r, echo = TRUE}
+t.test(hunger$drug, hunger$placebo,
+       paired = TRUE,
+       alternative = "two")
+```
+
+## Hypothesis Testing -- Hunger
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}$
+-   $H_1: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}$
+
+**Test Statistic**
+
+-   $t_0 = -2.701$
+
+***p*****-Value**
+
+-   $p = 0.027$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that, on average, reports of hunger are different between the drug and the placebo.
+
+## Assumptions
+
+-   Note that the paired *t*-test assumes normality, like in the two-sample *t*-test.
+
+-   We again assess this with a quantile-quantile (QQ) plot.
+
+    -   We will create a QQ plot for the differences! Not the raw data, like we did for the paired *t*-test.
+
+-   We still want to see an approximate 45° line.
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] %>% 
+  mutate(diff = [variable 1] - [variable 2]) %>% 
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+
+## Assumptions -- Garages
+
+```{r, echo = TRUE}
+garage %>% 
+  mutate(diff = g1 - g2) %>%
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+
+## Assumptions -- Hunger
+
+```{r, echo = TRUE}
+hunger %>% 
+  mutate(diff = drug - placebo) %>% 
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```

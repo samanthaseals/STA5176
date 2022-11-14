@@ -1,0 +1,435 @@
+---
+title: "Multiple Regression: Estimation and Inference"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+- We have learned simple linear regression,
+
+$$ \hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x $$
+
+- Today, we are expanding to multiple regression,
+
+$$ \hat{y} = \hat{\beta}_0 + \hat{\beta}_1 x_1  + \hat{\beta}_2 x_2 + ... + \hat{\beta}_k x_k$$
+
+## Multiple Regression: Computation
+
+- In simple linear regression, there are formulas for estimation of $\beta_0$ and $\beta_1$
+
+- However, the true underlying computation is matrix multiplication:
+
+$$ y = X\beta + \varepsilon, $$
+
+- where:
+
+    - $y$ is the vector of outcome responses,
+    - $X$ is the design matrix
+    
+        - first column is all 1's
+        - following columns are vectors of predictor responses
+  
+    - $\varepsilon$ is the vector of error terms
+    
+## Multiple Regression: R Syntax
+
+- We again use the `lm()` function to construct our model.
+
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], data = data)
+```
+
+- To see the full summary of the model, we will use the `summary()` function.
+    
+```{r, echo = TRUE, eval = FALSE}
+summary(m)
+``` 
+
+- To find the confidence intervals for $\beta_i$, we will use the `confint()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+confint(m)
+```
+    
+## Multiple Regression: Example
+
+- Recall the penguin data. Let's model body mass (g) as a function of bill length (mm) and flipper length (mm).
+
+```{r, echo = TRUE}
+data <- palmerpenguins::penguins
+m1 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data)
+summary(m1)
+```
+
+$$ \hat{y} = -5536.90 + 6.05 \text{ bill} + 48.15 \text{ flipper} $$
+    
+## Multiple Regression: Interpretations
+
+- We interpret coefficients much the same as in simple linear regression.
+
+    - Intercept: when [all predictors = 0], the average [outcome] is [$\hat{\beta}_0$].
+
+    - Slope: For a 1 [units of predictor i] increase in [predictor i], we expect [outcome] to [increase or decrease] by [$|\hat{\beta}_i|$] [units of outcome], after controlling for [all other predictors in the model.
+    
+        - If $\hat{\beta}_i > 0$, there is an increase.
+        - If $\hat{\beta}_i < 0$, there is a decrease.
+    
+## Multiple Regression: Example
+
+- Let's interpret the penguin model.
+
+```{r, echo = TRUE}
+coefficients(m1)
+```
+
+- When both bill length and flipper length are 0 mm, a penguin's body mass is -5736.9 g.
+- As bill length increases by 1 mm, the penguin's body mass increases by 6 g, after controlling for flipper length.
+- As flipper length increases by 1 mm, the penguin's body mass increases by 48 g, after controlling for bill length.
+
+## Multiple Regression: Inference on Slope
+
+**Hypotheses**
+
+- $H_0: \beta_i = \beta_i^{(0)}$
+- $H_1: \beta_i \ne \beta_i^{(0)}$
+
+
+**Test Statistic**
+
+$$ t_0 = \frac{\hat{\beta}_i - \beta_i^{(0)}}{\text{SE}_{\hat{\beta}_i}} $$
+
+-   where
+
+    -   $\beta_i^{(0)}$ is the hypothesized value (often 0)
+    -   SE$_{\hat{\beta}_i}$ = the $i$^th^ diagonal entry of  $\sqrt{\text{MSE}(X^{'}X)^{-1}}$ 
+
+
+## Multiple Regression: R Syntax
+
+- To see the *t*-test output, we will use the `summary()` function.
+    
+```{r, echo = TRUE, eval = FALSE}
+summary(m)
+``` 
+
+- To find the confidence intervals for $\beta_i$, we will use the `confint()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+confint(m)
+```
+    
+## Multiple Regression: Example
+
+```{r, echo = TRUE}
+summary(m1)
+```
+    
+## Multiple Regression: Example
+
+**Hypotheses**
+
+- $H_0: \beta_{\text{Bill}} = 0$
+- $H_1: \beta_{\text{Bill}} \ne 0$
+
+**Test Statistic and *p*-value**
+
+- $t_0 = 1.168$
+
+- $p = 0.244$
+
+**Conclusion/Interpretation**
+
+- Fail to reject $H_0$ at the $\alpha=0.05$ level. After adjusting for flipper length, there is not sufficient evidence to suggest that bill length is a significant predictor of penguin body mass.
+
+
+## Multiple Regression: Example
+
+**Hypotheses**
+
+- $H_0: \beta_{\text{Flipper}} = 0$
+- $H_1: \beta_{\text{Flipper}} \ne 0$
+
+**Test Statistic and *p*-value**
+
+- $t_0 = 23.94$
+
+- $p < 0.001$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. After adjusting for bill length, there is sufficient evidence to suggest that flipper length is a significant predictor of penguin body mass.
+
+## Multiple Regression: Example
+
+```{r, echo = TRUE}
+confint(m1)
+```
+
+- The 95% CI for $\beta_{\text{Bill}}$ is (-4.14, 16.24).
+
+- The 95% CI for $\beta_{\text{Flipper}}$ is (44.19, 52.10).
+
+## Multiple Regression: Inference on the Line
+
+- ANOVA allows us to test for the significance of the regression line.
+
+    - Partitioning the variance into variance due to the model and the error term.
+    
+    - The error term holds the variance due to variables *not* included in the predictor set.
+    
+- We will not concern ourselves with the computation of sums of squares.
+
+    - Mean squares are computed like before: SS<sub>X</sub> / df<sub>X</sub>
+    
+    - Test statistic is *F* = MS<sub>Reg</sub> / MS<sub>E</sub>
+    
+    - The degrees of freedom are as follows:
+    
+        - df<sub>Reg</sub> = *k*
+        - df<sub>E</sub> = *n*--*k*--1
+        - df<sub>Tot</sub> = *n*--1
+        
+## Multiple Regression: Inference on the Line
+
+**Hypotheses**
+
+- $H_0: \beta_1 = \beta_2 = ... = \beta_k = 0$
+- $H_1:$ at least one $\beta_i$ is different.
+
+**Test Statistic**
+
+- $F_0 = \text{MS}_{\text{Reg}} / \text{MS}_{\text{E}}$ 
+
+## Multiple Regression: R Syntax
+
+- The ANOVA information comes out of the `summary()` function
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+## Multiple Regression: Example
+
+**Hypotheses**
+
+- $H_0: \beta_1 = \beta_2 = 0$
+- $H_1:$ at least one $\beta_i$ is different.
+
+**Test Statistic and *p*-Value**
+
+- $F_0 =  536.6$
+- $p < 0.001$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that at least one variable is a significant predictor of penguin body mass.
+
+## Multiple Regression: Line Fit
+
+- We can assess how well the regression model fits the data using $R^2$.
+
+$$ R^2 = \frac{\text{SS}_{\text{Reg}}}{\text{SS}_{\text{Tot}}} $$
+
+- Thus, $R^2$ is the proportion of variation explained by the model (i.e., predictor set).
+
+- $R^2 \in [0, 1]$
+
+    - $R^2 \to 0$ indicates that the model fits "poorly."
+    
+    - $R^2 \to 1$ indicates that the model fits "well."
+
+    - $R^2 = 1$ indicates that all points fall on the response surface.
+    
+
+
+## Multiple Regression: Line Fit
+
+- Recall that the error term is the "catch all" ...
+
+    - The SS<sub>Tot</sub> is constant for the outcome of interest.
+    - As we add predictors to the model, we are necessarily increasing SS<sub>Reg</sub>
+    
+        - The variance is moving from SS<sub>E</sub> to SS<sub>Reg</sub>
+        
+- We do not want to arbitrarily increase $R^2$, so we will use an adjusted version:
+
+$$ R^2_{\text{adj}} = 1 - \frac{\text{MS}_{\text{E}}}{\text{SS}_{\text{Tot}}/\text{df}_{\text{Tot}}} $$
+
+## Multiple Regression: R Syntax
+
+- The $R^2$ and $R^2_{\text{adj}}$ both come out of the `summary()` function.
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+- $R^2_{\text{adj}}$ is 0.759 -- 75.9% of the variability in body mass is explained by the model with bill length and flipper length.
+
+## Model Visualization: Introduction
+
+- Like before, we can visualize our model. 
+
+    - It is now more complicated because we have more than one predictor in the model.
+    
+- We will first plot a scatterplot, then overlay the regression line.
+
+    - One predictor will be on the *x*-axis.
+    - The outcome will be on the *y*-axis.
+    - We can plot one or more lines by plugging in for the predictors not on the *x*-axis.
+    
+## Model Visualization: Example
+
+- Let's create a model using the penguin data,
+
+```{r, echo = TRUE}
+c1 <- coefficients(m1)
+c1
+```    
+    
+- Let's have flipper length on the *x*-axis. This means we will plug in for bill length,
+
+```{r, echo = TRUE}
+quantile(data$bill_length_mm, na.rm = TRUE)
+```
+
+- Let's create lines for bill lengths of 35, 45, and 55 mm.
+
+```{r, echo = TRUE}
+library(tidyverse)
+data <- data %>%
+  mutate(b35 = c1[1] + c1[2]*35 + c1[3]*flipper_length_mm,
+         b45 = c1[1] + c1[2]*45 + c1[3]*flipper_length_mm,
+         b55 = c1[1] + c1[2]*55 + c1[3]*flipper_length_mm)
+```    
+
+## Model Visualization: Example
+
+```{r}
+head(data)
+```
+
+## Model Visualization: Example
+
+- Now we can construct the graph using ``ggplot()``:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = b35), color = "pink") +
+  geom_line(aes(y = b45), color = "purple") +
+  geom_line(aes(y = b55), color = "blue") +
+  labs(x = "Flipper Length (mm)",
+       y = "Body Mass (g)") +
+  theme_bw()
+```
+
+## Model Visualization: Example
+
+- We can further tweak the graph:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = b35), color = "pink") +
+  geom_line(aes(y = b45), color = "purple") +
+  geom_line(aes(y = b55), color = "blue") +
+  geom_text(aes(x = 234, y = 5600, label = "35 mm")) +
+  geom_text(aes(x = 234, y = 5700, label = "45 mm")) + 
+  geom_text(aes(x = 234, y = 5800, label = "55 mm")) +
+  geom_text(aes(x = 234, y = 5950, label = "Bill Length")) +
+  labs(x = "Flipper Length (mm)",
+       y = "Body Mass (g)") +
+  theme_bw()
+```
+
+## Model Visualization: Example
+
+- We can further tweak the graph:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = b35), color = "black") +
+  geom_line(aes(y = b45), color = "black") +
+  geom_line(aes(y = b55), color = "black") +
+  geom_text(aes(x = 234, y = 5600, label = "35 mm")) +
+  geom_text(aes(x = 234, y = 5700, label = "45 mm")) + 
+  geom_text(aes(x = 234, y = 5800, label = "55 mm")) +
+  geom_text(aes(x = 234, y = 5950, label = "Bill Length")) +
+  labs(x = "Flipper Length (mm)",
+       y = "Body Mass (g)") +
+  theme_bw()
+```
+
+## Model Visualization: Example 2
+
+- Let's create a model using the penguin data,
+
+```{r, echo = TRUE}
+c1 <- coefficients(m1)
+c1
+```    
+    
+- Let's have bill length on the *x*-axis. This means we will plug in for flipper length,
+
+```{r, echo = TRUE}
+quantile(data$flipper_length_mm, na.rm = TRUE)
+```
+
+- Let's create lines for bill lengths of 35, 45, and 55 mm.
+
+```{r, echo = TRUE}
+library(tidyverse)
+data <- data %>%
+  mutate(f175 = c1[1] + c1[2]*bill_length_mm + c1[3]*175,
+         f200 = c1[1] + c1[2]*bill_length_mm + c1[3]*200,
+         f225 = c1[1] + c1[2]*bill_length_mm + c1[3]*225)
+``` 
+
+## Model Visualization: Example 2
+
+- Now we can construct the graph using ``ggplot()``:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = f175), color = "pink") +
+  geom_line(aes(y = f200), color = "purple") +
+  geom_line(aes(y = f225), color = "blue") +
+  labs(x = "Bill Length (mm)",
+       y = "Body Mass (g)") +
+  theme_bw()
+```
+
+
+## Model Visualization: Example 2
+
+- We can further tweak the graph:
+
+```{r, echo = TRUE}
+data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
+  geom_point(size=3, color = "darkgray") + 
+  geom_line(aes(y = f175), color = "black") +
+  geom_line(aes(y = f200), color = "black") +
+  geom_line(aes(y = f225), color = "black") +
+  labs(x = "Bill Length (mm)",
+       y = "Body Mass (g)") +
+  geom_text(aes(x = 65, y = 3010, label = "175 mm")) +
+  geom_text(aes(x = 65, y = 4230, label = "200 mm")) +
+  geom_text(aes(x = 65, y = 5480, label = "225 mm")) +
+  geom_text(aes(x = 63, y = 5900, label = "Flipper Length")) +
+  theme_bw()
+```

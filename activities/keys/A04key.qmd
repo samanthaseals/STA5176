@@ -1,0 +1,101 @@
+---
+title: "Two-Sample Means (Dependent) - Week 2, Lecture 2"
+author: "Dr. Seals"
+format: html
+self-contained: true
+editor: source
+---
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+```
+
+**A new 2 hour reading comprehension program has been developed by a local tutoring center. A pilot study of 30 students has been conducted and we have data on a reading comprehension test taken before the program and a separate reading comprehension test taken after the program. Consider the data, found in the following Google Sheet.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1ijxX7c6qcFAw-r_mNSxC-Ps5b5njw-WtE4RcxPTySXU/edit?usp=sharing"))
+```
+
+#### 1. Summarize the data. Provide appropriate summary statistics for the study population.
+
+```{r, echo=TRUE}
+data <- data %>%
+  mutate(Diff = Post - Pre)
+
+data %>% 
+  summarize(PreMean = mean(Pre),
+            PreSD = sd(Pre),
+            PostMean = mean(Post),
+            PostSD = sd(Post),
+            DiffMean = mean(Diff),
+            DiffSD = sd(Diff))
+```
+
+#### 2. Construct the 95% confidence interval for the difference in test scores. Hint: we want to discuss this in terms of the *increase* in test scores.
+
+```{r, echo=TRUE}
+t.test(data$Post, data$Pre, paired = TRUE)
+```
+
+The resulting 95% CI is (2.23, 5.37). That is, the program increases reading scores by 2.23 to 5.37 points.
+
+Instructor's note: Because we are looking at how the program may have affected reading scores, we want to specifically subtract Post - Pre.
+
+#### 3. Use the appropriate hypothesis test to determine if the program raises comprehension test averages by at least 5 points. Test at the &alpha;=0.05 level.
+
+```{r, echo=TRUE}
+t.test(data$Post, data$Pre, mu = 5, alternative = "greater", paired = TRUE)
+```
+
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{Post}} - \mu_{\text{Pre}} \le 5$
+-   $H_1: \ \mu_{\text{Post}} - \mu_{\text{Pre}} > 5$
+
+**Test Statistic**
+
+-   $t_0 = -1.563$
+
+***p*****-Value**
+
+-   $p = 0.9356$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the reading program is increasing scores by 5 points or more.
+
+#### 4. (Challenge!) Construct a graph that will help you explain your findings to the tutoring center.
+
+```{r, echo=TRUE}
+data %>% ggplot(aes(y = Diff)) +
+  geom_boxplot() +
+  labs(x = "",
+       y = "Difference in Scores") +
+  theme_minimal() +
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+
+data %>% ggplot(aes(y = Diff, x = Student)) +
+  geom_hline(yintercept = 5, color = "gray") +
+  geom_point() +
+  geom_hline(yintercept = 0, color = "gray") +
+  labs(x = "Student",
+       y = "Difference in Scores") +
+  theme_minimal() + 
+  theme(axis.ticks.x = element_blank(),
+        axis.text.x = element_blank())
+```
+
+
+#### 5. Write a brief paragraph explaining your findings to the tutoring center. 
+
+While there is definitely an increase in test scores -- the confidence interval (2.23, 5.37) indicates that students will increase somewhere between 2 and 5 points -- the average increase is 3.8, which is not larger than 5 points (*p*=0.936). We should note that while most students increased their score somewhat, a handful (*n*=4, 13%) did *not* increase their score. This is a small sample size, so it's hard to say if they are outliers or if we can truly expect 13% of students to not increase their scores at all. 
+
+
+
+
+
+
+

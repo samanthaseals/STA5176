@@ -1,0 +1,45 @@
+---
+title: "ANOVA Assumptions and the Kruskal-Wallis - Week 5, Lecture 2"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+**Recall the agricultural data from the ANOVA activity available in the following [Google Sheet](https://docs.google.com/spreadsheets/d/1CFyuuWy-4YmVU3wkYuC8Uf3xW3qkpCnpF468NjBAhbY/edit#gid=0).**
+
+#### 1. State the ANOVA assumptions mathematically.
+
+#### 2. Explain how to check the ANOVA assumptions.
+
+```{r, echo=TRUE}
+
+```
+
+#### 3. Assess the ANOVA assumptions for the agricultural data, graphically. In addition to providing the relevant graphs, you must provide an assessment for each assumption.
+
+```{r, echo=TRUE}
+
+```
+
+#### 4. Use the appropriate hypothesis test to assess the variance assumption. Test at the $\alpha=0.05$ level.
+
+```{r, echo=TRUE}
+
+```
+
+#### 5. Provide an overall assessment -- do we meet the assumptions to use ANOVA?
+
+#### 6. Perform the Kruskal-Wallis to determine if there is a difference between the treatment groups. Test at the $\alpha=0.05$ level.
+
+```{r, echo=TRUE}
+
+```
+
+#### 7. Perform the Kruskal-Wallis post-hoc test to determine what differences exist between groups. Test at the $\alpha=0.05$ level.
+
+#### 8. Challenge! Construct a graph (or multiple graphs) to aid in explaining this to the agricultural researcher.
+
+#### 9. Write a summary paragraph, appropriate for the agricultural researcher (i.e., not a statistician), using the results that are **appropriate for the data**. Hint: you will summarize either your ANOVA findings from the previous activity *or* your Kruskal-Wallis findings from this activity.
+
+

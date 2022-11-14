@@ -1,0 +1,123 @@
+---
+title: "Statistical Inference on Variances - Week 4, Lecture 1"
+author: "Dr. Seals"
+format: html
+self-contained: true
+editor: source
+---
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+library(EnvStats)
+```
+
+## Question 1: 
+
+**Recall the following dataset from the first week. We have data from 22 elementary schools located in a Florida school district in 1999. Reading and math scores from a standardized test, percent minority of the particular grade level in that school, percent in poverty of the particular grade level in that school, and total number of students in that grade at that school are included.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1cVGLLdILMI34xjnzHfJNHua6fJROJwCzUBFgV22OLT4/edit#gid=0"))
+```
+
+#### a. Construct the 99% confidence interval for the standard deviation of math scores for 4th graders.
+
+```{r, echo=TRUE}
+data4 <- data %>% filter(Grade == 4)
+varTest(data4$Math, conf.level = 0.99)
+```
+
+The 99% CI is (`r round(sqrt(47.1247), 2)`, `r round(sqrt(242.8550), 2)`).
+
+#### b. Use the confidence interval found in part a to determine if the standard deviation is smaller than 10.
+
+No, the CI includes 10. For us to conclude that the standard deviation to be smaller than 10, the entire interval would need to be smaller than 10.
+
+## Question 2:
+
+**Recall the following dataset from the second week. A large credit union awards quarterly bonuses to its employees. To ensure fairness across departments, data on the bonuses are regularly reviewed for equality. Consider the data in the following Google Sheet, which includes the bonus percentage for each employee in two departments.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1q0Ouhr6hGBDp-5oyQuYGcsWTLrsayywVHJS7o17Sm6Y/edit?usp=sharing"))
+```
+
+#### a. (From two weeks ago!) Use the appropriate *t*-test to determine if the two departments are given different bonus amounts. Test at the &alpha;=0.01 level.
+
+```{r, echo=TRUE}
+t.test(Bonus ~ Department, data = data)
+```
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{C}} = \mu_{\text{M}}$
+-   $H_1: \ \mu_{\text{C}} \ne \mu_{\text{M}}$
+
+**Test Statistic**
+
+-   $t_0 = 3.901$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.01$ level. There is sufficient evidence to suggest that there is a difference in the bonus percentage when comparing the credit and mortgage departments.
+
+#### b. Use the appropriate test to show that we meet the assumption of equal variance.
+
+```{r, echo=TRUE}
+c <- data %>% filter(Department == "Credit")
+m <- data %>% filter(Department == "Mortgage")
+var.test(c$Bonus, m$Bonus,
+         alternative = "two",
+         ratio = 1)
+```
+
+
+**Hypotheses**
+
+-   $H_0: \ \sigma^2_{\text{C}} = \sigma^2_{\text{M}}$
+-   $H_1: \ \sigma^2_{\text{C}} \ne \sigma^2_{\text{M}}$
+
+**Test Statistic**
+
+-   $F_0 = 0.713$
+
+***p*****-Value**
+
+-   $p = 0.358$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that there is a difference in the variances of the bonus percentage when comparing the credit and mortgage departments. i.e., the equal variance assumption is not broken.
+
+#### c. Change the hypothesis used in part a to account for equal variances. Do you reach a different conclusion?
+
+```{r, echo=TRUE}
+t.test(Bonus ~ Department, data = data, var.equal = TRUE)
+```
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{C}} = \mu_{\text{M}}$
+-   $H_1: \ \mu_{\text{C}} \ne \mu_{\text{M}}$
+
+**Test Statistic**
+
+-   $t_0 = 4.037$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.01$ level. There is sufficient evidence to suggest that there is a difference in the bonus percentage when comparing the credit and mortgage departments.
+
+
+
+
+
+
+

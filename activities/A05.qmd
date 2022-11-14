@@ -1,0 +1,70 @@
+---
+title: "Wilcoxons - Week 3, Lecture 1"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+```{r setup, echo = TRUE, warnings = FALSE, message = FALSE}
+library(tidyverse)
+library(gsheet)
+```
+
+## Question 1:
+
+**Recall the first dataset from last week. A large credit union awards quarterly bonuses to its employees. To ensure fairness across departments, data on the bonuses are regularly reviewed for equality. Consider the data in the following Google Sheet, which includes the bonus percentage for each employee in two departments.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1q0Ouhr6hGBDp-5oyQuYGcsWTLrsayywVHJS7o17Sm6Y/edit?usp=sharing"))
+```
+
+#### a. (From last week!) Use the appropriate *t*-test to determine if the two departments are given different bonus amounts. Test at the &alpha;=0.01 level.
+
+```{r, echo=TRUE}
+
+```
+
+#### b. Use the appropriate nonparametric test to determine if the two departments are given different bonus amounts. Test at the &alpha;=0.01 level.
+
+```{r, echo=TRUE}
+
+```
+
+#### c. Assess the assumption(s) associated with the *t*-test in part a. In your assessment, determine if the *t*-test or the corresponding nonparametric test should be reported.
+
+#### d. Write a brief paragraph explaining your findings to management, based on the test chosen in part c.
+
+## Question 2: 
+
+**Recall the second dataset from last week. A new 2 hour reading comprehension program has been developed by a local tutoring center. A pilot study of 30 students has been conducted and we have data on a reading comprehension test taken before the program and a separate reading comprehension test taken after the program. Consider the data, found in the following Google Sheet.**
+
+```{r, echo = TRUE}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1ijxX7c6qcFAw-r_mNSxC-Ps5b5njw-WtE4RcxPTySXU/edit?usp=sharing"))
+```
+
+#### a. (From last week!) Use the appropriate *t*-test to determine if the program raises comprehension test averages by at least 5 points. Test at the &alpha;=0.05 level.
+
+```{r, echo=TRUE}
+
+```
+
+#### b. Use the appropriate nonparametric test to determine if the program raises comprehension test averages by at least 5 points. Test at the &alpha;=0.05 level.
+
+```{r, echo=TRUE}
+
+```
+
+#### c. Assess the assumption(s) associated with the *t*-test in part a. In your assessment, determine if the *t*-test or the corresponding nonparametric test should be reported.
+
+#### d. Write a brief paragraph explaining your findings to the tutoring center, based on the test chosen in part c.
+
+
+
+
+
+
+
+
+
+

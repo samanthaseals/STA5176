@@ -1,0 +1,53 @@
+---
+title: "Logistic Regression - Week 12, Day 1"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+**Recall the Titanic data from lecture. Use it to answer the following questions.**
+
+**1. Model survival as a function of age (*Age*), the number of siblings and/or spouses (*SibSp*), the number of parents or children (*Parch*), the class of ticket (*Pclass*), and amount paid for ticket (*Fare*).** 
+
+```{r, echo = TRUE}
+
+```
+
+**1a. Report the model.**
+
+**1b. Which, if any, are significant predictors of survival? The full hypothesis test is not needed, but you must provide statistical justification.**
+
+```{r, echo = TRUE}
+
+```
+
+**1c. Find the odds ratios and corresponding 95% confidence intervals.**
+
+```{r, echo = TRUE}
+
+```
+
+**1d. Provide interpretations for the odds ratios for each of the predictors in the model.**
+
+**2. Challenge! Model survival as a function of age (*Age*), the class of ticket (*Pclass*), and sex of passenger (*Sex*).** 
+
+```{r, echo = TRUE}
+
+```
+
+**2a. Report the model.**
+
+**2b. Which, if any, are significant predictors of survival? The full hypothesis test is not needed, but you must provide statistical justification.**
+
+```{r, echo = TRUE}
+
+```
+
+**2c. Find the odds ratios and corresponding 95% confidence intervals.**
+
+```{r, echo = TRUE}
+
+```
+
+**2d. Provide interpretations for the odds ratios for each of the predictors in the model.**

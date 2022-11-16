@@ -1,0 +1,214 @@
+---
+title: "Logistic Regression"
+subtitle: "STA5176: Statistical Modeling"
+author: "Dr. Seals"
+format: 
+  revealjs:
+    theme: dark2
+    self-contained: false
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    chalkboard: true
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+- Recall the binary logistic regression model,
+$$\ln \left( \frac{\pi}{1-\pi} \right) = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k, $$
+
+- In our last lecture, we discussed the basics of logistic regression.
+
+- Today, we will talk about probabilities resulting from the model.
+
+## Titanic Data
+
+- Recall the Titanic example,
+
+```{r, warning = FALSE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1TrJ6jZ3hP6gQk6FvqbMrFUysEUEqle7XfuLnAkZsHYI/edit"))
+```
+
+```{r, echo = TRUE}
+m1 <- glm(Survived ~ Age + Fare + Pclass, 
+          data = data, 
+          family = binomial)
+summary(m1)
+```
+
+```{r}
+c <- coefficients(m1)
+```
+
+$$
+\ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = `r round(c[1],3)` `r round(c[2],3)` \text{ age} + `r round(c[3],3)` \text{ fare} `r round(c[4],3)`0 \text{ class}
+$$
+
+
+## Predictions
+
+Recall the logistic regression model,
+$$ 
+\ln \left( \frac{\pi_i}{1-\pi_i} \right) = \beta_0 + \beta_1 x_{1i} + ... + \beta_k x_{ki} 
+$$
+
+We can solve for the probability, which allows us to predict the probability that $y_i=1$ given the specified model:
+$$
+\pi_i = \frac{\exp\left\{ \beta_0 + \beta_1 x_{1i} + ... + \beta_k x_{ki} \right\}}{1 + \exp\left\{ \beta_0 + \beta_1 x_{1i} + ... + \beta_k x_{ki} \right\}} 
+$$
+
+## Predictions: R Syntax
+
+- We can request predicted probabilities in R using the `predict()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+data <- data %>%
+  mutate(p_hat = predict([m], type="response"))
+```
+
+- Note that if there are missing values in the data, we need to specify `na.action = na.exclude` in our `glm()` call. e.g.,
+
+```{r, echo = TRUE, eval = FALSE}
+m1 <- glm([outcome] ~ [predictor 1] + [predictor 2] + ... [predictor k], 
+          data = data, 
+          family = binomial,
+          na.action = na.exclude)
+```
+
+- If we do not use the `na.action` option, we will receive an error message when using the `predict()` function.
+
+## Predictions: Titanic
+
+```{r, echo = TRUE}
+m1 <- glm(Survived ~ Age + Fare + Pclass, 
+          data = data, 
+          family = binomial,
+          na.action = na.exclude)
+data <- data %>%
+  mutate(p_hat = predict(m1, type="response"))
+head(data, n = 3)
+```
+
+## Predictions: R Syntax
+
+- Suppose we want to make a prediction beyond the probability.
+
+    - e.g., does the person survive or not?
+    
+```{r, echo = TRUE}
+data <- data %>%
+  mutate(Predicted = ifelse(p_hat > 0.5, 1, 0))
+```
+
+- This will construct a column of 0/1 predicted responses.
+
+## Predictions: Titanic
+
+```{r, echo = TRUE}
+data <- data %>% 
+  mutate(Predicted = ifelse(p_hat > 0.5, 1, 0))
+head(data, n = 3)
+```
+
+## Errors in Predictions
+
+- With continuous data, it is easy to find errors, 
+
+$$ e_i = y_i - \hat{y}_i$$
+
+- For binary data, we will construct a confusion matrix,
+
+<center>[<img src="images/L18a.png">](https://en.wikipedia.org/wiki/Confusion_matrix)</center>
+
+## Errors: Titanic
+
+- Let's look at the confusion matrix for the Titanic model,
+
+```{r, echo = TRUE}
+library(gmodels)
+CrossTable(data$Survived, data$Predicted,
+           prop.r = FALSE, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE)
+```
+
+
+## Errors: Titanic
+
+- From the previous table,
+
+    - True positive (predicted to survived & survived): 150
+    - True negative (predicted to die & died): 355
+    - False positive (predicted to survive & died): 69
+    - False negative (predicted to die & survived): 140
+    
+## Sensitivity / True Positive Rate
+
+- We define the sensitivity or the true positive rate of the model as the probability of a positive prediction (i.e., $\hat{y} = 1$) given that the outcome is positive (i.e., $y = 1$).
+
+$$ \frac{\text{true positives}}{\text{true positives} + \text{false negatives}} $$
+
+- In the Titanic data,
+
+$$ \frac{150}{150 + 140} = `r round(150 / 290, 2)`$$
+
+    
+
+## Specificity / True Negative Rate
+
+- We define the specificity or the true negative rate of the model as the probability of a negative prediction (i.e., $\hat{y} = 0$) given that the outcome is negative (i.e., $y = 0$).
+
+$$ \frac{\text{true negatives}}{\text{true negatives} + \text{false positives}} $$
+
+- In the Titanic data,
+
+$$ \frac{355}{355 + 69} = `r round(355/(355+69),2)` $$
+
+
+
+## Precision / Positive Predictive Value
+
+- We define the precision or the positive predictive value of the model as the proportion of true positives out of all predicted positives.
+
+$$ \frac{\text{true positives}}{\text{true positives} + \text{false positives}} $$
+
+- In the Titanic data,
+$$ \frac{150}{150 + 69} = `r round(150/(150+69),2)` $$
+
+
+
+
+## Negative Predictive Value
+
+- We define the negative predictive value of the model as the proportion of true negatives out of all predicted negatives.
+
+$$ \frac{\text{true negatives}}{\text{true negatives} + \text{false negatives}} $$
+
+- In the Titanic data,
+$$ \frac{355}{355 + 140} = `r round(355/(355+140),2)` $$
+
+
+
+## False Discovery Rate
+
+- We define the false discovery rate of the model as the proportion of false positives out of all predicted positives.
+
+$$ \frac{\text{false positives}}{\text{false positives} + \text{true positives}} $$
+
+- In the Titanic data,
+$$ \frac{69}{69+150} = `r round(69/(69+150),2)` $$
+
+
+
+
+
+
+
+
+
+
+

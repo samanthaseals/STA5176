@@ -1,0 +1,65 @@
+---
+title: "Logistic Regression - Week 13, Day 2"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+**1. Challenge! Research "good" values of the metrics we discussed in lecture. How can we determine how well the model is performing using these metrics?**
+
+**2. Recall question 1 from the last activity.**
+
+**2a. Restate the model from 1a here.** 
+
+```{r, echo = TRUE}
+
+```
+
+**2b. Find the confusion matrix for this model.**
+
+```{r, echo = TRUE}
+
+```
+
+**2c. Find the sensitivity of the model.**
+
+```{r, echo = TRUE}
+
+```
+
+**2d. Find the specificity of the model.**
+
+```{r, echo = TRUE}
+
+```
+
+**2e. Find the positive predictive value of the model.**
+
+```{r, echo = TRUE}
+
+```
+
+**2f. Find the negative predictive value of the model.**
+
+```{r, echo = TRUE}
+
+```
+
+**2g. Find the false discovery rate of the model.**
+
+```{r, echo = TRUE}
+
+```
+
+**3. Compare and contrasts the results from the models constructed in  lecture and the last activity. Which model performs better, based on your answer in question 1?**
+
+**4. Challenge! Construct a graph to support your answer in question 3.**
+
+```{r, echo = TRUE}
+
+```
+
+
+
+

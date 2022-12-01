@@ -257,7 +257,7 @@ $$ \hat{\pi}_1 = \frac{y_1}{n_1} \ \ \text{ and } \ \ \hat{\pi}_2 = \frac{y_2}{n
 
 $$ \hat{\pi}_1 - \hat{\pi}_2 = \frac{y_1}{n_1} - \frac{y_2}{n_2} $$
 
-- If we have a "large sample" (i.e., $n_i\pi_i \ge 5$ **and** $n_i(1-\pi_i) \ge 5$) for $i = 1, \ 2$, we know
+- If we have a "large sample" (i.e., $n_i\pi_i \ge 5$ **and** $n_i(1-\pi_i) \ge 5$) for $i = \{ 1, \ 2 \}$, we know
 
 $$ \hat{\pi}_1 - \hat{\pi}_2 \sim N \left( \pi_1-\pi_2, \sqrt{\frac{\pi_1(1-\pi_1)}{n_1} + \frac{\pi_2(1-\pi_2)}{n_2}} \right) $$
 

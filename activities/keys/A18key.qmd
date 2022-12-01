@@ -1,0 +1,78 @@
+---
+title: "Logistic Regression - Week 13, Day 2"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+**1. Challenge! Research "good" values of the metrics we discussed in lecture. How can we determine how well the model is performing using these metrics?**
+
+**2. Recall question 1 from the last activity.**
+
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1TrJ6jZ3hP6gQk6FvqbMrFUysEUEqle7XfuLnAkZsHYI/edit"))
+m1 <- glm(Survived ~ Age + Fare + Pclass + SibSp + Parch, 
+          data = data, 
+          family = binomial,
+          na.action = na.exclude)
+```
+
+**2a. Restate the model from 1a here.** 
+
+```{r, echo = TRUE}
+coefficients(m1)
+```
+
+$$ \ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = 3.40 - 0.04 \text{ age} + 0.003 \text{ fare} - 1.15 \text{ class} - 0.29 \text{ sib. sp.} + 0.25 \text{ par. ch.} $$
+
+**2b. Find the confusion matrix for this model.**
+
+```{r, echo = TRUE}
+library(gmodels)
+data <- data %>%
+  mutate(p_hat = predict(m1, type="response")) %>%
+  mutate(Predicted = ifelse(p_hat > 0.5, 1, 0))
+
+CrossTable(data$Survived, data$Predicted,
+           prop.r = FALSE, prop.c = FALSE, prop.t = FALSE, prop.chisq = FALSE)
+```
+
+  - True positive (predicted to survive & survived): 150
+  - True negative (predicted to die & died): 351
+  - False positive (predicted to survive & died): 73
+  - False negative (predicted to die & survived): 140
+
+**2c. Find the sensitivity of the model.**
+
+$$ \text{sensitivity} = \frac{\text{true positives}}{\text{true positives} + \text{false negatives}} = \frac{150}{150 + 140} = `r round(150 / 290, 2)` $$
+
+**2d. Find the specificity of the model.**
+
+$$ \text{specificity} = \frac{\text{true negatives}}{\text{true negatives} + \text{false positives}} = \frac{351}{351 + 73} = `r round(351 / (351+73), 2)` $$
+
+**2e. Find the positive predictive value of the model.**
+
+$$ \text{ppv} = \frac{\text{true positives}}{\text{true positives} + \text{false positives}} = \frac{150}{150+73} = `r round(150 / (150+73), 2)` $$
+
+**2f. Find the negative predictive value of the model.**
+
+$$ \text{npv} = \frac{\text{true negatives}}{\text{true negatives} + \text{false negatives}} = \frac{351}{351+140} = `r round(351 / (351+140), 2)` $$
+
+**2g. Find the false discovery rate of the model.**
+
+$$ \text{fdr} = \frac{\text{false positives}}{\text{false positives} + \text{true positives}} = \frac{73}{73+150} = `r round(73 / (73+150), 2)` $$
+
+**3. Compare and contrasts the results from the models constructed in  lecture and the last activity. Which model performs better, based on your answer in question 1?**
+
+**4. Challenge! Construct a graph to support your answer in question 3.**
+
+```{r, echo = TRUE}
+
+```
+
+
+
+

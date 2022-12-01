@@ -1,0 +1,99 @@
+---
+title: "Logistic Regression - Week 13, Day 1"
+author: "Dr. Seals"
+format: html
+self-contained: true
+editor: source
+---
+
+**Recall the Titanic data from lecture. Use it to answer the following questions.**
+
+```{r, echo = TRUE, message = FALSE, warning = FALSE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1TrJ6jZ3hP6gQk6FvqbMrFUysEUEqle7XfuLnAkZsHYI/edit"))
+```
+
+**1. Model survival as a function of age (*Age*), the number of siblings and/or spouses (*SibSp*), the number of parents or children (*Parch*), the class of ticket (*Pclass*), and amount paid for ticket (*Fare*).** 
+
+```{r, echo = TRUE}
+m1 <- glm(Survived ~ Age + Fare + Pclass + SibSp + Parch, 
+          data = data, 
+          family = binomial)
+coefficients(m1)
+```
+
+**1a. Report the model.**
+
+$$ \ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = 3.40 - 0.04 \text{ age} + 0.003 \text{ fare} - 1.15 \text{ class} - 0.29 \text{ sib. sp.} + 0.25 \text{ par. ch.} $$
+
+**1b. Which, if any, are significant predictors of survival? The full hypothesis test is not needed, but you must provide statistical justification.**
+
+```{r, echo = TRUE}
+summary(m1)
+```
+
+Age (*p* < 0.001), class of ticket (*p* < 0.001), number of siblings and/or spouse (*p* = 0.006), and number of parents or children (*p* = 0.023)
+
+**1c. Find the odds ratios and corresponding 95% confidence intervals.**
+
+```{r, echo = TRUE}
+round(exp(coefficients(m1)), 3)
+```
+
+**1d. Provide interpretations for the odds ratios for each of the predictors in the model.**
+
+- For a one year increase in age, the odds of surviving are multiplied by 0.956 (a 4.4% decrease)
+
+- For a $1 increase in ticket fare, the odds of surviving are multiplied by 1.003 (a 0.3% increase)
+
+- When decreasing the class of ticket, the odds of surviving are multiplied by 0.316 (a 68.4% decrease)
+
+    - Technically the number is increasing, but 2nd class is "lower" than 1st class
+
+- For a one person increase in the number of siblings or spouses, the odds of surviving are multiplied by 0.747 (a 25.3% decrease)
+
+- For a one person increase in the number of parents or children, the odds of surviving are multiplied by 1.281 (a 28.1% increase)
+
+**2. Challenge! Model survival as a function of age (*Age*), the class of ticket (*Pclass*), and sex of passenger (*Sex*).** 
+
+```{r, echo = TRUE}
+m2 <- glm(Survived ~ Age + Pclass + Sex, 
+          data = data, 
+          family = binomial)
+coefficients(m2)
+```
+
+**2a. Report the model.**
+
+$$ \ln \left( \frac{\hat{\pi}}{1-\hat{\pi}} \right) = 3.40 - 0.04 \text{ age} - 1.29 \text{ class} - 2.52 \text { male} $$
+
+**2b. Which, if any, are significant predictors of survival? The full hypothesis test is not needed, but you must provide statistical justification.**
+
+```{r, echo = TRUE}
+summary(m2)
+```
+
+Age, class of ticket, and sex are significant predictors of survival (all *p* < 0.001).
+
+**2c. Find the odds ratios and corresponding 95% confidence intervals.**
+
+```{r, echo = TRUE}
+round(exp(coefficients(m2)), 2)
+```
+
+**2d. Provide interpretations for the odds ratios for each of the predictors in the model.**
+
+- For a one year increase in age, the odds of surviving are multiplied by 0.96 (a 4% decrease)
+
+- When decreasing the class of ticket, the odds of surviving are multiplied by 0.28 (a 72% decrease)
+
+    - Technically the number is increasing, but 2nd class is "lower" than 1st class
+    
+- The odds of males surviving is 0.08 times that of females surviving
+
+    - Males have 92% lower odds of survival, as compared to females
+
+
+
+

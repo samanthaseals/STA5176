@@ -1,0 +1,111 @@
+---
+title: "Contingency Tables - Week 12, Day 2"
+author: "Dr. Seals"
+format: html
+self-contained: true
+editor: source
+---
+
+**1. The fire department in a large city is examining its promotion policy to assess if there is the potential for an age discrimination lawsuit.**
+
+**1a. Consider the following data:**
+
+| | Under 30 | 30--39 | 40--49 | 50 or Older | 
+|--|--|--|--|--|
+| Promoted | 9 | 29 | 34 | 12 |
+| Not Promoted | 41 | 39 | 46 | 38 |
+
+**Is there evidence to suggest there is age discrimination? Test at the $\alpha=0.05$ level.**
+
+```{r, echo = TRUE, eval = FALSE}
+observed_table <- matrix(c(9, 29, 34, 12,
+                           41, 39, 46, 38), 
+                         nrow = 2, ncol = 4, byrow = T)
+chisq.test(observed_table)
+```
+
+**Hypotheses**
+
+- $H_0: \ $ promotion does not depend on age
+- $H_1: \ $ promotion depends on age
+
+**Test Statistic and *p*-Value**
+
+- $\chi^2_0 = 12.796$
+- $p = 0.005$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that promotion depends on age.
+
+**1b. Consider the following data:**
+
+| | 39 or Younger | 40 or Older | 
+|--|--|--|
+| Promoted | 38 | 46 |
+| Not Promoted | 80 | 84 |
+
+**Is there evidence to suggest there is age discrimination? Test at the $\alpha=0.05$ level.**
+
+```{r, echo = TRUE, eval = FALSE}
+observed_table <- matrix(c(38, 46,
+                           80, 84), 
+                         nrow = 2, ncol = 2, byrow = T)
+chisq.test(observed_table)
+```
+
+**Hypotheses**
+
+- $H_0: \ $ promotion does not depend on age
+- $H_1: \ $ promotion depends on age
+
+**Test Statistic and *p*-Value**
+
+- $\chi^2_0 = 0.155$
+- $p = 0.693$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that promotion depends on age.
+
+**1c. Construct (separate) graphs to represent the data in 1a and 1b.**
+
+**1d. What are you take away from this exercise?**
+
+**2. Recall this problem from last week:**
+
+**A large retail lawn care dealer currently provides a 2-year warranty on all lawn mowers sold at its stores. A new employee suggested that the dealer could save money by just not offering the warranty. To evaluate this suggestion, the dealer randomly decides whether or not to offer the warranty to the next 50 customers who enter the store and express an interest in purchasing a lawnmower. Out of the 25 customers offered the warranty, 10 purchased a mower as compared to 4 of 25 not offered the warranty.**
+
+**Last week, you determined that the data does not meet the assumption to use the *z* test. Now that we know what to do in the case of small expected values, use the appropriate hypothesis test to determine if offering the warranty changes the proportion of customers who will purchase a mower. Test at the $\alpha=0.05$ level.**
+
+```{r, echo = TRUE, eval = FALSE}
+observed_table <- matrix(c(10, 4,
+                           15, 21), 
+                         nrow = 2, ncol = 2, byrow = T)
+fisher.test(observed_table)
+```
+
+**Hypotheses**
+
+- $H_0: \ \pi_{\text{warranty}} = \pi_{\text{no warranty}}$ 
+- $H_1: \ \pi_{\text{warranty}} \ne \pi_{\text{no warranty}}$ 
+
+***p*-Value**
+
+- $p = 0.114$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+**Conclusion/Interpretation**
+
+- Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest offering the warranty changes the proportion who will purchase a mower.

@@ -9,8 +9,8 @@ show_sidebar: false
 ## Tentative Schedule
 
 | Week | Day | Date  | Topic(s) | Lecture | Lab |
-|:-:|:-:|:-:|---------|:-:|:-:|:-:|:-:|
-| 1 | W | 06/21 | Review of estimation, inference, and graphing | [slides](https://samanthaseals.github.io/STA5176/slides/L01.html), [slides](https://samanthaseals.github.io/STA5176/slides/L01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L01.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A01.qmd) |
+|:-:|:-:|:-:|---------|:---:|:---:|
+| 1 | W | 06/21 | Review of estimation, inference, and graphing |  [slides](https://samanthaseals.github.io/STA5176/slides/L01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/slides/L01.qmd) | [html](https://samanthaseals.github.io/STA5176/activities/A01.html), [qmd](https://github.com/samanthaseals/STA5176/blob/main/activities/A01.qmd) |
 | 2 | M | 06/26 | One- and two-sample *t*-tests | | | 
 |   | W | 06/28 | Assumptions on *t*-tests, nonparametric alternatives | | | 
 | 3 | M | 07/03 | **July 4 Holiday -- no class** | | | 

@@ -2,6 +2,7 @@
 title: "Lab 1 - Summarizing Data"
 author: "Your Name Here"
 format: html
+self-contained: true
 execute:
   echo: true
   warning: false

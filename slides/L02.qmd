@@ -1,0 +1,592 @@
+---
+title: "One- and Two-Sample Means"
+subtitle: "STA5176 Lecture 2, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+```{r setup_environment, include = FALSE}
+library("tidyverse") 
+```
+
+## One-Sample Means
+
+-   In the last lecture, we reviewed summary statistics and the concepts of statistical inference (confidence intervals and hypothesis testing).
+
+-   Now we will cover estimation and inference on one mean using the one-sample *t*-test.
+
+-   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
+
+    - Why do we use a *t*-test exclusively? 
+
+## Palmer Penguins
+
+<div style = "font-size: .75em; margin-top: 2em">
+
+```{r, echo = FALSE}
+penguins <- palmerpenguins::penguins
+set.seed(1)
+penguins |>
+ slice_sample(prop = 1)
+```
+
+## Confidence Interval -- Definition
+
+-   The CI for $\mu$ is as follows:
+
+$$ \bar{x} \pm t_{1-\alpha/2, \ n-1} \frac{s}{\sqrt{n}} $$
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([dataset]$[variable], conf.level = [confidence level])
+```
+
+## Confidence Interval -- Penguins
+
+-   Find the 95% CI for the body mass of penguins.
+
+```{r, echo = TRUE}
+t.test(penguins$body_mass_g, conf.level = 0.95)
+```
+
+-   The 95% CI for $\mu$ is (4116.46 grams, 4287.05 grams)
+
+## Confidence Interval -- Pilots
+
+-   An airline wants to evaluate the depth perception of its pilots over the age of 50. A random sample of 14 airline pilots over the age of 50 are asked to judge the distance between two markers placed 20 feet apart at the opposite end of the laboratory. The sample data listed here are the pilots' error (recorded in feet) in judging the distance. Use the sample data to place a 99% confidence interval on the average error in depth perception for the company's pilots over the age of 50.
+
+|     |     |     |     |     |     |     |
+|-----|-----|-----|-----|-----|-----|-----|
+| 2.7 | 2.4 | 1.9 | 2.6 | 2.4 | 1.9 | 2.3 |
+| 2.2 | 2.5 | 2.3 | 1.8 | 2.5 | 2.0 | 2.2 |
+
+## Confidence Interval -- Pilots
+
+```{r, echo = TRUE}
+error <- c(2.7, 2.4, 1.9, 2.6, 2.4, 1.9, 2.3,
+           2.2, 2.5, 2.3, 1.8, 2.5, 2.0, 2.2)
+
+t.test(error, conf.level = 0.99)
+```
+
+-   The 99% CI for $\mu$ is (2.04, 2.49).
+
+## Confidence Interval -- Salmonella
+
+-   A massive Salmonella outbreak occurred due to ice cream. Epidemiologists sampled nine production runs from the company that had produced the ice cream to determine the level of Salmonella in the ice cream. Construct the appropriate 90% CI and determine whether the average level of Salmonella in the ice cream is greater than 0.3, a level that is considered to be very dangerous.
+
+|       |       |       |
+|-------|-------|-------|
+| 0.593 | 0.142 | 0.329 |
+| 0.691 | 0.231 | 0.793 |
+| 0.519 | 0.392 | 0.418 |
+
+## Confidence Interval -- Salmonella
+
+```{r, echo = TRUE}
+salmonella <- c(0.593, 0.142, 0.329, 
+                0.691, 0.231, 0.793, 
+                0.519, 0.392, 0.418)
+
+t.test(salmonella, conf.level = 0.90)
+```
+
+-   The 95% CI for $\mu$ is (0.325, 0.588).
+-   The CI is entirely above 0.3, thus, we can conclude that the level of Salmonella in the ice cream is larger than 0.3.
+
+## Hypothesis Testing - Definition {.smaller}
+
+**Hypotheses**
+
+|       Right Tail       |       Left Tail        |       Two Tails        |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \mu \le \mu_0$ | $H_0: \ \mu \ge \mu_0$ |  $H_0: \ \mu = \mu_0$  |
+|  $H_1: \ \mu > \mu_0$  |  $H_1: \ \mu < \mu_0$  | $H_1: \ \mu \ne \mu_0$ |
+
+**Test Statistic**
+
+$$ t_0 = \frac{\bar{x}-\mu_0}{s / \sqrt{n}} $$
+
+-   We again use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([dataset]$[variable], 
+       mu = [hypothesized value], 
+       alternative = [alternative])
+```
+
+## Hypothesis Testing -- Penguins
+
+-   Recall the penguin data. Determine if the average body mass of penguins is different from 4400 grams. Test at the $\alpha=0.05$ level.
+
+```{r, echo = TRUE}
+t.test(penguins$body_mass_g, mu=4400, alternative = "two")
+```
+
+## Hypothesis Testing -- Penguins 
+
+**Hypotheses**
+
+-   $H_0: \ \mu = 4400$ grams
+-   $H_1: \ \mu \ne 4400$ grams
+
+**Test Statistic**
+
+-   $t_0 = -4.572$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average body mass of penguins is different from 4400 grams.
+
+## Hypothesis Testing -- Salmonella
+
+-   Recall the Salmonella data. Determine if the Salmonella levels are greater than 0.3. Test at the $\alpha=0.10$ level.
+
+```{r, echo = TRUE}
+t.test(salmonella, mu=0.3, alternative = "greater")
+```
+
+## Hypothesis Testing -- Salmonella
+
+**Hypotheses**
+
+-   $H_0: \ \mu \le 0.3$
+-   $H_1: \ \mu > 0.3$
+
+**Test Statistic**
+
+-   $t_0 = 2.205$
+
+***p*****-Value**
+
+-   $p = 0.039$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that the average Salmonella level is greater than 0.3.
+
+## Two-Sample Independent Means
+
+-   In the last section, we covered estimation and inference on a single mean using a one-sample *t*-test.
+
+-   Now we will cover estimation and inference on two independent means using the two-sample *t*-test.
+
+    -   We will cover two cases: equal variances and unequal variances.
+
+    -   The data is independent because the two groups do not depend on one another; we cannot link observations between the groups.
+
+-   We will only discuss the *t*-test approach, but note that under certain conditions, we could use a *z*-test.
+
+## Confidence Interval -- Definition
+
+-   The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 = \sigma_2^2$ is as follows:
+
+$$ \left( \bar{x}_1-\bar{x}_2 \right) \pm t_{1-\alpha/2, \ n_1+n_2-2} s_p \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}, $$
+
+-   where $s_p$ is the pooled standard deviation and
+
+$$ s_p=\sqrt{\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{n_1+n_2-2}} $$
+
+## Confidence Interval -- Definition
+
+-   The CI for $\mu_1 - \mu_2$ assuming $\sigma_1^2 \ne \sigma_2^2$ is as follows:
+
+$$ (\bar{x}_1-\bar{x}_2) \pm t_{1-\alpha/2, \text{df}} \sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}, $$
+
+-   where df are *estimated* using Satterthwaite's approximation,
+
+$$ \text{df}=\frac{ \left( \frac{s^2_1}{n_1} + \frac{s_2^2}{n_2} \right)^2 }{ \frac{(s_1^2/n_1)^2}{n_1-1} + \frac{(s_2^2/n_2)^2}{n_2-1} } $$
+
+## Confidence Interval -- Comparing $s_i$
+
+-   Generally, we do not need to worry about this, because R automatically assumes $\sigma^2_1 \ne \sigma^2_2$ and estimates the df.
+
+    -   This is a safe approach because when we can assume $\sigma_1^2 = \sigma_2^2$, the estimated df is close to $n_1+n_2-2$.
+
+-   For now, we can "eyeball" the standard deviations to determine equivalence.
+
+    -   If one is more than twice the other, we will use Satterthwaite's approximation.
+
+    -   If we want to use exact df, we can use the `var.equal` option in the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function.
+
+## Confidence Intervals -- R Syntax
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([continuous variable] ~ [grouping variable],
+       data = [dataset],
+       conf.level = [confidence level])
+```
+
+## Confidence Intervals -- Penguins
+
+-   Let's find a 95% CI on the average body mass for penguins, comparing females to males.
+
+-   First, let's look at the standard deviations.
+
+```{r, echo = TRUE}
+penguins %>% 
+  group_by(sex) %>%
+  summarize(sd(body_mass_g, na.rm = TRUE))
+```
+
+-   Thus, we can assume that $\sigma_1^2 = \sigma_2^2$.
+
+## Confidence Intervals -- Penguins
+
+-   Now, to find the 95% CI for $\mu_{\text{F}} - \mu_{\text{M}}$,
+
+```{r, echo = TRUE}
+t.test(body_mass_g ~ sex,
+       data = penguins,
+       conf.level = 0.95,
+       var.equal = TRUE)
+```
+
+-   The 95% CI is (-840.80, -526.02)
+
+## Confidence Intervals -- Penguins
+
+-   What happens if we do not specify $\sigma_1^2 = \sigma_2^2$?
+
+```{r, echo = TRUE}
+t.test(body_mass_g ~ sex,
+       data = penguins,
+       conf.level = 0.95)
+```
+
+-   The 95% CI is (-840.58, -526.25)
+
+-   Compared to (-840.80, -526.02), we can see that the CI is a hair wider (more conservative).
+
+## Confidence Intervals -- Sheep
+
+-   An experiment was conducted to evaluate the effectiveness of a treatment for tapeworm in the stomachs of sheep. A random sample of 24 worm-infested lambs was randomly divided into two groups: half were injected with the drug and the other half were untreated. After 6 months, the worm counts were as follows:
+
+|           |            |            |            |            |            |            |
+|-----------|-----------|-----------|-----------|-----------|-----------|-----------|
+| Treatment | 18 <br> 13 | 43 <br> 35 | 28 <br> 38 | 50 <br> 33 | 16 <br> 6  | 32 <br> 7  |
+| Control   | 40 <br> 39 | 54 <br> 23 | 26 <br> 48 | 63 <br> 58 | 21 <br> 28 | 37 <br> 39 |
+
+```{r, echo = TRUE}
+worms <- c(18, 13, 43, 35, 28, 38,
+           50, 33, 16,  6, 32,  7,
+           40, 39, 54, 23, 26, 48, 
+           63, 58, 21, 28, 37, 39)
+trt <- c(rep(1, 12), rep(0, 12))
+sheep <- tibble(worms, trt)
+```
+
+## Confidence Intervals -- Sheep
+
+-   Let's now find a 99% CI for the average difference in worm counts between the treated and untreated sheep.
+
+```{r, echo = TRUE}
+t.test(worms ~ trt,
+       data = sheep,
+       conf.level = 0.99)
+```
+
+-   The 99% CI for $\mu_{\text{Ctrl}} - \mu_{\text{Trt}}$ is (--3.16, 29.33).
+
+## Hypothesis Testing -- Definition {.smaller}
+
+-   Assuming $\sigma_1^2 = \sigma_2^2$,
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ t_0 = \frac{\left(\bar{x_1}-\bar{x_2}\right) - D_0}{s_p \sqrt{\frac{1}{n_1}+\frac{1}{n_2}}} $$
+
+-   where
+
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   $s_p$ is the pooled standard deviation, as defined earlier,
+    -   $t_0$ has df $= n_1+n_2-2$.
+
+## Hypothesis Testing -- Definition {.smaller}
+
+-   Assuming $\sigma_1^2 \ne \sigma_2^2$,
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ t_0 = \frac{\left(\bar{x_1}-\bar{x_2}\right) - D_0}{\sqrt{\frac{s_1^2}{n_1} + \frac{s_2^2}{n_2}}} $$
+
+-   where
+
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   the df for $t_0$'s distribution are estimated using Satterthwaite's approximation, as defined before.
+
+## Hypothesis Testing -- R Syntax
+
+-   We again use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([continuous variable] ~ [grouping variable],
+       data = [dataset],
+       alternative = [alternative])
+```
+
+-   Like before, if we want to use exact df, we can use the `var.equal` option.
+
+## Hypothesis Testing -- Penguins
+
+-   Let's use the appropriate test to determine if the average body mass is different between male and female penguins. Test at the $\alpha=0.05$ level.
+
+```{r, echo = TRUE}
+t.test(body_mass_g ~ sex,
+       data = penguins)
+```
+
+## Hypothesis Testing -- Penguins
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{F}} = \mu_{\text{M}}$
+-   $H_1: \ \mu_{\text{F}} \ne \mu_{\text{M}}$
+
+**Test Statistic**
+
+-   $t_0 = -8.555$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average body mass of penguins is different for males and females.
+
+## Hypothesis Testing -- Sheep
+
+-   Let's now use the appropriate hypothesis test to determine if the treatment decreased the worm count in sheep. Test at the $\alpha=0.01$ level.
+
+```{r, echo = TRUE}
+t.test(worms ~ trt,
+       data = sheep,
+       alternative = "greater")
+```
+
+## Hypothesis Testing -- Sheep
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{Trt}} \ge \mu_{\text{Ctrl}}$
+-   $H_1: \ \mu_{\text{Trt}} < \mu_{\text{Ctrl}}$
+
+**Test Statistic**
+
+-   $t_0 = 2.271$
+
+***p*****-Value**
+
+-   $p = 0.017$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that the treatment reduced the number of worms in sheep.
+
+
+## Two-Sample Dependent Means
+
+-   In the last section, we covered estimation and inference on two independent means using the two-sample *t*-test.
+
+-   Today we will cover estimation and inference on two dependent means using the paired *t*-test.
+
+    -   The data is dependent because we can link the observations between the two groups.
+
+    -   e.g., pre- and post-tests; sections of standardized tests; monthly rainfall at Pensacola Regional Airport
+
+## Confidence Interval -- Definition
+
+-   The CI for $\mu_1 - \mu_2$ is as follows:
+
+$$ \bar{d} \pm t_{\alpha/2, n-1} \frac{s_d}{\sqrt{n}}, $$
+
+-   where
+    -   $d_i = y_{1i} - y_{2i}$,
+    -   $\bar{d}$ is the average of all $d_i$,
+    -   $s_d$ is the standard deviation of all $d_i$, and
+    -   $n$ is the number of paired observations
+
+## Confidence Intervals -- R Syntax
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to find the CI,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([variable 1], [variable 2],
+       data = [dataset],
+       paired = TRUE,
+       conf.level = [confidence level])
+```
+
+## Confidence Interval -- Garages
+
+Insurance adjusters are concerned about the high estimates they are receiving for auto repairs from garage I compared to garage II. To verify their suspicions, each of 15 cars recently involved in an accident was taken to both garages for separate estimates of repair costs. The estimates from the two garages (in hundreds of dollars) are given in the data below Construct the 90% CI for the average difference between garages. 
+<br><br>
+
+```{r, echo = TRUE}
+g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 22.1, 16.9, 17.6, 18.4)
+g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 21.0, 16.1, 16.7, 17.5)
+garage <- tibble(g1, g2)
+```
+
+## Confidence Interval -- Garages
+
+```{r, echo = TRUE}
+t.test(garage$g1, garage$g2, paired = TRUE, conf.level = 0.90)
+```
+
+-   The 90% CI is (0.433, 0.793) $\to$ (\$433, \$793)
+
+    -   Is there evidence that garage I is higher than garage II?
+
+## Confidence Interval -- Hunger
+
+During a weight loss study, each of nine subjects was given (1) the active drug for 2 weeks and then a placebo for another 2 weeks, or (2) the placebo for the first 2 weeks and then the active drug for the second 2 weeks. As part of the study, the subjects were asked to rate how hungry there were at the end of each 2-week period. The hunger rating data are given in the data on below. Construct the 99% CI for the average difference between hunger on the active drug and on the placebo.
+<br><br>
+
+```{r, echo = TRUE}
+drug <- c(79, 48, 52, 15, 61, 107, 77, 54, 5)
+placebo <- c(78, 54, 142, 25, 101, 99, 94, 107, 64)
+hunger <- tibble(drug, placebo)
+```
+
+## Confidence Interval -- Hunger
+
+```{r, echo = TRUE}
+t.test(drug, placebo, data = hunger, paired = TRUE, conf.level = 0.99)
+```
+
+-   The 99% CI is (-66.27, 7.15)
+
+    -   Is there evidence that the active drug changes reported feeling of hunger?
+
+## Hypothesis Testing -- Definition {.smaller}
+
+**Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \mu_1- \mu_2 \le D_0$ | $H_0: \ \mu_1 - \mu_2\ge D_0$ |  $H_0: \ \mu_1 - \mu_2 = D_0$  |
+| $H_1: \ \mu_1 - \mu_2 > D_0$  | $H_1: \ \mu_1 - \mu_2 < D_0$  | $H_1: \ \mu_1 - \mu_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ t_0 = \frac{\bar{d} - D_0}{s_d/\sqrt{n}} $$
+
+-   where
+
+    -   $D_0$ is the hypothesized average difference between groups 1 and 2,
+    -   $\bar{d}$ is the average of all $d_i$,
+    -   $s_d$ is the standard deviation of all $d_i$
+    -   $n$ is the number of paired observations, and
+    -   $t_0$ has df $= n-1$.
+
+## Hypothesis Testing -- R Syntax
+
+-   We will use the [`t.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/t.test) function to perform the hypothesis test,
+
+```{r, echo = TRUE, eval = FALSE}
+t.test([variable 1], [variable 2],
+       data = [dataset]
+       paired = TRUE,
+       alternative = [alternative])
+```
+
+## Hypothesis Testing -- Garages
+
+-   Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
+
+```{r, echo = TRUE}
+t.test(g1, g2,
+       data = data,
+       paired = TRUE,
+       alternative = "greater")
+```
+
+## Hypothesis Testing -- Garages
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}$
+-   $H_1: \ \mu_{\text{I}} > \mu_{\text{II}}$
+
+**Test Statistic**
+
+-   $t_0 = 6.023$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that, on average, it costs more to have repairs done at garage I as compared to garage II.
+
+## Hypothesis Testing -- Hunger
+
+-   Recall the hunger data. Determine if there is a difference in hunger scores when on the active drug as compared to the placebo. Test at the $\alpha=0.01$ level.
+
+```{r, echo = TRUE}
+t.test(hunger$drug, hunger$placebo,
+       paired = TRUE,
+       alternative = "two")
+```
+
+## Hypothesis Testing -- Hunger
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{drug}} = \mu_{\text{placebo}}$
+-   $H_1: \ \mu_{\text{drug}} \ne \mu_{\text{placebo}}$
+
+**Test Statistic**
+
+-   $t_0 = -2.701$
+
+***p*****-Value**
+
+-   $p = 0.027$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.01$ level. There is not sufficient evidence to suggest that, on average, reports of hunger are different between the drug and the placebo.
+
+## Wrap Up
+
+- Today we have learned inference for one- and two-sample means.
+
+- In our next lecture, we will discuss the assumptions on these tests and what to do if we break the assumption.

@@ -1,0 +1,523 @@
+---
+title: "Assumptions on *t*-Tests; One- and Two-Sample Medians"
+subtitle: "STA5176 Lecture 2, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+```{r, echo = FALSE}
+library(tidyverse)
+penguins <- palmerpenguins::penguins
+```
+
+- In our last lecture, we learned the one- and two-sample *t*-tests.
+
+- Today, we will learn their assumptions, how to check them, and how to deal with violations.
+
+- Briefly,
+
+    - Two-sample *t*-test: normality and equal variance
+    
+        - If we break the normality assumption $\to$ nonparametric test
+        
+        - If we break the equal variance assumption $\to$ use the Satterthwaite approximation for df
+        
+    - Dependent *t*-test: normality
+    
+        - If we break the normality assumption $\to$ nonparametric test        
+
+## Normality Assumption on Independent Two-Sample *t*-Tests
+
+-   Note that the two-sample *t*-test assumes normality.
+
+-   We will assess this with a quantile-quantile (QQ) plot.
+
+    -   We will create a QQ plot for the data in each group.
+
+-   We want to see an approximate 45° line.
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] %>% ggplot(aes(sample = [outcome])) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample")
+```
+
+## Penguin Example
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{F}} = \mu_{\text{M}}$
+-   $H_1: \ \mu_{\text{F}} \ne \mu_{\text{M}}$
+
+**Test Statistic**
+
+-   $t_0 = -8.555$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average body mass of penguins is different for males and females.
+
+## Penguin Example
+
+<center>
+```{r, echo = TRUE}
+penguins %>% 
+  filter(sex == "male") %>% 
+  ggplot(aes(sample = body_mass_g)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+</center>
+
+## Penguin Example
+
+<center>
+```{r, echo = TRUE}
+penguins %>% 
+  filter(sex == "female") %>% 
+  ggplot(aes(sample = body_mass_g)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+</center>
+
+## Penguin Example
+
+```{r, echo = FALSE}
+library(ggpubr)
+
+m <- penguins %>% 
+  filter(sex == "male") %>%  ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Males")
+
+f <- penguins %>% 
+  filter(sex == "female") %>% 
+  ggplot(aes(sample = body_mass_g)) +
+  stat_qq(size=3) +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Theoretical") +
+  ylab("Sample") +
+  ggtitle("Females")
+
+ggarrange(m, f, ncol=2, nrow=1)
+```
+
+## Variance Assumption on Independent Two-Sample *t*-Test
+
+  - This is known as the folded $F$ test.
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \sigma_1^2 \le \sigma^2_2$ | $H_0: \sigma_1^2 \ge \sigma^2_2$ |  $H_0: \ \sigma_1^2 = \sigma^2_2$  |
+| $H_1: \ \sigma_1^2 > \sigma^2_2$  | $H_1: \ \sigma_1^2 < \sigma_2^2$  | $H_1: \ \sigma_1^2 \ne \sigma_2^2$ |
+
+**Test Statistic**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $F_0 = \frac{s_1^2}{s_2^2}$ | $F_0 = \frac{s_2^2}{s_1^2}$ |  $F_0 = \frac{s_1^2}{s_2^2}$  |
+
+## Hypothesis Testing -- Two $\sigma^2$
+
+- We will use the [`var.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/var.test) function from the [`stats`](https://www.rdocumentation.org/packages/stats/versions/3.6.2) package.
+
+```{r, echo = TRUE, eval = FALSE}
+var.test([var 1], [var 2], 
+         alternative = [alternative], 
+         conf.level = [level], 
+         ratio = [ratio (normally 1)])
+```
+
+- We do not have to specify the `conf.level` if only interested in the hypothesis test.
+
+- Remember that this is typically used to verify the variance assumption of the two-sample $t$-test.
+
+## Penguin Example
+
+- Recall the penguins data. Determine if the variance of the bill length is the same between male and female penguins. Test at the $\alpha=0.05$ level.
+
+```{r, echo = TRUE}
+f <- penguins %>% filter(sex == "female")
+m <- penguins %>% filter(sex == "male")
+var.test(f$bill_length_mm, m$bill_length_mm,
+         alternative = "two",
+         ratio = 1)
+```
+
+## Penguin Example
+
+**Hypotheses**
+
+-   $H_0: \ \sigma^2_{\text{M}} = \sigma^2_{\text{F}}$
+-   $H_1: \ \sigma^2_{\text{M}} \ne \sigma^2_{\text{F}}$
+
+**Test Statistic**
+
+-   $F_0 = 0.83$
+
+***p*****-Value**
+
+-   $p = 0.247$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the variances are different.
+
+## Confidence Intervals -- Two $\sigma^2$
+
+- CI for the ratio of two variances:
+$$ \left( \frac{s_1^2}{s_2^2} F_{1-\alpha/2, n_2-1, n_1-1}, \frac{s_1^2}{s_2^2} F_{\alpha/2, n_2-1, n_1-1} \right)$$
+
+- We again use the [`var.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/var.test) function from the [`stats`](https://www.rdocumentation.org/packages/stats/versions/3.6.2) package.
+
+```{r, echo = TRUE, eval = FALSE}
+var.test([var 1], [var 2], 
+         conf.level = [level])
+```
+
+## Penguin Example
+
+- Let's find the 95% CI for the ratio of variances between male and female penguins.
+
+```{r, echo = TRUE}
+var.test(f$bill_length_mm, m$bill_length_mm,
+         conf.level = 0.95)
+```
+
+- Thus, the 95% CI for the ratio of variances is (0.61, 1.13).
+
+## Assumptions on the Dependent *t*-Test
+
+-   Note that the paired *t*-test assumes normality, like in the two-sample *t*-test.
+
+-   We again assess this with a quantile-quantile (QQ) plot.
+
+    -   We will create a QQ plot for the differences! Not the raw data, like we did for the paired *t*-test.
+
+-   We still want to see an approximate 45° line.
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] %>% 
+  mutate(diff = [variable 1] - [variable 2]) %>% 
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+
+## Garage Example
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{I}} \le \mu_{\text{II}}$
+-   $H_1: \ \mu_{\text{I}} > \mu_{\text{II}}$
+
+**Test Statistic**
+
+-   $t_0 = 6.023$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that, on average, it costs more to have repairs done at garage I as compared to garage II.
+
+## Garage Example
+
+```{r, echo = FALSE}
+g1 <- c(17.6, 20.2, 19.5, 11.3, 13.0, 16.3, 15.3, 16.2, 12.2, 14.8, 21.3, 22.1, 16.9, 17.6, 18.4)
+g2 <- c(17.3, 19.1, 18.4, 11.5, 12.7, 15.8, 14.9, 15.3, 12.0, 14.2, 21.0, 21.0, 16.1, 16.7, 17.5)
+garage <- tibble(g1, g2)
+```
+
+<center>
+```{r, echo = TRUE}
+garage %>% 
+  mutate(diff = g1 - g2) %>%
+  ggplot(aes(sample = diff)) +
+    stat_qq(size=3) +
+    stat_qq_line() +
+    theme_minimal() +
+    xlab("Theoretical") +
+    ylab("Sample")
+```
+</center>
+
+## Nonparametric Alternatives
+
+-   The Wilcoxon tests are nonparametric -- they do not impose a distributional assumption on the data.
+
+    -   In nonparametric tests, we often analyze the ranks instead of the raw data.
+    
+- Note:
+
+    - Two-Sample *t*-Test $\to$ Wilcoxon Rank Sum
+    
+    - Dependent *t*-Test $\to$ Wilcoxon Signed Rank
+
+-   How do we rank data?
+
+    -   We rank all data, without regard to grouping
+
+    -   The smallest value in the combined sample is assigned the rank of 1 while the largest value is assigned the rank of $N=n_1+n_2$.
+
+    -   **Ties are assigned the average rank.**
+
+## Ranking Independent Data
+
+-   Suppose we want to rank the data:
+
+    -   8, 3, 9, 1, 3
+
+-   We first order the data:
+
+    -   1, 3, 3, 8, 9
+
+-   Then we assign the ranks, ignoring ties:
+
+    -   1, 2, 3, 4, 5
+
+-   Then we assign the final ranks, accounting for ties:
+
+    -   1, 2.5, 2.5, 4, 5
+
+## Wilcoxon Rank Sum for "Small" Samples {.smaller}
+
+-   if $n_1 \le 10$ and $n_2 \le 10$:
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ T_0 = \sum \text{(ranks from group 1)}$$
+
+## Wilcoxon Rank Sum for "Large" Samples {.smaller}
+
+-   if $n_1 > 10$ or $n_2 > 10$:
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ z_0 = \frac{T_0 - \mu_T}{\sigma_T},$$
+
+-   where
+
+$$ \mu_{T} = \frac{n_1(n_1+n_2+1)}{2} \ \ \ \ \ \text{and} \ \ \ \ \ \sigma_T^2 = \frac{n_1 n_2}{12} \left( n_1+n_2+1 - \frac{\sum_{j=1}^k t_j(t_j^2-1)}{(n_1+n_2)(n_1+n_2-1)} \right)$$
+
+## Wilcoxon Rank Sum -- R Syntax
+
+-   We will use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+wilcox.test([continuous variable] ~ [grouping variable],
+       data = [dataset],
+       alternative = "[alternative]",
+       paired = FALSE)
+```
+
+## Penguin Example
+
+-   Recall the penguin data. Let's use the appropriate test to determine if the bill length of female penguins (median 42.8 mm) is shorter than male penguins (median 46.8 mm). Test at the $\alpha=0.05$ level.
+
+```{r, echo = TRUE}
+wilcox.test(bill_length_mm ~ sex,
+            data = penguins,
+            alternative = "less")
+```
+
+## Penguin Example
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{F}} \ge M_{\text{M}}$
+-   $H_1: \ M_{\text{F}} < M_{\text{M}}$
+
+**Test Statistic**
+
+-   $T_0 = 8178$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the median bill length of female penguins is shorter than that of male penguins.
+
+## Ranking Dependent Data
+
+-   Like in the paired *t*-test, we will first find the difference. e.g.,
+
+    -   -8, 3, 0, 9, -1, -3
+
+-   We order the absolute value of the differences and exclude differences of 0:
+
+    -   <font color="orange">1</font>, 3, <font color="orange">3</font>, <font color="orange">8</font>, 9
+
+-   Then we assign the ranks, ignoring ties:
+
+    -   <font color="orange">1</font>, 2, <font color="orange">3</font>, <font color="orange">4</font>, 5
+
+-   Then we assign the final ranks, accounting for ties, and carry over the sign of the corresponding difference:
+
+    -   <font color="orange">-1</font>, 2.5, <font color="orange">-2.5</font>, <font color="orange">-4</font>, 5
+
+## Wilcoxon Signed Rank for "Small" Samples
+
+-   if $n \le 50$:
+
+    -   $n =$ number of non-zero differences
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+|              Right Tail              |              Left Tail               |    Two Tails     |
+|:----------------------:|:----------------------:|:----------------------:|
+| $T_- = \sum \text{(neg. ranks)}$ | $T_+ = \sum \text{(pos. ranks)}$ | $\min(T_-, T_+)$ |
+
+## Wilcoxon Signed Rank for "Large" Samples
+
+-   if $n > 50$:
+
+    -   $n =$ number of non-zero differences
+
+**Hypotheses**
+
+|        Right Tail         |         Left Tail         |         Two Tails          |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ M_1- M_2 \le D_0$ | $H_0: \ M_1 - M_2\ge D_0$ |  $H_0: \ M_1 - M_2 = D_0$  |
+| $H_1: \ M_1 - M_2 > D_0$  | $H_1: \ M_1 - M_2 < D_0$  | $H_1: \ M_1 - M_2 \ne D_0$ |
+
+**Test Statistic**
+
+$$ z_0 = \frac{T_0-\mu_T}{\sigma_T}$$
+
+## Wilcoxon Signed Rank for "Large" Samples
+
+  -   The mean is as follows,
+
+$$ \mu_T = \frac{n (n+1)}{4} $$ 
+
+  - The variance is as follows,
+
+$$\sigma^2_T = \frac{1}{24} \left( n(n+1)(2n+1) - \frac{\sum_{j=1}^k t_j(t_j-1)(t_j+1)}{2} \right)$$ 
+
+  - where $t_j$ is the number of ties in tied group $j$
+
+## Wilcoxon Signed Rank -- R Syntax
+
+  -   We will again use the [`wilcox.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.1/topics/wilcox.test) function to perform the test,
+
+```{r, echo = TRUE, eval = FALSE}
+wilcox.test([variable 1], [variable 2],
+       data = [dataset],
+       alternative = "[alternative]",
+       paired = TRUE)
+```
+
+## Garage Example
+
+-   Recall the car repair data. Determine if garage I has higher cost for repairs than garage II. Test at the $\alpha=0.10$ level.
+
+```{r, echo = TRUE, warning = FALSE}
+wilcox.test(g1, g2,
+            data = garage,
+            paired = TRUE,
+            alternative = "greater")
+```
+
+## Garage Example
+
+**Hypotheses**
+
+-   $H_0: \ M_{\text{I}} \le M_{\text{II}}$
+-   $H_1: \ M_{\text{I}} > M_{\text{II}}$
+
+**Test Statistic**
+
+-   $T_0 = 118.5$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.10$ level. There is sufficient evidence to suggest that it costs more to have repairs done at garage I as compared to garage II.
+
+## Wrap Up
+
+- Today we covered checking the assumptions on the *t*-tests learned last class and the appropriate nonparametric option if the normality assumption is broken.
+
+- Remember,
+
+    - Two-sample *t*-test: normality and equal variance
+    
+        - If we break the normality assumption $\to$ nonparametric test
+        
+        - If we break the equal variance assumption $\to$ use the Satterthwaite approximation for df
+        
+    - Dependent *t*-test: normality
+    
+        - If we break the normality assumption $\to$ nonparametric test  
+        
+- **Note!** Monday is a holiday -- **no class**!
+
+- Next Wednesday, we will work on putting everything together into Project 1.

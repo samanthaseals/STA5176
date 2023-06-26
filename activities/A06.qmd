@@ -1,0 +1,129 @@
+---
+title: "Lab 6: July 17"
+author: "Your Name Here"
+format: html
+self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r setup}
+library(tidyverse)
+library(gsheet)
+```
+
+A large advertising firm specializes in creating television commercials for children's products. The firm wants to design a study to investigate factors that may affect the lengths of time a commercial is able to hold a child's attention. A preliminary study determines that two factors that may be important are the age of the child and the type of product being advertised. The firm wants to determine whether there were large differences in the mean length of time that the commercial is able to hold the child's attention depending on these two factors. If there proves to be a difference, the firm would then attempt to determine new types of commercials depending on the product and targeted age group.
+
+Three age groups are used:
+
+-   A<sub>1</sub>: 5-6 years,
+-   A<sub>2</sub>: 7-8 years,
+-   A<sub>3</sub>: 9-10 years
+
+The types of products selected are:
+
+-   P<sub>1</sub>: breakfast cereals,
+-   P<sub>2</sub>: video games
+
+A group of 30 children is recruited in each age group, and 10 are randomly assigned to watch a 60-second commercial for each of the two products. Researchers record their attention spans during the viewing of the commercial. The data are given here: [Google Sheet](https://docs.google.com/spreadsheets/d/16_HOSmIBDD9oYY1oBQ5Df6eFH9nT6GgO1UWcbMZNLUo/edit?usp=sharing).
+
+```{r}
+
+```
+
+**1.  Construct the two-way ANOVA table.**
+
+```{r}
+
+```
+
+**2.  Use the appropriate hypothesis test to show that the interaction between age and product is significant. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**3. Construct the profile plot for this data.**
+
+```{r}
+
+```
+
+**4. (Challenge! ...but required!) Perform Tukey's test to determine which treatment groups are significantly different. Test at the $\alpha=0.05$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**5. Graphically assess the ANOVA assumptions -- is ANOVA appropriate here?**
+
+```{r}
+
+```
+
+A horticulturalist at a large research institution designs a study to evaluate the effect on tomato yields of water loss due to transpiration. She decides to examine four levels of shading of the tomato plants at three stages of the tomato plant's development. The four levels of shading (0, 25%, 50%, and 75%) were selected to reduce the solar exposure of the plants. The shading remained in place for 20 days during the early, middle, and late phases of the tomato plants' growth. There were four plots of tomatoes randomly assigned to each of the combinations of shading and growth stage. At the end of the study, the yields per plot in pounds were recorded. The data are given here: [Google Sheet](https://docs.google.com/spreadsheets/d/1kUxXje3cTl_PZFQcg8FvESo34UuGNwm1GrKGc4HN0_A/edit?usp=sharing).
+
+```{r}
+
+```
+
+**6.  Construct the two-way ANOVA table.**
+
+```{r}
+
+```
+
+**7.  Use the appropriate hypothesis test to show that the interaction between shading and phase of growth is not significant. Test at the $\alpha=0.10$ level. Remember to typeset your results.** 
+
+```{r}
+
+```
+
+**8.  Remove the interaction term and reconstruct the two-way ANOVA table.**
+
+```{r}
+
+```
+
+**9.  Use the appropriate hypothesis test to determine if there is a main effect of shading. Test at the $\alpha=0.10$ level. Remember to typeset your results.**
+
+```{r}
+
+```
+
+**10.  Use the appropriate hypothesis test to determine if there is a main effect of phase of growth. Test at the $\alpha=0.10$ level. Remember to typeset your results.**
+
+```{r}
+
+```
+
+**11.  (Challenge! ...but required!) Construct the profile plot for this data.**
+
+```{r}
+
+```
+
+**12. If there is a main effect of shading, perform Tukey's test to determine which levels of shading are significantly different. Test at the $\alpha=0.10$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**13.  If there is a main effect of phase of growth, perform Tukey's test to determine which phases of growth are significantly different. Test at the $\alpha=0.10$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**14. Graphically assess the ANOVA assumptions -- is ANOVA appropriate here?**
+
+```{r}
+
+```
+
+
+
+

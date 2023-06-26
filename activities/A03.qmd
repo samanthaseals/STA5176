@@ -1,0 +1,77 @@
+---
+title: "Lab 3: June 28"
+author: "Your Name Here"
+format: html
+self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r setup}
+library(tidyverse)
+library(gsheet)
+```
+
+A large credit union awards quarterly bonuses to its employees. To ensure fairness across departments, data on the bonuses are regularly reviewed for equality. Consider the data in the following Google Sheet, which includes the bonus percentage for each employee in two departments.
+
+```{r}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1q0Ouhr6hGBDp-5oyQuYGcsWTLrsayywVHJS7o17Sm6Y/edit?usp=sharing"))
+head(data)
+table(data$Department)
+```
+
+**1. From last lab! Use the appropriate parametric test to determine if the two departments are given different bonus amounts. Test at the $\alpha=0.01$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**2. Use the appropriate nonparametric test to determine if the two departments are given different bonus amounts. Test at the $\alpha=0.01$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**3. Assess the assumption(s) associated with the test in question 1. In your assessment, determine (and state!) if the parametric or nonparametric test should be reported.**
+
+```{r}
+
+```
+
+**4. Write a brief paragraph explaining your findings to management, based on the test chosen in question 3.**
+
+
+
+A new 2 hour reading comprehension program has been developed by a local tutoring center. A pilot study of 30 students has been conducted and we have data on a reading comprehension test taken before the program and a separate reading comprehension test taken after the program. Consider the data, found in the following Google Sheet.
+
+```{r}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1ijxX7c6qcFAw-r_mNSxC-Ps5b5njw-WtE4RcxPTySXU/edit?usp=sharing"))
+head(data)
+```
+
+**5. From last lab! Use the appropriate parametric test to determine if the program raises comprehension test averages by at least 5 points. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**6. Use the appropriate nonparametric test to determine if the program raises comprehension test averages by at least 5 points. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**7. Assess the assumption(s) associated with the test in question 5. In your assessment, determine (and state!) if the parametric or nonparametric test should be reported.**
+
+```{r}
+
+```
+
+**8. Write a brief paragraph explaining your findings to management, based on the test chosen in question 7.**
+
+
+
+

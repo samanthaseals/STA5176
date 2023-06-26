@@ -1,0 +1,103 @@
+---
+title: "Lab 2: June 26"
+author: "Your Name Here"
+format: html
+self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r setup}
+library(tidyverse)
+library(gsheet)
+```
+
+A large credit union awards quarterly bonuses to its employees. To ensure fairness across departments, data on the bonuses are regularly reviewed for equality. Consider the data in the following Google Sheet, which includes the bonus percentage for each employee in two departments.
+
+```{r}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1q0Ouhr6hGBDp-5oyQuYGcsWTLrsayywVHJS7o17Sm6Y/edit?usp=sharing"))
+head(data)
+```
+
+**1. Estimate each group mean using the sample means and 99% confidence intervals. (i.e., provide a 99% CI for $\mu_{\text{mortgage}}$, and, separately, a 99% CI for $\mu_{\text{credit}}$.) Remember to state the group means and corresponding CIs.**
+
+```{r}
+
+```
+
+**2. Estimate the average difference in bonuses for the two departments using the sample mean and 99% confidence interval for the difference in bonuses for the two departments. Remember to state the mean and corresponding CI.**
+
+```{r}
+
+```
+
+**3. Use the appropriate hypothesis test to determine if the two departments are given different bonus amounts. Test at the $\alpha=0.01$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+- **Hypotheses**
+
+    -   $H_0: \ \mu_{\text{insert}} [\text{insert}] \mu_{\text{insert}}$
+    -   $H_1: \ \mu_{\text{insert}} [\text{insert}] \mu_{\text{insert}}$
+
+- **Test Statistic and *p*-Value**
+
+    -   $t_0 = \text{insert}$
+    -   $p = \text{insert}$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha = \text{insert}$.
+
+- **Conclusion/Interpretation**
+
+    -   [Fail to reject or Reject] $H_0$. There [is or is not] sufficient evidence to suggest [the alternative hypothesis in words].
+
+**4. (Challenge! ...but required!) Construct a graph that will help you explain your findings to management.**
+
+```{r}
+
+```
+
+A new 2 hour reading comprehension program has been developed by a local tutoring center. A pilot study of 30 students has been conducted and we have data on a reading comprehension test taken before the program and a separate reading comprehension test taken after the program. Consider the data, found in the following Google Sheet.
+
+```{r}
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1ijxX7c6qcFAw-r_mNSxC-Ps5b5njw-WtE4RcxPTySXU/edit?usp=sharing"))
+head(data)
+```
+
+**5. Estimate each group mean using the sample means and 95% confidence intervals. (i.e., provide a 95% CI for $\mu_{\text{pre}}$, and, separately, a 95% CI for $\mu_{\text{post}}$.) Remember to state the group means and corresponding CIs.**
+
+```{r}
+
+```
+
+**6. Estimate the increase in test scores using the sample mean and corresponding 95% confidence interval for the increase in test scores. (i.e., we are interested in estimating $\mu_{\text{post}-\text{pre}}$.**
+
+```{r}
+
+```
+
+**7. Use the appropriate hypothesis test to determine if the program raises comprehension test averages by at least 5 points. Test at the $\alpha=0.05$ level. Remember to typeset the results**
+
+```{r}
+
+```
+
+**8. (Challenge! ...but required!) Construct a graph that will help you explain your findings to the tutoring center.**
+
+```{r}
+
+```
+
+
+
+
+
+
+

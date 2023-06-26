@@ -1,0 +1,65 @@
+---
+title: "Lab 5: July 12"
+author: "Your Name Here"
+format: html
+self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r setup}
+library(tidyverse)
+library(gsheet)
+```
+
+**1. State the ANOVA assumptions, mathematically. Then, explain what it means.**
+
+
+
+
+
+
+Recall the data from last lab: An agricultural researcher investigated two new herbicides and their effects on crop yields of tomatoes, which can be demolished by the [tomato hornworm](https://extension.umn.edu/yard-and-garden-insects/tomato-hornworms) in mere hours. There were three areas for the experiment: an area for herbicide A, an area for herbicide B, and an area for no herbicide at all (control). At the end of the growing season, the yields (in bushels per acre) were measured and are available in the following [Google Sheet](https://docs.google.com/spreadsheets/d/1CFyuuWy-4YmVU3wkYuC8Uf3xW3qkpCnpF468NjBAhbY/edit#gid=0).
+
+```{r}
+
+```
+
+**2a. From last lab: Use the appropriate parametric test to show that there is a difference in the average yield between the three groups. Test at the $\alpha=0.05$ level. Remember to typeset your results.**
+
+```{r}
+
+```
+
+**2b. From last lab: Use the appropriate posthoc test (following question 2a, above) to perform all pairwise comparisons of yield. Test at the $\alpha=0.05$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**3. Use the appropriate nonparametric test to determine if there is a difference in the average yield between the three groups. Test at the $\alpha=0.05$ level. Remember to typeset your results.**
+
+```{r}
+
+```
+
+**3. Use the appropriate nonparametric posthoc test (following question 3, above) to perform all pairwise comparisons of yield. Test at the $\alpha=0.05$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**4. Assess the assumptions associated with the test used in question 2a. In your assessment, determine (and state!) if the parametric or nonparametric test should be reported.**
+
+```{r}
+
+```
+
+**5. Write a brief paragraph explaining your findings to the researcher, based on the test chosen in question 3. Which herbicide, if any, is recommended, and why?**
+
+
+
+

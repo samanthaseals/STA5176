@@ -1,0 +1,73 @@
+---
+title: "Lab 4: July 10"
+author: "Your Name Here"
+format: html
+self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+editor: source
+---
+
+```{r setup}
+library(tidyverse)
+library(gsheet)
+```
+
+An agricultural researcher investigated two new herbicides and their effects on crop yields of tomatoes, which can be demolished by the [tomato hornworm](https://extension.umn.edu/yard-and-garden-insects/tomato-hornworms) in mere hours. There were three areas for the experiment: an area for herbicide A, an area for herbicide B, and an area for no herbicide at all (control). At the end of the growing season, the yields (in bushels per acre) were measured and are available in the following [Google Sheet](https://docs.google.com/spreadsheets/d/1CFyuuWy-4YmVU3wkYuC8Uf3xW3qkpCnpF468NjBAhbY/edit#gid=0).
+
+```{r}
+
+```
+
+**1. Construct the 95% confidence interval for the average yield for each group (A, B, control).**
+
+```{r}
+
+```
+
+**2. Challenge! (...but required!) Construct a single graph to display all confidence intervals.**
+
+```{r}
+
+```
+
+**3. Challenge! (... but required!) Why should we be cautious when using the individual CIs found in question 1 and displayed in question 2 to directly compare the three groups?**
+
+**4. Use the appropriate hypothesis test to show that there is a difference in the average yield between the three groups. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**5. Construct and test the following contrasts for the following comparisons:**
+
+**5a. Herbicide A vs. Herbicide B. Test at the $\alpha=0.05$ level. Remember to state the final conclusion.**
+
+```{r}
+
+```
+
+**5b. Herbicide A and Herbicide B vs. Control. Test at the $\alpha=0.05$ level. Remember to state the final conclusion.**
+
+```{r}
+
+```
+
+**6. Use the appropriate posthoc test to perform all pairwise comparisons of yield. Test at the $\alpha=0.05$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+**7. Use the appropriate posthoc test to only compare the individual herbicides to the control. Test at the $\alpha=0.05$ level. Remember to state the final conclusion (i.e., the pairwise differences).**
+
+```{r}
+
+```
+
+
+
+
+

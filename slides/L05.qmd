@@ -1,0 +1,365 @@
+---
+title: "One-Way ANOVA Assumptions; Kruskal-Wallis"
+subtitle: "STA5176 Lecture 4, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+
+## Introduction
+
+- In the last lecture, we were introduced to one-way ANOVA, an extension of the two-sample *t*-test.
+
+- Today, we will talk about the assumptions on ANOVA, and what to do when the assumptions are broken.
+
+    - Briefly, we have normality and variance assumptions.
+    
+        - Remember: ANOVA is an extension of the two-sample *t*-test!
+    
+    - If either assumption is broken, then we will need to use the nonparametric alternative.
+
+## ANOVA Assumptions: Definition
+
+- We can represent ANOVA with the following model:
+$$ y_{ij} = \mu + \tau_i + \varepsilon_{ij} $$
+
+- where:
+
+    - $y_{ij}$ is the $j^{\text{th}}$ observation in the $i^{\text{th}}$ group,
+    - $\mu$ is the overall (grand) mean,
+    - $\tau_i$ is the treatment effect for group $i$, and
+    - $\varepsilon_{ij}$ is the error term for the $j^{\text{th}}$ observation in the $i^{\text{th}}$ group.
+    
+## ANOVA Assumptions: Definition
+
+- We assume that the error term follows a normal distribution with mean 0 and a constant variance, $\sigma^2$. i.e., $$\varepsilon_{ij} \overset{\text{iid}}{\sim} N(0, \sigma^2)$$
+
+- Very important note: **the assumption is on the error term** and NOT on the outcome!
+
+    - This note will make more sense when we get into our next module for linear regression.
+
+- We will use the residual (the difference between the observed value and the predicted value) to assess assumptions: $$ e_{ij} = y_{ij} - \hat{y}_{ij} $$
+
+## ANOVA Assumptions: Normality
+    
+- The histogram of residuals:
+
+    - Should be mound-shaped and symmetric
+    - Should be centered at $\mu=0$
+    - Note: it may look "wonky" when sample sizes are small
+    
+- The quantile-quantile plot:
+
+    - Should have points close to the 45$^\circ$ line
+    - We will focus on the "center" portion of the plot
+
+- I always base my final decision on the QQ plot.
+
+- We do not test for normality.
+
+## ANOVA Assumptions: Constant Variance
+
+- The scatterplot of residual ($e_{ij}$) vs. predicted ($\bar{y}_i$):
+
+    - We assess the length of the line -- we want them to be approximately equal.
+    
+- Brown-Forsyth-Levine (BFL) test for homogeneity of variances:
+
+    - We construct ANOVA for transformed data, $z_{ij} = | y_{ij} - \tilde{y}_i|$, whee $\tilde{y}_i$ is the median of group $i$.
+
+## ANOVA Assumptions: Constant Variance
+
+- **Hypotheses**
+
+  - $H_0: \ \sigma^2_1 = ... = \sigma^2_k$
+  - $H_1:$ at least one $\sigma^2_i$ is different
+
+- **Test Statistic**
+$$ F_0 = \frac{\sum_{i=1}^k n_i (\bar{z}_i - \bar{z})^2/(k-1)}{\sum_{i=1}^k \sum_{j=1}^{n_j}(z_{ij}-\bar{z}_i)^2/(n-k) }, $$
+
+- where
+
+    - $k$ is the number of groups,
+    - $n_i$ is the sample size of group i,
+    - $n = \sum_{i=1}^k n_i$, and
+    - $z_{ij} = |y_{ij} - \text{median}(y_i)|$
+  
+## ANOVA Assumptions: Constant Variance
+
+- We will use the [`leveneTest()`](https://www.rdocumentation.org/packages/car/versions/3.1-0/topics/leveneTest) function from the [`car`](https://www.rdocumentation.org/packages/car/versions/3.1-0) package.
+
+```{r, echo = TRUE, eval = FALSE}
+leveneTest([continuous var] ~ [grouping var], 
+           data = [dataset], 
+           center = median)
+```
+
+  
+## ANOVA Assumptions: R Syntax for Graphs
+
+- We will construct a matrix of graphs described on previous slides.
+        
+- R syntax to put together the matrix of graphs (credit: former graduate student, Reid Ginoza)
+
+```{r, eval = FALSE}
+# define function to construct graph for assumptions
+almost_sas <- function(aov.results){
+  aov_residuals <- residuals(aov.results)
+  par(mfrow=c(2,2))
+  plot(aov.results, which=1)
+  hist(aov_residuals)
+  plot(aov.results, which=2)
+}
+
+# use the function to create the graph
+almost_sas([model results])
+```
+
+## ANOVA Assumptions: Penguins
+
+- Recall the penguin example from our last lecture -- we determined that bill length varied by species (*p* < 0.001).
+
+```{r, echo = TRUE}
+penguins <- palmerpenguins::penguins
+m1 <- lm(bill_length_mm ~ species, data = penguins)
+anova(m1)
+```
+
+## ANOVA Assumptions: Penguins
+
+```{r, echo = FALSE}
+# define function to construct graph for assumptions
+almost_sas <- function(aov.results){
+  aov_residuals <- residuals(aov.results)
+  par(mfrow=c(2,2))
+  plot(aov.results, which=1)
+  hist(aov_residuals)
+  plot(aov.results, which=2)
+}
+```
+
+<center>
+```{r}
+almost_sas(m1)
+```
+</center>
+
+## ANOVA Assumptions: Penguins
+
+- Although we do not suspect an issue with variance based on the graph, let's test the variance of bill length
+
+```{r, echo = TRUE}
+library(car)
+leveneTest(bill_length_mm ~ species, data = penguins, center = median)
+```
+
+## ANOVA Assumptions: Penguins
+
+- **Hypotheses**
+
+    -   $H_0: \ \sigma^2_{\text{Adelie}} = \sigma^2_{\text{Chinstrap}} = \sigma^2_{\text{Gentoo}}$
+    -   $H_1:$ at least one $\sigma^2_i$ is different
+
+- **Test Statistic and *p*-Value**
+
+    -   $F_0 = 2.24$
+    -   $p = 0.108$
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$.    
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the variances are different.
+
+## ANOVA Assumptions: Insulation Shields
+
+- A small corporation makes insulation shields for electrical wires using three different types of machines. A quality engineer at the corporation randomly selects shields produced by each of the machines and records the inside diameter of each shield (in millimeters). Using ANOVA to test at $\alpha=0.05$, she determines that there is not a difference (*p* = 0.094).
+
+```{r, echo = FALSE}
+library(gsheet)
+library(tidyverse)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1Bqv7WaV7AUoMs7HWhSHvJR0rZLFGnDDOjwuIHKfrAqY/edit#gid=0"))
+long <- data %>%
+  pivot_longer(cols = c("Machine A", "Machine B", "Machine C"),
+               names_to = "Machine",
+               values_to = "Diameter")
+```
+
+```{r}
+m2 <- lm(Diameter ~ Machine, data = long)
+anova(m2)
+```
+
+## ANOVA Assumptions: Insulation Shields
+
+<center>
+```{r}
+almost_sas(m2)
+```
+</center>
+
+## ANOVA Assumptions: Insulation Shields
+
+- We can formally check the variance assumption as the graph is questionable.
+
+```{r}
+leveneTest(Diameter ~ as.factor(Machine), data = long, center = median)
+```
+
+- The variance assumption is not broken (*p* = 0.448). 
+
+## Kruskal-Wallis: Definition
+
+- The Kruskal-Wallis is the nonparametric alternative to one-way ANOVA
+
+- The data is ranked without regard to grouping (similar to the Wilcoxon rank sum).
+
+    - If ties are present, we will assign the average rank.
+    
+- In computation:
+
+    - We are interested in $R_i$, the sum of ranks for group $i$
+    
+    - We also need the number of tied groups ($g$), indexed by $j$, and the number of observations in each tied group, $t_j$.
+
+## Kruskal-Wallis: No Ties
+
+- **Hypotheses**
+
+    - $H_0: \ M_1 =  ... = M_k$
+    - $H_1:$ at least one $M_i$ is different
+  
+- **Test Statistic**
+
+    - $H^* = \frac{12}{n(n+1)} \sum_{i=1}^k \frac{R_i^2}{n_i} - 3(n+1) \sim \chi^2_{k-1}$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$
+  
+## Kruskal-Wallis: Ties
+
+- **Hypotheses**
+
+    - $H_0: \ M_1 =  ... = M_k$
+    - $H_1:$ at least one $M_i$ is different
+  
+- **Test Statistic**
+
+    - $H = \frac{H^*}{1- \frac{\sum_{j=1}^g (t_j^3 - t_j)}{n^3-n}} \sim \chi^2_{k-1}$ 
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$
+
+## Kruskal-Wallis: R Syntax
+
+- We will use the [`kruskal.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/kruskal.test) function to perform the Kruskal-Wallis test.
+
+```{r, echo = TRUE, eval = FALSE}
+kruskal.test([outcome variable] ~ [grouping variable], 
+             data = [dataset])
+```
+
+## Kruskal-Wallis: Insulation Shields
+
+- Let us now apply the Kruskal-Wallis test to the insulation shield data from earlier,
+
+```{r, echo = TRUE}
+kruskal.test(Diameter ~ Machine, data = long)
+```
+
+## Kruskal-Wallis: Insulation Shields
+
+- **Hypotheses**
+
+    -   $H_0: \ M_{\text{A}} = M_{\text{B}} = M_{\text{C}}$
+    -   $H_1:$ at least one is different
+
+- **Test Statistic and *p*-Value**
+
+    -   $H = 9.891$
+    -   $p = 0.007$
+    
+- **Rejection Region**
+
+    - $p < \alpha$; $\alpha=0.05$.
+
+- **Conclusion/Interpretation**
+
+    -   Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the average diameter is different between the three machines.
+
+## Kruskal-Wallis Post-hoc: Definition
+
+- Like when using ANOVA, we can apply post-hoc testing procedures to the Kruskal-Wallis.
+
+- Instead of using $|\bar{y}_i - \bar{y}_j|$, we will use $|\bar{R}_i - \bar{R}_j|$, where $\bar{R}_i$ is the average rank of group $i$.
+
+- The comparison as defined in the textbook:
+
+    - We declare $M_i \ne M_j$ if $|\bar{R}_i - \bar{R}_j| \ge KW$, where $$ KW = \frac{q_{\alpha}(k, \infty)}{\sqrt{2}} \sqrt{\frac{n(n+1)}{12} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)} $$
+    
+- $q_{\alpha}(k, \infty)$ is the critical value from the Studentized range distribution.
+
+## Kruskal-Wallis Post-hoc: R Syntax
+
+- We will use the [`kruskalmc()`](https://www.rdocumentation.org/packages/pgirmess/versions/2.0.0/topics/kruskalmc) function from the [`pgirmess` package](https://www.rdocumentation.org/packages/pgirmess/versions/2.0.0) to perform the Kruskal-Wallis post-hoc test.
+
+```{r, echo = TRUE, eval = FALSE}
+kruskalmc([outcome variable] ~ [grouping variable], 
+          data = [dataset])
+```
+
+## Kruskal-Wallis Post-hoc: Insulation Shields
+
+- Let us now apply the Kruskal-Wallis post-hoc test to the insulation shield data from earlier,
+
+```{r, echo = TRUE}
+library(pgirmess)
+kruskalmc(Diameter ~ Machine, data = long)
+```
+
+## Kruskal-Wallis Post-hoc: Insulation Shields
+
+- Some summary statistics to help with interpretations/understanding:
+
+    - Machine A: M<sub>A</sub> = `r median(data$"Machine A", na.rm = TRUE)`, IQR<sub>A</sub> = `r IQR(data$"Machine A", na.rm = TRUE)`
+    - Machine B: M<sub>B</sub> = `r median(data$"Machine B", na.rm = TRUE)`, IQR<sub>B</sub> = `r IQR(data$"Machine B", na.rm = TRUE)`
+    - Machine C: M<sub>C</sub> = `r median(data$"Machine C", na.rm = TRUE)`, IQR<sub>C</sub> = `r IQR(data$"Machine C", na.rm = TRUE)`
+
+```{r, echo = FALSE}
+kruskalmc(Diameter ~ Machine, data = long)
+```
+
+- Only Machines A and C are significantly different.
+
+- Machine B is not significantly different from either Machines A or C.
+
+## Wrap Up
+
+- This week we learned about one-way ANOVA and the nonparametric alternative, the Kruskal-Wallis.
+
+    - Recall that ANOVA/KW only tell us that a difference exists.
+    
+    - We must perform posthoc testing to determine *what* differences exist.
+
+- Next week we will learn about two-way ANOVA.
+
+    - This allows us to examine the relationship between our outcome and more than one factor.
+
+

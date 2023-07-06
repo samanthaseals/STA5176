@@ -1,0 +1,494 @@
+---
+title: "One-Way ANOVA"
+subtitle: "STA5176 Lecture 4, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+```{r, echo = FALSE}
+library(tidyverse)
+penguins <- palmerpenguins::penguins
+```
+
+-   We have previously discussed methods for one- and two-sample means
+
+-   Today we will cover one-way ANOVA, the way to test more than two means
+
+    -   we "could" use ANOVA to test two means
+    - this is equivalent to the two-sample *t*-test
+    - *t*^2^ = *F*
+    
+## ANOVA Theory
+    
+- The total sum of squares (SS<sub>Total</sub>) measures the overall variability in the data,
+
+$$ \text{SS}_{\text{Total}} =  \sum_{i=1}^k \sum_{j=1}^{n_i} (y_{ij} - \bar{y})^2 $$
+
+- where
+
+    - $y_{ij}$ is the individual observation and
+    - $\bar{y}$ is the overall mean 
+    
+- In ANOVA, we are decomposing the variance into two pieces: treatment and error.
+
+## ANOVA Theory
+
+- The fundamental ANOVA identity is as follows:
+
+$$ \begin{align*}
+\sum_{i=1}^k \sum_{j=1}^{n_i} (y_{ij} - \bar{y})^2 &= \sum_{i=1}^k \sum_{j=1}^{n_i} (\bar{y}_i - \bar{y})^2 + \sum_{i=1}^k \sum_{j=1}^{n_i} (y_{ij} - \bar{y}_i)^2 \\
+\text{SS}_{\text{Total}} &= \text{SS}_{\text{Treatment}} + \text{SS}_{\text{Error}}
+\end{align*} $$
+
+- where
+
+    - $y_{ij}$ is the individual observation
+    - $\bar{y}_i$ is the mean for group $i$
+    - $\bar{y}$ is the overall mean 
+    
+## ANOVA Theory
+
+- Each sum of square has degrees of freedom:
+
+    - $\text{df}_{\text{Treatment}} = k-1$
+    - $\text{df}_{\text{Error}} = n-k$
+    - $\text{df}_{\text{Total}} = n-1$
+    
+- We can compute mean squares:
+
+    - $\text{MS}_{\text{X}} = \text{SS}_{\text{X}} / \text{df}_{\text{X}}$
+    
+- and the corresponding $F$ statistic:
+
+    - $F_{\text{X}} = \text{MS}_{\text{X}}/\text{MS}_{\text{Error}}$
+    
+## ANOVA Tables
+
+- We can display this information in an ANOVA table,
+
+| **Source** | **SS**           | **df**           | **MS**           | **_F_** |
+|------------|------------------|------------------|------------------|---------|
+| Treatment  | SS<sub>Trt</sub> | df<sub>Trt</sub> | MS<sub>Trt</sub> | *F*<sub>0</sub> |
+| Error      | SS<sub>E</sub>   | df<sub>E</sub>   | MS<sub>E</sub>   |         |
+| Total      | SS<sub>Tot</sub> | df<sub>Tot</sub> |                  |         |
+
+- As we learn other ways to use ANOVA, we will learn how to further partition the variance through the Treatment SS.
+
+## Hypothesis Testing -- Definition
+
+**Hypotheses**
+
+  - $H_0: \ \mu_1 =  ... = \mu_k$
+  - $H_1:$ at least one $\mu_i$ is different
+  
+**Test Statistic**
+
+  - $F_{\text{0}} = \text{MS}_{\text{Treatment}}/\text{MS}_{\text{Error}}$
+   
+- $F_0$ has numerator df df<sub>treatment</sub> and denominator df df<sub>error</sub>
+
+**Rejection Region**
+
+  - Reject $H_0$ if $p < \alpha$
+
+## Hypothesis Testing -- R Syntax
+
+We will use both the [`lm()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/lm) and [`anova()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/anova) functions in R.
+
+  - ANOVA is regression (and regression is ANOVA).
+  - We use `lm()` to define the model.
+  - We use `anova()` to construct the ANOVA table.
+  
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([continuous variable] ~ [grouping variable],
+        data = [dataset])
+anova(m)
+```
+
+Alternatively, we can use the `aov()` and `summary()` functions.
+
+```{r, echo = TRUE, eval = FALSE}
+m <- aov([continuous variable] ~ [grouping variable],
+         data = [dataset])
+summary(m)
+```
+
+## Hypothesis Testing -- Penguins
+
+Let's determine if there is a difference in bill lengths between the three species. Test at the $\alpha=0.01$ level.
+
+```{r, echo = TRUE}
+m1 <- lm(bill_length_mm ~ species, data = penguins)
+anova(m1)
+```
+
+## Hypothesis Testing -- Penguins 
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{Adelie}} = \mu_{\text{Chinstrap}} = \mu_{\text{Gentoo}}$
+-   $H_1:$ at least one is different
+
+**Test Statistic**
+
+-   $F_0 = 410.6$
+
+***p*****-Value**
+
+-   $p < 0.001$
+
+**Conclusion/Interpretation**
+
+-   Reject $H_0$ at the $\alpha=0.01$ level. There is sufficient evidence to suggest that the average bill length is different between the three species.
+
+## Hypothesis Testing -- Disabilities 
+
+- Consider the research study beginning on page 467. Briefly, job candidates with one of five conditions were recorded in a job interview: used a wheelchair, used crutches, was hard of hearing, had a leg amputated, or did not have a disability (control). Fourteen raters for each interview rated the candidate on (1) how well they liked the candidate, (2) their evaluation on the candidate's job qualifications. These responses were used to score each applicant; the resulting data can be seen [here](https://docs.google.com/spreadsheets/d/1Jss-lHPXb0m6rXP32cN3PEY1atP1SVx55rrKGPmE_hU/edit#gid=0).
+- The first question the researchers are interested in: do the raters' average qualification scores differ across the five disability groups?
+
+## Hypothesis Testing -- Disabilities
+
+```{r, echo = TRUE}
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1Jss-lHPXb0m6rXP32cN3PEY1atP1SVx55rrKGPmE_hU/edit#gid=0"))
+head(data, n = 5)
+```
+
+## Hypothesis Testing -- Disabilities
+
+```{r, echo = TRUE}
+long <- data %>%                                
+  pivot_longer(cols = c("Control", "Hearing", "Amputee", "Crutches", "Wheelchair"),
+               names_to = "Disability",
+               values_to = "AvgRating")
+head(long, n = 5)
+```
+
+## Hypothesis Testing -- Disabilities
+
+```{r, echo = TRUE}
+m2 <- aov(AvgRating ~ Disability, data = long)
+summary(m2)
+```
+- Thus, there is a difference in perception among the five groups (*p* = 0.039).
+
+## Post-hoc Testing
+
+- When ANOVA determines there is a difference, it does not specify where the difference is.
+
+- Post-hoc testing allows us to look for differences between groups.
+
+- Consider the following:
+\begin{align*} \text{P}[\text{at least one significant result}] &= 1 - \text{P}[\text{no significant results}] \\
+&= 1 - (1-\alpha)^k
+\end{align*}
+
+- If $\alpha=0.05$ and we are examining 3 groups (3 choose 2 = 3 pairwise comparisons):
+
+$$ 1 - (0.95)^3 = 0.14 $$
+
+- If $\alpha=0.05$ and we are examining 5 groups (5 choose 2 = 10 pairwise comparisons):
+
+$$ 1 - (0.95)^{10} = 0.40 $$
+
+## Post-hoc Testing
+
+- Recall the definition of a type I error ($\alpha$):
+
+\begin{align*}\alpha &= \text{the probability of falsely detecting a significant result} \\
+&= \text{P}[\text{rejecting } H_0 \text{ } | \text{ } H_0 \text{ is true}] \end{align*}
+
+- If we perform post-hoc testing without adjusting $\alpha$, we are inflating the type I error rate.
+
+- Some posthoc procedures adjust $\alpha$, others do not.
+    
+    - "Okay" to not adjust in exploratory studies.
+    
+    - "Should" adjust in confirmatory studies.
+
+- We will focus on procedures that adjust $\alpha$.
+
+## Linear Contrasts -- Definition
+
+- We want to make comparisons among the $k$ population means: $\mu_1$, $\mu_2$, ... , $\mu_k$.
+
+- We can write the comparisons as follows:
+$$ \ell = a_1 \mu_1 + a_2\mu_2 + ... + a_k \mu_k = \sum_{i=1}^k a_i \mu_i, $$
+
+- Note that the $a_i$ are constants and $\sum_{i=1}^k a_i=0$.
+
+- This allows us to set up very specific comparisons.
+
+## Linear Contrasts -- Disabilities
+
+- In the disability example, comparing only those in wheelchairs to those that are amputees:
+$$a_{\text{Control}} = 0, \ a_{\text{Hearing}} = 0, \  a_{\text{Amputee}} = -1, \ a_{\text{Crutches}} = 0, \  a_{\text{Wheelchair}} = 1$$
+
+- In the disability example, comparing only those in wheelchairs or use crutches to the control:
+$$a_{\text{Control}} = -1, \ a_{\text{Hearing}} = 0, \  a_{\text{Amputee}} = 0, \ a_{\text{Crutches}} = \frac{1}{2}, \  a_{\text{Wheelchair}} = \frac{1}{2}$$
+$$a_{\text{Control}} = -2, \ a_{\text{Hearing}} = 0, \  a_{\text{Amputee}} = 0, \ a_{\text{Crutches}} = 1, \  a_{\text{Wheelchair}} = 1$$
+
+## Linear Contrasts -- Definition
+
+- For each linear contrast, we can construct an *F* statistic (i.e., partitioned ANOVA):
+
+$$ F_{\text{Contrast}} = \frac{\left( \sum_{i=1}^k a_i \bar{y}_i \right)^2}{\text{MSE} \sum_{i=1}^k \frac{a_i^2}{n_i}} $$
+
+- The MSE comes from the general ANOVA table.
+
+## Linear Contrasts -- R Syntax
+
+- We will specify contrasts using matrices in R.
+
+- First, we need to verify the order that R "sees" the levels (categories) of the factor (grouping) variable.
+
+```{r, echo = TRUE}
+long$Disability <- as.factor(long$Disability)
+contrasts(long$Disability)
+```
+
+- Then, we can assign the $a_i$ values based on (1) what we are interested in testing, (2) the order that R sees the levels of the factor variable.
+
+```{r, echo = TRUE}
+contrasts(long$Disability) <- cbind(c(-1, 0, 0, 0, 1), 
+                                    c(0, 1, -0.5, 0, -0.5))
+```
+
+## Linear Contrasts  -- R Syntax
+
+- Then, we will request the appropriate tests from the `summary.aov()` function,
+
+```{r, echo = TRUE}
+m1 <- aov(AvgRating ~ Disability, data = long)
+summary.aov(m1, split=list(Disability=list("Amputee vs. Wheel."=1, 
+                                           "Crutch. + Wheel. vs. Ctr."=2)))
+```
+
+## Linear Contrasts -- Adusting $\alpha$
+
+- When testing individual contrasts, we will adjust our $\alpha$ using the [Bonferroni correction](https://en.wikipedia.org/wiki/Bonferroni_correction)
+
+$$\alpha_{\text{B}} = \frac{\alpha}{\text{\# contrasts}}$$
+- In our example, we are looking at 2 contrasts.
+
+$$\alpha_{\text{B}} = \frac{\alpha}{\text{\# contrasts}} = \frac{0.05}{2} = 0.025$$
+
+- Thus, we will compare the *p*-values to $\alpha_{\text{B}}$ = 0.025.
+
+## Linear Contrasts  -- Disabilities
+
+- Evaluating the linear contrasts with $\alpha_{\text{B}}$ = 0.025,
+
+```{r, echo = TRUE}
+summary.aov(m1, split=list(Disability=list("Amputee vs. Wheel."=1, 
+                                           "Crutch. + Wheel. vs. Ctr."=2)))
+```
+
+- There is not a difference in ratings between amputees and those in wheelchairs (*p* = 0.150).
+
+- There is not a difference in ratings when comparing those using crutches or in wheelchairs together against the control group (*p* = 0.341).
+
+## Linear Contrasts -- Disabilities
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{Amputee}} = \mu_{\text{Wheelchair}}$
+-   $H_1: \ \mu_{\text{Amputee}} \ne \mu_{\text{Wheelchair}}$
+
+**Test Statistic**
+
+-   $F_0 = 2.12$
+
+***p*****-Value**
+
+-   $p = 0.150$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ ($\alpha_{\text{B}}$ = 0.025) level. There is not sufficient evidence to suggest that the average ratings are different between those that are amputees and those that are in wheelchairs.
+
+## Linear Contrasts -- Disabilities
+
+**Hypotheses**
+
+-   $H_0: \ \mu_{\text{Crutches}} + \mu_{\text{Wheelchair}} = \mu_{\text{Control}}$
+-   $H_1: \ \mu_{\text{Amputee}} + \mu_{\text{Wheelchair}} \ne \mu_{\text{Control}}$
+
+**Test Statistic**
+
+-   $F_0 = 0.920$
+
+***p*****-Value**
+
+-   $p = 0.341$
+
+**Conclusion/Interpretation**
+
+-   Fail to reject $H_0$ at the $\alpha=0.05$ ($\alpha_{\text{B}}$ = 0.025) level. There is not sufficient evidence to suggest that the average ratings are different between those that either use crutches or are in a wheelchair and those that do not present with a disability.
+
+## Tukey's Test -- Definition
+
+- Tukey's test allows us to do all pairwise comparisons while controlling $\alpha$.
+
+- The comparison as defined in the textbook:
+
+    - We declare $\mu_i \ne \mu_j$ if $|\bar{y}_i - \bar{y}_j| \ge W$, where $$ W = \frac{q_{\alpha}(k, \text{df}_{\text{E}})}{\sqrt{2}} \sqrt{\text{MSE} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)} $$
+- $q_{\alpha}(k, \text{df}_{\text{E}})$ is the critical value from the Studentized range distribution.
+
+## Tukey's Test -- R Syntax
+
+- We will use the [`TukeyHSD()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/TukeyHSD) function from the stats package to perform Tukey's test.
+
+```{r, echo = TRUE, eval = FALSE}
+TukeyHSD([model])$[grouping variable]
+```
+
+- The *p*-values are adjusted, so you can directly compare them to the specified $\alpha$.
+
+## Tukey's Test -- Disabilities
+
+- In the disability example,
+
+```{r, echo = TRUE}
+round(TukeyHSD(m1)$Disability, 3)
+```
+
+- There is a difference between those hard of hearing and those that use crutches (*p* = 0.037). 
+
+    - Because $\bar{y}_{\text{Hearing}} - \bar{y}_{\text{Crutches}}$ < 0, those that are hard of hearing are rated lower than those using crutches.
+    
+## Fisher's Test
+
+- Fisher's allows us to test all pairwise comparisons but \textbf{does not} control the $\alpha$.
+
+- The underlying idea of the comparison:
+
+    - We declare $\mu_i \ne \mu_j$ if $|\bar{y}_i - \bar{y}_j| \ge \text{LSD}$, where $$ \text{LSD} = t_{1-\alpha/2, \text{df}_\text{E}} \sqrt{\text{MSE} \left( \frac{1}{n_i} + \frac{1}{n_j} \right)} $$
+
+## Fisher's Test
+
+- We will use the [`LSD.test()`](https://www.rdocumentation.org/packages/agricolae/versions/1.3-5/topics/LSD.test) function from the [`agricolae`](https://www.rdocumentation.org/packages/agricolae/versions/1.3-5) package.
+
+    - Note that, like Tukey's, this requires us to have created our model using the `aov()` function.
+
+```{r, eval = FALSE}
+library(agricolae)
+results <- summary(m)
+(LSD.test([dataset]$[continuous], # continuous outcome
+          [dataset]$[grouping], # grouping variable
+          results[[1]]$Df[2], # df_E
+          results[[1]]$`Mean Sq`[2], # MSE
+          alpha = [alpha level]) # can omit if alpha = 0.05
+  )[5] # limit to only the pairwise comparison results
+```
+
+## Fisher's Test -- Disabilities
+
+- In the disability example,
+
+```{r, echo = TRUE}
+library(agricolae)
+results <- summary(m1)
+LSD.test(long$AvgRating, 
+         long$Disability, 
+         results[[1]]$Df[2], 
+         results[[1]]$`Mean Sq`[2],
+         alpha = 0.05)[5]
+```
+
+- Which are significantly different at the $\alpha=0.05$ level?
+
+## Fisher's Test -- Disabilities
+
+- In the disability example,
+
+```{r, echo = FALSE}
+library(agricolae)
+results <- summary(m1)
+LSD.test(long$AvgRating, 
+         long$Disability, 
+         results[[1]]$Df[2], 
+         results[[1]]$`Mean Sq`[2],
+         alpha = 0.05)[5]
+```
+
+- Which are significantly different at the $\alpha=0.01$ level?
+
+    - There is a difference between those hard of hearing and those that use crutches. 
+        
+    - There is a difference between those hard of hearing and wheelchair users.
+  
+
+## Dunnett's Test -- Definition
+
+- Dunnett's test allows us to do all pairwise comparisons against only the control, while controlling $\alpha$.
+
+    - This has fewer comparisons than Tukey's because we are not comparing non-control groups to one another.
+    
+    - i.e., we are sharing the $\alpha$ between fewer comparisons now, which is preferred if we are not interested in the comparisons between non-control groups.
+
+- The comparison as defined in the textbook:
+
+    - We declare $\mu_i \ne \mu_j$ if $|\bar{y}_i - \bar{y}_j| \ge D$, where
+    
+$$ D = d_{\alpha}(k-1, \text{df}_{\text{E}}) \sqrt{\text{MSE} \left( \frac{1}{n_i} + \frac{1}{n_c} \right)} $$
+- $d_{\alpha}(k-1, \text{df}_{\text{E}})$ is the critical value from Dunnett's table.
+
+## Dunnett's Test -- R Syntax
+
+- We will use the [`DunnettTest()`](https://www.rdocumentation.org/packages/DescTools/versions/0.99.32/topics/DunnettTest) function from the DescTools package to perform Dunnett's test.
+
+```{r, echo = TRUE, eval = FALSE}
+DunnettTest(x=[dataset]$[outcome], 
+            g=[dataset]$[grouping variable], 
+            control = "[name of control group]")
+```
+
+- The *p*-values are adjusted, so you can directly compare them to the specified $\alpha$.
+
+## Dunnett's Test -- Disabilities
+
+- In the disability example,
+
+```{r, echo = TRUE}
+library(DescTools)
+DunnettTest(x=long$AvgRating, 
+            g=long$Disability, 
+            control = "Control")
+```
+
+- Thus, none of the disabilities are significantly different from the control group.
+
+## Conclusions
+
+- One-way ANOVA allows us to determine if there is a difference among several means.
+
+    - The two-sample *t*-test is a special case of ANOVA!
+    
+- Post-hoc testing allows us to determine what differences exist.
+
+    - Linear contrasts allow us to specify "non-pairwise" comparisons (e.g., group 1 + group 2 vs. group 3 + group 4).
+    
+    - Tukey's performs all pairwise comparisons, whether we are interested in all of them or not.
+    
+    - Dunnett's only performs pairwise comparisons with the control group.
+    
+- In this course, we focus on post-hoc testing that adjusts $\alpha$, but there are other methods that do not.
+
+
+

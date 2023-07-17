@@ -1,0 +1,620 @@
+---
+title: "Two-Way ANOVA"
+subtitle: "STA5176 Lecture 6, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+## Introduction
+
+- Previously, we discussed one-way ANOVA.
+
+    - One-way ANOVA has one factor, or grouping variable.
+    
+- Now, we will discuss ANOVA for designs with multiple factors.
+
+    - We will focus on two-way ANOVA, however, this can be extended to multiple factors.
+    
+- We will see that as we increase the number of factors, the ANOVA table becomes more complicated.
+
+## Factorial Treatment Structure
+
+- **Factorial treatment structure:** An experiment in which the response (*y*) is observed at all factor-level combinations of the independent variables.
+
+- Consider two factors:
+
+    - A with three levels (*a* = 3)
+    - B with two levels (*b* = 2)
+    
+- We have *ab* = 6 treatment groups:
+
+    - A1B1, A1B2
+    - A2B1, A2B2
+    - A3B1, A3B2
+
+- We now have what we call replicates in each treatment group.
+
+    - i.e., more than one value observed for each A1B1, A1B2, A2B1, A2B2, A3B1, and A3B2.
+    
+- This allows for us to examine interaction terms.
+
+## Interaction Terms
+
+- **Interaction**: The difference in the mean responses for two levels of one factor is not constant across levels of the second factor.
+
+- Generic definition: The relationship between the outcome and one factor depends on the level of a second factor.
+
+- Graphically, if we plot the means of the treatment groups, we should see either an intersection or a potential intersection.
+
+## Interaction Terms
+
+- Example for demonstration:
+
+    - An experimenter is interested in examining the effects of nitrogen and phosphorous on the yield of a crop. Two levels of each have been selected for the study. For nitrogen, 40 and 60 pounds per plot are examined. For phosphorous, 10 and 20 pounds per plot are examined. Thus, there are four possible combinations:
+    
+        - N40, P10
+        - N40, P20
+        - N60, P10
+        - N60, P20
+
+## Interaction Terms
+
+<img src="images/L09a.png">
+
+## Interaction Terms
+
+<img src="images/L09b.png">
+
+## Two-Way ANOVA
+
+- We can now write the ANOVA model as follows: $$ y_{ijk} = \mu + \tau_i + \beta_j + \tau \beta_{ij} + \varepsilon_{ijk} $$ where
+
+    - $y_{ijk}$ is the *k*<sup>th</sup> observation from the *i*<sup>th</sup> level of factor A and the *j*<sup>th</sup> level of factor B
+    
+    - $\mu$ is the overall mean
+    
+    - $\tau_i$ is the effect due to the *i*<sup>th</sup> level of factor A 
+    
+    - $\beta_j$ is the effect due to  the *j*<sup>th</sup> level of factor B
+    
+    - $\tau \beta_{ij}$ is the interaction effect of the *i*<sup>th</sup> level of factor A with the *j*<sup>th</sup> level of factor B 
+    
+    - $\varepsilon_{ijk} \sim N(0, \sigma^2)$, the random error associated with the *k*<sup>th</sup> observation from the *i*<sup>th</sup> level of factor A and the *j*<sup>th</sup> level of factor B
+
+## Two-Way ANOVA
+
+- Using the two-way ANOVA model, we represent the mean of each treatment group: $$ \text{E}[y_{ijk}] = \mu_{ij} = \mu + \tau_i + \beta_j + \tau \beta_{ij}  $$
+
+- We can also simplify the two-way ANOVA model if there is not an interaction between factors A and B: $$ y_{ijk} = \mu + \tau_i + \beta_j + \varepsilon_{ijk} $$
+
+- Recall,     
+
+    - $\mu$ is the overall mean
+    
+    - $\tau_i$ is the effect due to the *i*<sup>th</sup> level of factor A 
+    
+    - $\beta_j$ is the effect due to  the *j*<sup>th</sup> level of factor B
+    
+    - $\tau \beta_{ij}$ is the interaction effect of the *i*<sup>th</sup> level of factor A with the *j*<sup>th</sup> level of factor B 
+    
+    - $\varepsilon_{ijk} \sim N(0, \sigma^2)$, is the random error
+
+## Two-Way ANOVA
+
+- The ANOVA table we are working towards:
+
+
+| **Source** | **SS**           | **df**           | **MS**           | **_F_** |
+|------------------------------|------------------|------------------|------------------|---------|
+| Main Effect - Factor A  | SS<sub>A</sub> | df<sub>A</sub> | MS<sub>A</sub> | *F*<sub>A</sub> |
+| Main Effect - Factor B  | SS<sub>B</sub> | df<sub>B</sub> | MS<sub>B</sub> | *F*<sub>B</sub> |
+| Interaction - A $\times$ B  | SS<sub>AB</sub> | df<sub>AB</sub> | MS<sub>AB</sub> | *F*<sub>AB</sub> |
+| Error      | SS<sub>E</sub>   | df<sub>E</sub>   | MS<sub>E</sub>   |         |
+| Total      | SS<sub>Tot</sub> | df<sub>Tot</sub> |                  |         |
+
+## Two-Way ANOVA
+
+- We will not review the SS formulas, however, they are developed in the book beginning on page 815.
+
+- The df will take the same form as before:
+
+    - df<sub>Tot</sub> = *abn* - 1, or the total sample size - 1
+    - df<sub>A</sub> = *a* - 1, or the number of groups in factor A - 1
+    - df<sub>B</sub> = *b* - 1, or the number of groups in factor B - 1
+    - df<sub>AB</sub> = (*a* - 1)(*b* - 1), or df<sub>A</sub> $\times$ df<sub>B</sub>
+    - df<sub>E</sub> = *ab*(*n* - 1), or df<sub>Tot</sub> - (df<sub>A</sub> + df<sub>B</sub> + df<sub>AB</sub>)
+
+- The MS will take the same form as before: MS<sub>X</sub> = SS<sub>X</sub> / df<sub>X</sub>
+
+- The *F* will take the same form as before: MS<sub>X</sub> / MS<sub>E</sub>
+
+## Two-Way ANOVA: R Syntax
+
+- We will again use `lm()` and `anova()` OR `aov()` and `summary()` to analyze the data.
+
+- As we are specifying our model, we will:
+    - include additional terms with +
+    - include interaction terms with :
+    
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([outcome] ~ [factor A] + [factor B] + [factor A]:[factor B],
+        data = [dataset])
+anova(m)
+```
+
+OR
+
+```{r, echo = TRUE, eval = FALSE}
+m <- aov([outcome] ~ [factor A] + [factor B] + [factor A]:[factor B],
+         data = [dataset])
+summary(m)
+```
+
+## Two-Way ANOVA: Example
+
+- An experiment was conducted to investigate the heat loss for five different designs for commercial thermal panes. The researcher, in order to obtain results that would be applicable throughout most regions of the country, decided to evaluate the panes at five temperatures: 0$^\circ$F, 20$^\circ$F, 40$^\circ$F, 60$^\circ$F, and 80$^\circ$F. A sample of 10 panes of each design was obtained. Two panes of each design were randomly assigned to each of the five exterior temperature settings. The interior temperature of the test was controlled at 70$^\circ$F for all five exterior temperatures. The heat losses associated with the five pane designs are given in the Google Sheet linked below.
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+library(gsheet)
+library(tidyverse)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1MNgpPyIp9tkcTgN3UHklayqQS1tT0pFDYS9oIIqICtg/edit#gid=0"))
+```
+
+## Two-Way ANOVA: Example
+
+```{r, echo = TRUE}
+head(data)
+```
+
+## Two-Way ANOVA: Example
+
+```{r, echo = TRUE}
+m1 <- lm(`Heat Loss` ~ as.factor(`Pane Design`) + as.factor(`Ext Temp (F)`) + as.factor(`Pane Design`):as.factor(`Ext Temp (F)`), data = data)
+anova(m1)
+```
+
+## Two-Way ANOVA: Testing Interactions
+
+**Hypotheses**
+
+- $H_0:$ There is not an interaction between factor A and factor B ($\tau \beta_{1,1} = ... = \tau \beta_{a,b} = 0$)
+- $H_1:$ There is an interaction between factor A and factor B (at least one $\tau \beta_{i,j} \ne 0$)
+
+**Test Statistic** 
+
+- $F_{\text{AB}} = \text{MS}_{\text{AB}} / \text{MS}_{\text{E}}$
+
+***p*-Value**
+
+- $p = \text{P}[F_{\text{df}_{\text{AB}}, \text{df}_{\text{E}}} \ge F_{\text{AB}}]$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Two-Way ANOVA: Example
+
+```{r, echo = TRUE}
+anova(m1)
+```
+
+## Two-Way ANOVA: Example 
+
+**Hypotheses**
+
+- $H_0:$ There is not an interaction between the pane design and the external temperature
+- $H_1:$ There is an interaction between the pane design and the external temperature
+
+**Test Statistic and *p*-Value** 
+
+- $F_{\text{AB}} = 3.566$
+
+- $p = 0.002$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$. There is sufficient evidence that there is an interaction between the pane design and the external temperature. The relationship between heat loss and external temperature depends on the pane design. 
+
+- Alternatively, we can say that the relationship between heat loss and pane design depends on the external temperature.
+    
+## Main Effects
+
+- What happens when the interaction term is not statistically significant? (i.e., $p \ge \alpha$)
+
+    - We will remove the interaction term from our model, rerun, and test factors A and B individually.
+
+**With the interaction:**
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([outcome] ~ [factor A] + [factor B] + [factor A]:[factor B],
+        data = [dataset])
+anova(m)
+```
+
+**Without the interaction:**
+```{r, echo = TRUE, eval = FALSE}
+m <- lm([outcome] ~ [factor A] + [factor B],
+        data = [dataset])
+anova(m)
+```
+
+- When the interaction is in the model, **we cannot comment on main effects**!
+
+## Main Effects: Example
+
+- Recall the heat loss example. Suppose that the interaction term was not significant. Let's now remove the interaction term.
+
+```{r, echo = TRUE}
+m2 <- lm(`Heat Loss` ~ as.factor(`Pane Design`) + as.factor(`Ext Temp (F)`), data = data)
+anova(m2)
+```
+
+## Main Effects: Testing Factor A
+
+**Hypotheses:**
+
+- $H_0:$ There is not a main effect of factor A ($\tau_1 = ... = \tau_a = 0$)
+- $H_1:$ There is a main effect of factor A (at least one $\tau_i \ne 0$)
+
+**Test Statistic** 
+
+- $F_{\text{A}} = \text{MS}_{\text{A}} / \text{MS}_{\text{E}}$ 
+
+***p*-Value**
+
+- $p = \text{P}[F_{\text{df}_{\text{A}}, \text{df}_{\text{E}}} \ge F_{\text{A}}]$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Main Effects: Testing Factor B
+
+**Hypotheses:**
+
+- $H_0:$ There is not a main effect of factor B ($\beta_1 = ... = \beta_b = 0$)
+- $H_1:$ There is a main effect of factor B (at least one $\beta_j \ne 0$)
+
+**Test Statistic** 
+
+- $F_{\text{B}} = \text{MS}_{\text{B}} / \text{MS}_{\text{E}}$ 
+
+***p*-Value**
+
+- $p = \text{P}[F_{\text{df}_{\text{B}}, \text{df}_{\text{E}}} \ge F_{\text{B}}]$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha$
+
+## Main Effects: Example
+
+- In the heat loss example,
+
+```{r, echo = TRUE}
+anova(m2)
+```
+
+## Main Effects: Example 
+
+**Hypotheses:**
+
+- $H_0:$ There is not a main effect of pane design ($\tau_1 = ... = \tau_5 = 0$)
+- $H_1:$ There is a main effect of pain design (at least one $\tau_i \ne 0$)
+
+**Test Statistic and *p*-Value** 
+
+- $F_{\text{A}} = 3.263$ 
+
+- $p = 0.021$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha; \ \alpha = 0.05$.
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest a main effect of pane design.
+- That is, there is a difference in heat loss across the different pane designs.
+
+## Main Effects: Example 
+
+**Hypotheses:**
+
+- $H_0:$ There is not a main effect of external temperature ($\beta_1 = ... = \beta_5 = 0$)
+- $H_1:$ There is a main effect of external temperature (at least one $\beta_j \ne 0$)
+
+**Test Statistic and *p*-Value** 
+
+- $F_{\text{B}} = 26.604$  
+
+- $p < 0.001$
+
+**Rejection Region**
+
+- Reject $H_0$ if $p < \alpha; \ \alpha = 0.05$.
+
+**Conclusion/Interpretation**
+
+- Reject $H_0$. There is sufficient evidence to suggest a main effect of external temperature.
+- That is, there is a difference in heat loss across different external temperatures.
+
+## Interactions
+
+- Remember, interactions mean that the relationship between the outcome and one factor depend on the level of another factor.
+
+- e.g., the relationship between grade in General Chemistry I and classification (freshman, sophomore, junior, or senior) depends on the level of major (STEM, non-STEM)
+
+- Now, we want to pry inside of the interaction so that we can communicate its meaning to non-statisticians/non-data scientists.
+
+## Profile Plots
+
+- If we detect an interaction term, we must give meaning to it.
+
+- An easy way to do this is to plot the treatment group means to visualize the interaction. This is called a profile plot.
+
+    - *y*-axis: always the average outcome
+    
+    - *x*-axis: either factor A or B
+    
+        - if only one factor is ordinal, use it for the *x*-axis
+        
+        - if there are two ordinal or two nominal factors, select the factor with the largest number of levels for the *x*-axis
+        
+    - lines on the plot: the factor that was not selected for the *x*-axis
+
+## Profile Plots: Example
+
+- Let's first find the treatment means for the heat loss data,
+
+```{r, echo = TRUE, warning = FALSE, message = FALSE}
+library(gsheet)
+library(tidyverse)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1MNgpPyIp9tkcTgN3UHklayqQS1tT0pFDYS9oIIqICtg/edit#gid=0"))
+
+means <- data %>%
+  group_by(`Pane Design`, `Ext Temp (F)`) %>%
+  summarize(mean = mean(`Heat Loss`)) %>%
+  ungroup()
+
+head(means, n = 3)
+```
+
+## Profile Plots: Example
+
+- The average heat loss will go on our *y*-axis.
+
+- Because only external temperature is ordinal, it will go on our *x*-axis.
+
+- Thus, the lines will represent the pane design.
+
+    - This means I want to restructure the dataset with the means to have a column for each of the pane designs.
+
+```{r, echo = TRUE}
+A <- means %>% filter(`Pane Design` == "A") %>% rename(A = mean) %>% select(-`Pane Design`)
+B <- means %>% filter(`Pane Design` == "B") %>% rename(B = mean) %>% select(-`Pane Design`)
+C <- means %>% filter(`Pane Design` == "C") %>% rename(C = mean) %>% select(-`Pane Design`)
+D <- means %>% filter(`Pane Design` == "D") %>% rename(D = mean) %>% select(-`Pane Design`)
+E <- means %>% filter(`Pane Design` == "E") %>% rename(E = mean) %>% select(-`Pane Design`)
+graph <- full_join(A, B, by = "Ext Temp (F)")
+graph <- full_join(graph, C, by = "Ext Temp (F)")
+graph <- full_join(graph, D, by = "Ext Temp (F)")
+graph <- full_join(graph, E, by = "Ext Temp (F)")
+graph <- graph %>% mutate(`Ext Temp (F)` = as.factor(`Ext Temp (F)`))
+```
+
+## Profile Plots: Example
+
+```{r, echo = TRUE}
+head(graph)
+```
+
+## Profile Plots: Example
+
+- Building profile plots using `ggplot()` is a process.
+
+    - First, include a `geom_line()` for each level of the factor creating the lines.
+    
+```{r, echo = TRUE, eval = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "pink") +
+  geom_line(aes(y = B), color = "purple") + 
+  geom_line(aes(y = C), color = "blue") + 
+  geom_line(aes(y = D), color = "green") + 
+  geom_line(aes(y = E), color = "black") + 
+  theme_bw()
+```
+
+## Profile Plots: Example
+
+<center>
+```{r, echo = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "pink") +
+  geom_line(aes(y = B), color = "purple") + 
+  geom_line(aes(y = C), color = "blue") + 
+  geom_line(aes(y = D), color = "green") + 
+  geom_line(aes(y = E), color = "black") + 
+  theme_bw()
+```
+</center>
+
+
+## Profile Plots: Example
+
+- Building profile plots using `ggplot()` is a process.
+
+    - Then, add `geom_text()` to label each line (use the line colors to make sure everything is labeled properly).
+    
+```{r, echo = TRUE, eval = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "pink") +
+  geom_line(aes(y = B), color = "purple") + 
+  geom_line(aes(y = C), color = "blue") + 
+  geom_line(aes(y = D), color = "green") + 
+  geom_line(aes(y = E), color = "black") + 
+  geom_text(aes(x = "85" , y = 7.5, label = "A & B"))  +
+  geom_text(aes(x = "85" , y = 8, label = "C"))  +
+  geom_text(aes(x = "85" , y = 8.2, label = "D"))  +
+  geom_text(aes(x = "85" , y = 9.55, label = "E"))  +
+  theme_bw()
+```
+
+
+## Profile Plots: Example
+
+<center>    
+```{r, echo = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "pink") +
+  geom_line(aes(y = B), color = "purple") + 
+  geom_line(aes(y = C), color = "blue") + 
+  geom_line(aes(y = D), color = "green") + 
+  geom_line(aes(y = E), color = "black") + 
+  geom_text(aes(x = "85" , y = 7.5, label = "A & B"))  +
+  geom_text(aes(x = "85" , y = 8, label = "C"))  +
+  geom_text(aes(x = "85" , y = 8.2, label = "D"))  +
+  geom_text(aes(x = "85" , y = 9.55, label = "E"))  +
+  theme_bw()
+```
+</center>
+
+## Profile Plots: Example
+
+- Building profile plots using `ggplot()` is a process.
+
+    - Then, clean up time:
+    
+        - Fix axis titles
+        - Change line colors
+    
+    - Because of the context, we will likely be recommending panel design A (pink) or B (purple) as they have the least heat loss across all temperatures. 
+    
+        - Thus, we will change A & B's lines to black while changing C, D, & E's lines to gray.
+        
+## Profile Plots: Example
+    
+```{r, echo = TRUE, eval = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "black") +
+  geom_line(aes(y = B), color = "black") + 
+  geom_line(aes(y = C), color = "gray") + 
+  geom_line(aes(y = D), color = "gray") + 
+  geom_line(aes(y = E), color = "gray") + 
+  geom_text(aes(x = "85" , y = 7.5, label = "A & B"))  +
+  geom_text(aes(x = "85" , y = 8, label = "C"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 8.2, label = "D"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 9.55, label = "E"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 10, label = "Panel Design"))  +
+  xlab("External Temperature (Fahrenheit)") +
+  ylab("Average Heat Loss") +
+  theme_bw()
+```
+
+## Profile Plots: Example
+    
+<center>    
+```{r, echo = FALSE}
+graph %>% 
+  ggplot(aes(x = `Ext Temp (F)`, group = 1)) +
+  geom_line(aes(y = A), color = "black") +
+  geom_line(aes(y = B), color = "black") + 
+  geom_line(aes(y = C), color = "gray") + 
+  geom_line(aes(y = D), color = "gray") + 
+  geom_line(aes(y = E), color = "gray") + 
+  geom_text(aes(x = "85" , y = 7.5, label = "A & B"))  +
+  geom_text(aes(x = "85" , y = 8, label = "C"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 8.2, label = "D"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 9.55, label = "E"), color = "gray")  +
+  geom_text(aes(x = "85" , y = 10, label = "Panel Design"))  +
+  xlab("External Temperature (Fahrenheit)") +
+  ylab("Average Heat Loss") +
+  theme_bw()
+```
+</center>
+
+## Profile Plots
+
+- Profile plots give us (statisticians and data scientists) a visualization to see what's going on.
+
+- I try to give a summary based on profile plots:
+
+    - e.g., in the heat loss example: For panel designs A, B, C, and D, heat loss decreases as external temperature increases. Interestingly, panel design E has consistent heat loss across external temperatures, hovering around 9.5$^\circ$F. Outside of that specific panel design, panel designs C & D consistently have higher heat loss than panel designs A & B. 
+    
+- As can be seen, the profile plots creation process is entirely dependent on the data at hand + the story being told. 
+
+    - Sometimes we will look at something and decide it isn't the best way to visualize. 
+    
+    - Sometimes we need to consult with who we are working with to see how to change our visualization to help their understanding or to be more useful for their purposes.
+    
+## Main Effects
+
+- Recall that when the interaction term is not significant, we must remove it from our ANOVA model and test the main effects.
+
+- Also recall from one-way ANOVA -- the test is just telling us if a difference exists, not where the specific difference is.
+
+- We will now look at posthoc testing in two-way ANOVA.
+
+- We will focus on the application of Tukey's test, though others are possible. 
+
+## Tukey's Test
+
+- First, recall the two-way ANOVA without the interaction term between pane design and external temperature.
+
+```{r, echo = TRUE}
+m1 <- aov(`Heat Loss` ~ as.factor(`Pane Design`) + as.factor(`Ext Temp (F)`), data = data)
+summary(m1)
+```
+
+- We will perform Tukey's on both pane design and external temperature.
+
+## Tukey's Test
+
+```{r, echo = TRUE}
+TukeyHSD(m1, which = "as.factor(`Pane Design`)") 
+```
+
+- Only panel designs A and D are significantly different (*p* = 0.027).
+
+
+## Tukey's Test
+
+```{r, echo = TRUE}
+TukeyHSD(m1, which = "as.factor(`Ext Temp (F)`)") 
+```
+
+- 0$^\circ$F is significantly different from all higher temperatures (all *p* < 0.040)
+- 20$^\circ$F is not significantly different from 40$^\circ$F (*p* = 0.999), but is significantly different from temperatures 60$^\circ$F and above (all *p* < 0.001)
+- 40$^\circ$F is significantly different from all higher temperatures (all *p* < 0.002)
+- 60$^\circ$F is not significantly different from 80$^\circ$F (*p* = 0.412)
+
+## Conclusions
+
+- We must take things a step further to provide interpretations to those we are working with.
+
+- Note 1: profile plots are valid for models without significant interactions.
+
+- Note 2: we could perform Tukey's test on the interaction term to see which treatment groups are significantly different.
+
+    - In the current example, that's too many treatment groups to do pairwise comparisons with given the sample size.

@@ -1027,139 +1027,277 @@ data %>% ggplot(aes(x = flipper_length_mm, y = body_mass_g)) +
 ```
 </center>
 
-## Model Visualization: Example 2
+## Regression Diagnostics: Introduction
 
-- Let's create a model using the penguin data,
+- Now let's discuss regression diagnostics:
 
-```{r, echo = TRUE}
-c1 <- coefficients(m1)
-c1
-```    
+    - Outliers
     
-- Let's have bill length on the *x*-axis. This means we will plug in for flipper length,
+    - Influential/leverage points
+    
+    - Collinearity
+    
+- Note that if we find an issue data point, we need to determine how it is affecting the results.
 
-```{r, echo = TRUE}
-quantile(data$flipper_length_mm, na.rm = TRUE)
+    - First instinct should **not** be to throw out an observation.
+    
+    - We will only remove a data point if we have a **non-statistical** reason to do so.
+    
+## Outliers
+
+- Definition: data values that are much larger or smaller than the rest of the values in the dataset.
+
+- We will look at the standardized residuals, $$ e_{i_{\text{standardized}}} = \frac{e_i}{\sqrt{\text{MSE}(1-h_i)}}, $$ where
+
+    - $e_i = y_i - \hat{y}_i$ is the residual of the $i$^th^ observation
+    - $h_i$ is the leverage of the $i$^th^ observation
+    
+- If $|e_{i_{\text{standardized}}}| > 2.5 \ \to \ $ outlier.
+
+- If $|e_{i_{\text{standardized}}}| > 3 \ \to \ $ extreme outlier.
+
+## Outliers: R Syntax
+
+- We will use the `rstandard()` function to find the residuals.
+
+- For ease of examining in large datasets, we will use it to create a "flag."
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] <- [dataset] %>%
+  mutate(outlier = abs(rstandard([m]))>2.5)
 ```
 
-- Let's create lines for bill lengths of 35, 45, and 55 mm.
+- We can count the number of outliers,
+
+```{r, echo = TRUE, eval = FALSE}
+[dataset] %>% count(outlier)
+```
+
+- We can just look at outliers from the dataset,
+
+```{r, echo = TRUE, eval = FALSE}
+[new dataset] <- [dataset] %>% 
+  filter(outlier == TRUE)
+```
+
+- We can also exclude outliers from the dataset,
+
+```{r, echo = TRUE, eval = FALSE}
+[new dataset] <- [dataset] %>% 
+  filter(outlier == FALSE)
+```
+
+## Example
+
+- Recall the penguin data and the model,
 
 ```{r, echo = TRUE}
+data <- palmerpenguins::penguins
+m1 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data)
+summary(m1)
+```
+
+$$ \hat{y} = -5536.90 + 6.05 \text{ bill} + 48.15 \text{ flipper} $$
+
+## Outliers: Example
+
+- Let's check for outlier penguins,
+
+```{r, echo = TRUE, error = TRUE}
 library(tidyverse)
-data <- data %>%
-  mutate(f175 = c1[1] + c1[2]*bill_length_mm + c1[3]*175,
-         f200 = c1[1] + c1[2]*bill_length_mm + c1[3]*200,
-         f225 = c1[1] + c1[2]*bill_length_mm + c1[3]*225)
-``` 
+data <- data %>% mutate(outlier = abs(rstandard(m1))>2.5)
+```
 
-## Model Visualization: Example 2
+- Uh oh! This doesn't work!
 
-- Now we can construct the graph using ``ggplot()``:
+- R is telling us that we are trying to mutate a dataset with 344 observations using a model that was constructed on 342 observations.
+
+    - Two penguins were excluded from the model due to missing data.
+
+## Outliers: Example
+
+- Let's try this again,
 
 ::: {.panel-tabset}
 
 ## Code
-
 ```{r, echo = TRUE, eval = FALSE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "pink") +
-  geom_line(aes(y = f200), color = "purple") +
-  geom_line(aes(y = f225), color = "blue") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  theme_bw()
+data2 <- palmerpenguins::penguins %>% 
+  select(body_mass_g, bill_length_mm, flipper_length_mm) %>%
+  na.omit() %>% 
+  mutate(obs = row_number())
+
+m1 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data2)
+summary(m1)
 ```
 
-## Graph
-
-<center>
+## Output
 ```{r, echo = FALSE, eval = TRUE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "pink") +
-  geom_line(aes(y = f200), color = "purple") +
-  geom_line(aes(y = f225), color = "blue") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  theme_bw()
+data2 <- palmerpenguins::penguins %>% 
+  select(body_mass_g, bill_length_mm, flipper_length_mm) %>%
+  na.omit() %>% 
+  mutate(obs = row_number())
+
+m1 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data2)
+summary(m1)
 ```
-</center>
 
 :::
 
+$$ \hat{y} = -5536.90 + 6.05 \text{ bill} + 48.15 \text{ flipper} $$
 
-## Model Visualization: Example 2
+## Outliers: Example
 
-- After iterations of tweaking it, we have our final graph:
+- Let's again check for outlier penguins,
 
-::: {.panel-tabset}
+```{r, echo = TRUE}
+data2 <- data2 %>% mutate(outlier = abs(rstandard(m1))>2.5)
+head(data2)
+```
 
-## Previous Code
+## Outliers: Example
+
+- How many penguins are outliers?
+
+```{r, echo = TRUE}
+data2 %>% count(outlier)
+```
+
+## Outliers: Example
+
+- Let's look at the outliers,
+
+```{r, echo = TRUE}
+data3 <- data2 %>% filter(outlier == TRUE)
+head(data3)
+```
+
+## Influence and Leverage
+
+- Influence: A measure of how much the slope is affected by the observation.
+
+- Leverage: A measure of the "extremeness" of an observation with respect to the independent variables.
+
+- Cook's Distance ($d_i$): Measures the extent to which the estimates of the regression coefficients change when an observation is deleted from the analysis.
+
+$$ d_i = \left( \frac{1}{k+1} \right) \left( \frac{h}{1-h_i} \right) e_{i_{\text{standardized}}} $$
+
+- We will use the graphical assessment and look for "spikes."
+
+## Influence and Leverage: R Syntax
+
+- We will use the [`gg_cooksd()`](https://www.rdocumentation.org/packages/lindia/versions/0.9/topics/gg_cooksd) function from the [`lindia`](https://www.rdocumentation.org/packages/lindia/versions/0.9) package.
 
 ```{r, echo = TRUE, eval = FALSE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "pink") +
-  geom_line(aes(y = f200), color = "purple") +
-  geom_line(aes(y = f225), color = "blue") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  theme_bw()
+gg_cooksd([m]) 
 ```
 
-## Previous Graph
+- Note that this is built in `ggplot()` -- you can add on as you wish
 
-<center>
-```{r, echo = FALSE, eval = TRUE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "pink") +
-  geom_line(aes(y = f200), color = "purple") +
-  geom_line(aes(y = f225), color = "blue") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  theme_bw()
+## Influence and Leverage: Example
+
+- Let's find the Cook's distance graph for the penguin model.
+
+```{r, echo = TRUE}
+library(lindia)
+gg_cooksd(m1) + theme_bw()
 ```
-</center>
 
-## Final Code
+- I would investigate points 39, 169, 292, and 313.
+
+## Multicollinearity
+
+- Collinearity/multicollinearity: a correlation between two or more predictor variables affects the estimation procedure.
+
+- We will use the variance inflation factor (VIF) to check for multicollinearity.
+
+$$ \text{VIF}_j = \frac{1}{1-R^2_j}, $$
+
+- where
+
+    - $j$ = the predictor of interest and $j \in \{1, 2, ..., k \}$,
+    - $R^2_j$ results from regressing $X_j$ on the remaining $(k-1)$ predictors.
+    
+- We say that multicollinearity is present if VIF > 10.
+
+## Multicollinearity
+
+- How do we deal with multicollinearity?
+
+    - Easy answer: remove at least one predictor from the collinear set, then reassess VIF.
+    
+    - More complicated: how do we know which predictor should be the one removed?
+    
+        - (We will likely need to consult with the research team.)
+        
+- Notes for more advanced models:
+
+    - If categorical predictors are present in the model, multicollinearity may be difficult to assess.
+    
+    - We <u>must not</u> include interaction terms when assessing VIF.
+    
+## Multicollinearity: R Syntax
+
+- We will use the [`vif()`](https://www.rdocumentation.org/packages/car/versions/3.1-0/topics/vif) function from the `car` package.
 
 ```{r, echo = TRUE, eval = FALSE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "black") +
-  geom_line(aes(y = f200), color = "black") +
-  geom_line(aes(y = f225), color = "black") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  geom_text(aes(x = 65, y = 3010, label = "175 mm")) +
-  geom_text(aes(x = 65, y = 4230, label = "200 mm")) +
-  geom_text(aes(x = 65, y = 5480, label = "225 mm")) +
-  geom_text(aes(x = 63, y = 5900, label = "Flipper Length")) +
-  theme_bw()
+vif([m])
 ```
 
-## Final Graph
+- There will be a value for each predictor in the model.
 
-<center>
-```{r, echo = FALSE, eval = TRUE}
-data %>% ggplot(aes(x = bill_length_mm, y = body_mass_g)) +
-  geom_point(size=3, color = "darkgray") + 
-  geom_line(aes(y = f175), color = "black") +
-  geom_line(aes(y = f200), color = "black") +
-  geom_line(aes(y = f225), color = "black") +
-  labs(x = "Bill Length (mm)",
-       y = "Body Mass (g)") +
-  geom_text(aes(x = 65, y = 3010, label = "175 mm")) +
-  geom_text(aes(x = 65, y = 4230, label = "200 mm")) +
-  geom_text(aes(x = 65, y = 5480, label = "225 mm")) +
-  geom_text(aes(x = 63, y = 5900, label = "Flipper Length")) +
-  theme_bw()
+- Warning! If outside of linear regression using the normal distribution, the `vif()` function in R is not reliable. (Story time!)
+    
+## Multicollinearity: Example
+
+- Let's check the multicollinearity for our penguin model,
+
+```{r, echo = TRUE, warning = FALSE}
+library(car)
+vif(m1)
 ```
-</center>
 
-:::
+- No multicollinearity is present.
+
+## Multicollinearity: Example
+
+```{r, echo = TRUE}
+m2 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm + bill_length_mm:flipper_length_mm, data = data)
+vif(m2)
+```
+
+## Sensitivity Analysis
+
+- We can remove problem datapoints and reanalyze the data to see "how different" the results are. 
+
+- Let's remove the problem datapoints from the penguin dataset and reanalyze.
+
+```{r, echo = TRUE}
+data4 <- data2 %>%
+  filter(outlier == FALSE & !obs %in% c(39, 169, 292, 313)) 
+m3 <- lm(body_mass_g ~ bill_length_mm + flipper_length_mm, data = data4)
+summary(m3)
+```
+
+$$ \hat{y} = -5752.56 + 5.48 \text{ bill} + 48.29 \text{ flipper} $$
+
+## Sensitivity Analysis
+
+$$ \hat{y} = -5536.90 + 6.05 \text{ bill} + 48.15 \text{ flipper} $$
+
+- Bill length is not significant (*p* = 0.244).
+- Flipper length is significant (*p* < 0.001).
+
+
+$$ \hat{y} = -5752.56 + 5.48 \text{ bill} + 48.29 \text{ flipper} $$
+
+- Bill length is not significant (*p* = 0.281).
+- Flipper length is significant (*p* < 0.001).
+
+
+
+
+
 
 ## Wrap Up
 

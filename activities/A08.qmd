@@ -1,0 +1,92 @@
+---
+title: "Lab: July 31"
+author: "Your Name Here"
+format: html
+self-contained: true
+editor: source
+---
+
+
+
+**1. A large retail lawn care dealer currently provides a 2-year warranty on all lawn mowers sold at its stores. A new employee suggested that the dealer could save money by just not offering the warranty. To evaluate this suggestion, the dealer randomly decides whether or not to offer the warranty to the next 50 customers who enter the store and express an interest in purchasing a lawnmower. Out of the 25 customers offered the warranty, 10 purchased a mower as compared to 4 of 25 not offered the warranty. Use the appropriate hypothesis test - and justify why you are using it - to determine if offering the warranty changes the proportion of customers who will purchase a mower. Test at the $\alpha=0.05$ level.**
+
+```{r}
+
+```
+
+**2. The data in the following table document the starting positions of the winning horses in 144 races. The starting position listed as 1 is the position of the horse in the starting gate closest to the inside rail of the track, and position 8 is farthest from the rail. Racing officials contend that starting position has no effect on the chance of winning the race.**
+
+| Starting Position | No. Winners |
+|---|---|
+| 1 | 29 |
+| 2 | 19 |
+| 3 | 18 |
+| 4 | 25 |
+| 5 | 17 |
+| 6 | 10 |
+| 7 | 15 |
+| 8 | 11 |
+
+**Do the data support the racing officials' contention? Test at the $\alpha=0.05$ level.**
+
+```{r}
+
+```
+
+**3. The fire department in a large city is examining its promotion policy to assess if there is the potential for an age discrimination lawsuit.**
+
+**3a. Consider the following data:**
+
+| | Under 30 | 30--39 | 40--49 | 50 or Older | 
+|--|--|--|--|--|
+| Promoted | 9 | 29 | 34 | 12 |
+| Not Promoted | 41 | 39 | 46 | 38 |
+
+**Is there evidence to suggest there is age discrimination? Test at the $\alpha=0.05$ level.**
+
+```{r}
+
+```
+
+**3b. Consider the following data:**
+
+| | 39 or Younger | 40 or Older | 
+|--|--|--|
+| Promoted | 38 | 46 |
+| Not Promoted | 80 | 84 |
+
+**Is there evidence to suggest there is age discrimination? Test at the $\alpha=0.05$ level.**
+
+```{r}
+
+```
+
+**3c. Construct (separate) graphs to represent the data in 1a and 1b.**
+
+```{r}
+
+```
+
+**3d. What are you take away from this exercise?**
+
+
+
+
+**4. Challenge (and required)! A study examining bomb hits in South London during World War II is documented in the following table. The bomb hits were recorded in the 576 grids in a map of a region in South London. The study contended that certain areas were less likely to be hit with a bomb because of certain geographical features. If the bomb hits were purely random, a Poisson model would produce the number of hits per grid.**
+
+| No. Bomb Hits | No. Grids |
+|---|---|
+| 0 | 229 |
+| 1 | 211 |
+| 2 | 93 |
+| 3 | 35 |
+| 4 | 7 |
+| 5 | 0 |
+| 6 | 0 |
+| 7 | 1 |
+
+**Does the distribution of bomb hits appear to be random across this region of South London?**
+
+```{r}
+
+```

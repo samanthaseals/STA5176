@@ -1,0 +1,883 @@
+---
+title: "Categorical Analysis"
+subtitle: "STA5176 Lecture 8, Summer 2023"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf
+    self-contained: true
+    slide-number: false
+    footer: "[STA5176 - Statistical Modeling](https://samanthaseals.github.io/STA5176)"
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+editor: source
+---
+
+
+## Introduction
+
+- Before today, we have focused on the analysis of continuous data.
+
+    - When observations on a quantitative random variable can assume any one of the uncountable number of values in a line interval, the variable is called a **continuous random variable**.
+    
+- Today, we will begin analyzing categorical data, a type of discrete random variable.
+
+    - When observations on a quantitative random variable can assume only a countable number of values, the variable is called a **discrete random variable**.
+    
+## Bernoulli Experiments: One Population
+
+- Bernoulli experiments have two possible outcomes: success and failure.
+
+    - "Success" is just the event of interest; "failure" is the event *not* happening.=
+    
+- When we have $n$ independent Bernoulli experiments, 
+$$ \text{P}[y] = \frac{n!}{y! (n-y!)} \pi^y (1-\pi)^{n-y}, $$
+
+- where
+
+    - $y$ is the number of successes and
+    - $n$ is the number of trials
+    - $\pi$ = P[success] and $(1-\pi)$ = P[failure]
+    
+## Bernoulli Experiments: One Population
+
+- But... $\pi$ is the *population* probability of success.
+
+- We will estimate $\pi$ with $\hat{\pi}$:
+
+$$ \hat{\pi} = \frac{y}{n} $$
+
+- If we have a "large sample" (i.e., $n\pi \ge 5$ **and** $n(1-\pi) \ge 5$),
+
+$$ \hat{\pi} \sim N \left( \pi, \sqrt{\frac{\pi(1-\pi)}{n}} \right) $$
+
+## Hypothesis Testing: Test for One Proportion
+
+- **Hypotheses**
+
+|       Right Tail       |       Left Tail        |       Two Tails        |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \pi \le \pi_0$ | $H_0: \ \pi \ge \pi_0$ |  $H_0: \ \pi = \pi_0$  |
+|  $H_1: \ \pi > \pi_0$  |  $H_1: \ \pi < \pi_0$  | $H_1: \ \pi \ne \pi_0$ |
+
+- **Test Statistic** $$ z_0 = \frac{\hat{\pi}-\pi_0}{s / \sigma}, $$ where  $$ \sigma = \sqrt{\frac{\pi_0 (1-\pi_0)}{n}} $$
+
+## Hypothesis Testing: R Syntax
+
+- We will use either the [`binom.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/binom.test) function or the [`prop.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.test) function.
+
+- If we have $n \le 30$,
+
+```{r, echo = TRUE, eval = FALSE}
+binom.test(x = [number of successes], 
+           n = [sample size], 
+           p = [hypothesized proportion], 
+           alternative = [alternative])
+```
+
+- If we have $n > 30$,
+
+```{r, echo = TRUE, eval = FALSE}
+prop.test(x = [number of successes], 
+          n = [sample size], 
+          p = [hypothesized proportion], 
+          alternative = [alternative],
+          correct=FALSE)
+```
+
+## Hypothesis Testing: Police 
+
+- A police department supplies its officers with a flashlight that contains four batteries. The company that manufacturers the flashlights is required to verify the reliability of the batteries that are included in the flashlight when it is shipped to the police department. The quality control department states that they expect 15% of its batteries to be defective. The four batteries were inspected in a random sample of 300 flashlights, and found that 200 were defective.
+
+- What pieces do we need?
+
+## Hypothesis Testing: Police
+
+- A police department supplies its officers with a flashlight that contains four batteries. The company that manufacturers the flashlights is required to verify the reliability of the batteries that are included in the flashlight when it is shipped to the police department. The quality control department states that <span style="color:pink">they expect 15% of its batteries to be defective</span>. The <span style="color:pink">four batteries</span> were inspected in a <span style="color:pink">random sample of 300 flashlights</span>, and found that <span style="color:pink">200 were defective</span>.
+
+- Where do these go in our R syntax? We need:
+
+    - $x$
+    - $n$
+    - $p$
+    - alternative
+    
+- Are we using `binom.test()` or `prop.test()`? Why?
+
+## Hypothesis Testing: Police
+
+- A police department supplies its officers with a flashlight that contains four batteries. The company that manufacturers the flashlights is required to verify the reliability of the batteries that are included in the flashlight when it is shipped to the police department. The quality control department states that <span style="color:pink">they expect 15% of its batteries to be defective</span>. The <span style="color:pink">four batteries</span> were inspected in a <span style="color:pink">random sample of 300 flashlights</span>, and found that <span style="color:pink">200 were defective</span>.
+
+- So, for our R syntax:
+
+    - $x$ = 200
+    - $n$ = 1200
+    - $p$ = 0.15
+    - alternative = "greater"
+    
+## Hypothesis Testing: Police
+
+```{r, echo = TRUE}
+prop.test(x = 200, 
+          n = 1200, 
+          p = 0.15, 
+          alternative = "greater",
+          correct=FALSE)
+```
+
+## Hypothesis Testing: Police
+
+- **Hypotheses**
+
+    - $H_0: \ \pi \le 0.15$ 
+    - $H_1: \ \pi > 0.15$
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi^2_0 = 2.485$ or $z_0 = \sqrt{2.485} = `r round(sqrt(2.485),3)`$
+    - $p = 0.057$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that the failure rate is higher than 15%.
+
+## Hypothesis Testing: Jackson Heart Study
+
+- Recall the Jackson Heart Study data. Do more than half of the participants take medication for high blood pressure? We will analyze the variable *BPmeds*, where 1=yes and 0=no.
+
+```{r, echo = TRUE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1H3TP-2SBMGleriJLESOe1cdCjtSj2F76bUh5iBqC8tI/edit#gid=2142000894"))
+
+data %>% count(BPmeds)
+```
+
+## Hypothesis Testing: Jackson Heart Study
+
+```{r, echo = TRUE}
+prop.test(x = 1331, 
+          n = 1302+1331, 
+          p = 0.5, 
+          alternative = "greater",
+          correct=FALSE)
+```
+
+## Hypothesis Testing: Jackson Heart Study
+
+- **Hypotheses**
+
+    - $H_0: \ \pi \le 0.50$ 
+    - $H_1: \ \pi > 0.50$
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi^2_0 = 0.319$ or $z_0 = \sqrt{0.319} = `r round(sqrt(0.319),3)`$
+    - $p = 0.286$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that more than 50% of participants take blood pressure medication.
+
+## Confidence Intervals: CI for One Proportion
+
+- The confidence interval for $\pi$ is found as follows, $$ \hat{\pi} \pm z_{\alpha/2} \hat{\sigma}, $$ where $$ \hat{\pi} = \frac{y}{n} \ \ \text{ and } \ \ \hat{\sigma} = \sqrt{\frac{\hat{\pi}(1-\hat{\pi})}{n}} $$
+
+## Confidence Intervals: R Syntax
+
+- We again use either the [`binom.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/binom.test) function or the [`prop.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.test) function.
+
+- If we have $n \le 30$,
+
+```{r, echo = TRUE, eval = FALSE}
+binom.test(x = [number of successes], 
+           n = [sample size])
+```
+
+- If we have $n > 30$,
+
+```{r, echo = TRUE, eval = FALSE}
+prop.test(x = [number of successes], 
+          n = [sample size], 
+          correct=FALSE)
+```
+
+- Note that we do not need to input either the hypothesized value or the alternative.
+
+  - It does not change anything if you do include those, but make sure that you are specifying alternative = "two.sided".
+
+## Confidence Intervals: Police
+
+- Let's find the 95% CI for the police flashlight data.
+
+```{r, echo = TRUE}
+prop.test(x = 200, 
+          n = 1200, 
+          correct=FALSE)
+```
+
+- Thus, the 95% CI for $\pi$, the population failure rate is (14.67%, 18.88%).
+
+## Confidence Intervals: Jackson Heart Study
+
+- Let's find the 99% CI for the proportion of JHS participants that take medicine for high blood pressure.
+
+```{r, echo = TRUE}
+prop.test(x = 1331, 
+          n = 1302+1331, 
+          conf.level = 0.99,
+          correct=FALSE)
+```
+
+- Thus, the 99% CI for $\pi$, the population proportion of southern African Americans taking high blood pressure medication is (48.04%, 53.06%).
+
+## Bernoulli Expreiments: Two Populations
+
+- Suppose we now have independent samples from two binomial populations with unknown parameters, $\pi_1$ and $\pi_2$. 
+
+- Further assume that we have $y_1$ and $y_2$ successes for the random samples of sizes $n_1$ and $n_2$, respectively.
+
+- We now have point estimates, $$ \hat{\pi}_1 = \frac{y_1}{n_1} \ \ \text{ and } \ \ \hat{\pi}_2 = \frac{y_2}{n_2} $$
+
+## Bernoulli Experiments: Two Populations
+
+- We now want to compare populations 1 and 2.
+
+- We will estimate $\pi_1 - \pi_2$ with $\hat{\pi}_1 - \hat{\pi}_2$, where, $$ \hat{\pi}_1 - \hat{\pi}_2 = \frac{y_1}{n_1} - \frac{y_2}{n_2} $$
+
+- If we have a "large sample" (i.e., $n_i\pi_i \ge 5$ **and** $n_i(1-\pi_i) \ge 5$) for $i = \{ 1, \ 2 \}$, we know $$ \hat{\pi}_1 - \hat{\pi}_2 \sim N \left( \pi_1-\pi_2, \sqrt{\frac{\pi_1(1-\pi_1)}{n_1} + \frac{\pi_2(1-\pi_2)}{n_2}} \right) $$
+
+## Hypothesis Testing: Test for Two Proportions
+
+- **Hypotheses**
+
+|          Right Tail           |           Left Tail           |           Two Tails            |
+|:----------------------:|:----------------------:|:----------------------:|
+| $H_0: \ \pi_1- \pi_2 \le 0$ | $H_0: \ \pi_1 - \pi_2\ge 0$ |  $H_0: \ \pi_1 - \pi_2 = 0$  |
+| $H_1: \ \pi_1 - \pi_2 > 0$  | $H_1: \ \pi_1 - \pi_2 < 0$  | $H_1: \ \pi_1 - \pi_2 \ne 0$ |
+
+- **Test Statistic** $$ z_0 = \frac{\hat{\pi}_1 - \hat{\pi}_2}{\hat{\sigma}}, $$ where $$ \hat{\sigma} = \sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1} + \frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}} $$
+
+## Hypothesis Testing: R Syntax
+
+- We again use the [`prop.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.test) function.
+
+```{r, echo = TRUE, eval = FALSE}
+prop.test(x = c(x_1, x_2), 
+          n = c(n_1, n_2), 
+          alternative = [alternative],
+          correct=FALSE)
+```
+
+- Note our assumption, $n_i\pi_i \ge 5$ **and** $n_i(1-\pi_i) \ge 5$ for $i = 1, \ 2$
+
+## Hypothesis Testing: Pain Reduction
+
+- Biofeedback is a treatment technique in which people are trained to improve their health by using signals from their own bodies. Specialists in many different fields use biofeedback to help their patients cope with pain. A study was conducted to compare a biofeedback treatment for chronic pain with an NSAID medical treatment. A group of 2,000 newly diagnosed chronic pain patients were randomly assigned to receive to one of the two treatments. After 6 weeks of treatments, the pain levels of the patients were assessed with the following results:
+
+|             | Reduction in Pain | No Reduction in Pain |
+|-------------|:-------------------:|:----------------------:|
+| Biofeedback | 560               | 440                  |
+| NSAID       | 680               | 320                  |
+
+
+## Hypothesis Testing: Pain Reduction
+
+|             | Reduction in Pain | No Reduction in Pain |
+|-------------|-------------------|----------------------|
+| Biofeedback | 560               | 440                  |
+| NSAID       | 680               | 320                  |
+
+- The proportion reduced in the biofeedback group, $$ \hat{\pi}_{\text{B}} = \frac{560}{`r 560+440`} = `r 560/(560+440)` $$
+
+- The proportion reduced in the NSAID group, $$ \hat{\pi}_{\text{N}} = \frac{680}{`r 680+320`} = `r 680/(680+320)` $$
+
+## Hypothesis Testing: Pain Reduction
+
+- Let's determine if there is a difference in pain reduction between the two treatments. 
+```{r, echo = TRUE}
+prop.test(x = c(560, 680), 
+          n = c(1000, 1000), 
+          alternative = "two",
+          correct=FALSE)
+```
+
+## Hypothesis Testing: Pain Reduction
+
+- **Hypotheses**
+
+    - $H_0: \ \pi_{\text{B}} = \pi_{\text{N}}$ 
+    - $H_1: \ \pi_{\text{B}} \ne \pi_{\text{N}}$
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi^2_0 = 30.56$ or $z_0 = \sqrt{30.56} = `r round(sqrt(30.56),3)`$
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the proportion with reduced pain is different between the two treatment groups.
+
+## Hypothesis Testing: Jackson Heart Study
+
+- Let's again look at the JHS data to determine if there is a higher proportion of females taking blood pressure medication.
+
+```{r, echo = TRUE}
+table(data$BPmeds, data$sex)
+```
+
+- The proportion of females on medicine, $$ \hat{\pi}_{\text{F}} = \frac{909}{`r 909+754`} = `r 909/(909+754)` $$
+
+- The proportion of males on medicine, $$ \hat{\pi}_{\text{M}} = \frac{422}{`r 422+548`} = `r 422/(422+548)` $$
+
+## Hypothesis Testing: Jackson Heart Study
+
+- Remember that order matters when inputting the data and the alternative,
+
+```{r, echo = TRUE}
+prop.test(x = c(909, 422), 
+          n = c(1663, 970), 
+          alternative = "greater",
+          correct=FALSE)
+```
+
+## Hypothesis Testing: Jackson Heart Study 
+
+- **Hypotheses**
+
+    - $H_0: \ \pi_{\text{F}} = \pi_{\text{M}}$ 
+    - $H_1: \ \pi_{\text{F}} \ne \pi_{\text{M}}$
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi^2_0 = 30.498$ or $z_0 = \sqrt{30.498} = `r round(sqrt(30.498),3)`$
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that a higher proportion of females takes blood pressure medicine, as compared to males.
+
+## Confidence Intervals: CI for Two Proportions
+
+- The confidence interval for $\pi_1 - \pi_2$ is found as follows, $$ (\hat{\pi}_1 - \hat{\pi}_2) \pm z_{\alpha/2} \hat{\sigma}, $$ where $$ \hat{\pi}_1 - \hat{\pi}_2 = \frac{y_1}{n_1} - \frac{y_2}{n_2} \ \ \text{ and } \ \ \hat{\sigma} = \sqrt{\frac{\hat{\pi}_1(1-\hat{\pi}_1)}{n_1} + \frac{\hat{\pi}_2(1-\hat{\pi}_2)}{n_2}} $$
+
+## Confidence Intervals: R Syntax
+
+- We again use either  the [`prop.test()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.test) function.
+
+```{r, echo = TRUE, eval = FALSE}
+prop.test(x = c(x_1, x_2), 
+          n = c(n_1, n_2), 
+          correct=FALSE)
+```
+
+- Note that we do not need to input the alternative.
+
+  - It does not change anything if you do, but make sure that you are specifying alternative = "two.sided".
+  
+## Confidence Intervals: Pain Reduction
+
+- Let's find the 95% CI for $\pi_{\text{B}}-\pi_{\text{N}}$ for the pain reduction data.
+
+```{r, echo = TRUE}
+prop.test(x = c(560, 680), 
+          n = c(1000, 1000), 
+          alternative = "two",
+          correct=FALSE)
+```
+
+- The 95% CI for $\pi_{\text{B}}-\pi_{\text{N}}$ is (-0.16, -0.08).
+
+    - Because the interval is negative, it indicates that the proportion of pain reduction in the biofeedback group is smaller than that of the NSAID group.
+
+## Confidence Intervals: Jackson Heart Study
+
+- Let's find the 99% CI for $\pi_{\text{F}}-\pi_{\text{M}}$ for the JHS data.
+
+```{r, echo = TRUE}
+prop.test(x = c(909, 422), 
+          n = c(1663, 970), 
+          conf.level = 0.99,
+          correct=FALSE)
+```
+
+- The 99% CI for $\pi_{\text{F}}-\pi_{\text{M}}$ is (0.06, 0.16).
+
+    - Because the interval is positive, this indicates that the proportion of females on blood pressure medication is higher than that of males.
+
+
+
+## Multinomial Probability Distribution
+
+- Let us now consider *k* possible outcomes, where *k* > 2.
+
+- This is a multinomial experiment.
+
+    - Each trial results in one of *k* outcomes.
+    - P[outcome $i$] = $\pi_i$ for $i = 1, 2, ... , k$ and $\sum_{i} \pi_i = 1$
+    
+- We are now interested in $n_i$, the number of trials resulting in outcome $i$
+
+    - $\sum_i n_i = n$
+    
+- The multinomial probability distribution is as follows, $$ \text{P}[n_1, n_2, ..., n_k] = \frac{n!}{n_1! n_2! ... n_k!} \pi_1^{n_1} \pi_2^{n_2} ... \pi_k^{n_k} $$
+
+## Goodness of Fit
+
+- Conceptually:
+
+    - We have a *single* categorical variable with multiple categories.
+    
+        - e.g., student classification: non-degree, undergraduate, master's, doctoral
+    
+    - Every category has a specified probability, $\pi_i$
+    
+- We can list the data in table form. Take, for example, the [UWF enrollment data](https://uwf.edu/academic-affairs/departments/institutional-research/enrollment-fact-book/enrollment-overview/):
+
+| College |  Fall 2021 |
+|---------|:-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 3297 |
+| [CEPS](https://uwf.edu/ceps/) | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/) | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 1554 |
+| [COB](https://uwf.edu/cob/) | 2094 |
+| None | 358 |
+
+## Goodness of Fit
+
+- For all tables, we will have
+
+    - cell probabilities for the known distribution: $\pi_i$
+    - observed cell counts: $O_i = n_i$
+    - expected cell counts: $E_i = n \pi_i$
+    
+- Consider the UWF data. Let's assume a uniform distribution,
+
+| College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
+|---------| :------------: | :-----------: | :-----: |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round((3297+2697+3265+1554+2094)/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2094 |
+
+
+## Hypothesis Test: Definition
+
+- **Hypotheses**
+
+    - $H_0$: The data come from the specified distribution.
+    - $H_1$: The data do not come from the specified distribution.
+
+- **Test Statistic** $$\chi_0^2 = \sum_{i=1}^k \frac{(O_i-E_i)^2}{E_i} $$
+
+- **p-Value**
+
+    - $p = \text{P}[\chi^2_{k-1} \ge \chi^2_0]$
+
+## Hypothesis Test: R Syntax
+
+```{r, echo = TRUE, eval = FALSE}
+# create O_i vector
+counts <- c(O_1, O_2, ..., O_k)
+# create pi_i vector
+probs <- c(pi_1, pi_2, ..., pi_k)
+
+chisq.test(counts, p = probs)
+```
+
+## Hypothesis Test: Uniform Distribution
+
+- Recall the UWF data,
+
+| College | Uniform ($\pi_i$) | Expected ($E_i$) | Fall 2021 ($O_i$) | 
+|---------| :------------: | :-----------: | :-----: |
+| [UKCOH](https://uwf.edu/ukcoh/) | 0.20 | `r  round((3297+2697+3265+1554+2094)/5,1)` | 3297  |
+| [CEPS](https://uwf.edu/ceps/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2697 |
+| [HMCSE](https://uwf.edu/hmcse/)  | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 3265 |
+| [CASSH](https://uwf.edu/cassh/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 1554 |
+| [COB](https://uwf.edu/cob/) | 0.20 | `r round((3297+2697+3265+1554+2094)/5,4)` | 2094 |
+
+```{r, echo = TRUE}
+counts <- c(3297, 2697, 3265, 1554, 2094)
+probs <- c(0.2, 0.2, 0.2, 0.2, 0.2)
+chisq.test(counts, p = probs)
+```
+
+## Hypothesis Test: Uniform Distribution 
+
+- **Hypotheses**
+
+    - $H_0$: The data follows a uniform distribution
+    - $H_1$: The data does not follow a uniform distribution
+
+- **Test Statistic and *p*-Value**
+
+  - $\chi_0^2=885.51$
+  - $\ p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the data does not follow a uniform distribution.
+
+## Hypothesis Test: Unnamed Distributions
+
+- Let's consider comparing the UWF data against the historical distribution,
+
+| College | Historical ($\pi_i$) | Fall 2021 ($O_i$) |
+|---------|------------:|-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 23.3% | 3297 (`r round(329700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CEPS](https://uwf.edu/ceps/) | 22.3% | 2697 (`r round(269700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [HMCSE](https://uwf.edu/hmcse/)  | 20.9% | 3265 (`r round(326500/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CASSH](https://uwf.edu/cassh/) | 13.4% | 1554 (`r round(155400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [COB](https://uwf.edu/cob/) | 13.1% | 2094 (`r round(209400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| None | 7.0% | 358 (`r round(35800/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+
+```{r, echo = TRUE}
+counts <- c(3297, 2697, 3265, 1554, 2094, 358)
+probs <- c(0.233, 0.223, 0.209, 0.134, 0.131, 0.070)
+chisq.test(counts, p = probs)
+```
+    
+## Hypothesis Test: Unnamed Distribution 
+
+- **Hypotheses**
+
+    - $H_0$: The data follows the historical distribution
+    - $H_1$: The data does not follow the historical distribution
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi_0^2=576.07$ 
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the data does not follow the historical distribution.
+
+## Interpretation
+
+| College | Historical ($\pi_i$) | Fall 2021 ($O_i$) |
+|---------|------------:|-----------:|
+| [UKCOH](https://uwf.edu/ukcoh/) | 23.3% | 3297 (`r round(329700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CEPS](https://uwf.edu/ceps/) | 22.3% | 2697 (`r round(269700/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [HMCSE](https://uwf.edu/hmcse/)  | 20.9% | 3265 (`r round(326500/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [CASSH](https://uwf.edu/cassh/) | 13.4% | 1554 (`r round(155400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| [COB](https://uwf.edu/cob/) | 13.1% | 2094 (`r round(209400/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+| None | 7.0% | 358 (`r round(35800/sum(3297, 2697, 3265, 1554, 2094, 358),1)`%) |
+
+  - UKCOH enrollment has increased,
+  - CEPS enrollment has decreased,
+  - HMCSE enrollment has increased,
+  - CASSH enrollment has decreased,
+  - COB enrollment has increased,
+  - Fewer students do not have a college designation
+    
+## Other Uses
+
+- We can use the $\chi^2$ goodness of fit test to determine fit to other probability models.
+
+- This requires knowledge of expected probabilities.
+
+    - See pages 505-507 for an example 
+
+## Contingency Tables
+
+- A *R* $\times$ *C* contingency table is a table with *R* rows and *C* columns
+
+    - The variable in the rows has *R* categories
+    
+    - The variable in the columns has *C* categories
+    
+- Assignment to *R* or *C* is arbitrary.
+
+  - The test statistic for a *R* $\times$ *C* is the same as the test statistic for a *C* $\times$ *R*
+
+## Contingency Tables
+
+<center><img src="images/L16a.png" width = 800></center>
+
+## Test for Independence
+
+- We will now extend the $\chi^2$ test to examine independence of two variables.
+
+    - e.g., does ice cream flavor preference depend on hair color?  
+    
+- We will again use observed values and expected values.
+
+- The calculation of the expected value is now different:
+
+$$ E_{ij} = \frac{\text{row total} \times \text{column total}}{\text{grand total}} $$
+
+- The assumption to apply the $\chi^2$ distribution is now that $E_{ij} \ge 5$ $\forall \ i$.
+
+## Hypothesis Test: Definition
+
+- **Hypotheses**
+
+    - $H_0$: There is not a relationship between [var 1] and [var 2].
+    - $H_1$: There is a relationship between [var 1] and [var 2].
+
+- **Test Statistic** $$\chi_0^2 = \sum_{i=1}^k \frac{(O_i-E_i)^2}{E_i} $$
+
+- **p-Value**
+
+    - $p = \text{P}[\chi^2_{(r-1)(c-1)} \ge \chi^2_0]$
+    
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$
+
+## Hypothesis Test: R Syntax
+
+- If given the contingency table, we can enter it in a `matrix()` (see example) and use the `chisq.test()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+chisq.test([matrix name])
+```
+
+- If given raw data, we can use the [`CrossTable()`](https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1/topics/CrossTable) function in the [`gmodels`](https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1) package.
+
+    - Note: this function replicates PROC FREQ from SAS :)
+
+```{r, echo = TRUE, eval = FALSE}
+CrossTable([dataset$row var], [dataset$col var], 
+           prop.chisq= FALSE,  # turn off proportion contributed to chi-square statistic
+           prop.r = FALSE,  # turn off row proportions
+           prop.t = FALSE, # turn off total proportions
+           chisq = TRUE) # request chi-square test
+```
+
+## Hypothesis Test: Marriage
+
+- Consider the following data on happiness in a marriage,
+
+|  | Married | Widowed | Div./Sep. | Never Married |
+|---|---|---|---|---|---|
+| Very Happy | 600 | 63 | 112 | 114 |
+| Pretty Happy | 720 | 142 | 355 | 459 |
+| Not Too Happy | 93 | 51 | 119 | 127 |
+
+- Use the $\chi^2$ test for independence to determine if happiness depends on marital status.
+
+```{r, echo = TRUE}
+observed_table <- matrix(c(600, 63, 112, 144,
+                           720, 142, 355, 459,
+                           93, 51, 119, 127), 
+                         nrow = 3, ncol = 4, byrow = T)
+chisq.test(observed_table)
+```
+
+## Hypothesis Test: Marriage
+
+- **Hypotheses**
+
+    - $H_0$: Happiness does not depend on relationship status.
+    - $H_1$: Happiness depends on relationship status.
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi_0^2=224.12$; 
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that happiness depends on relationship status.
+
+## Hypothesis Test: Jackson Heart Study
+
+- Recall the Jackson Heart Study dataset. 
+
+```{r, warning = FALSE}
+library(tidyverse)
+library(gsheet)
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1H3TP-2SBMGleriJLESOe1cdCjtSj2F76bUh5iBqC8tI/edit#gid=2142000894"))
+```
+
+- Let's determine if there is a difference between the proportion of male and female drinkers.
+
+```{r, echo = TRUE}
+library(gmodels)
+CrossTable(data$alc, data$sex, prop.chisq= FALSE, prop.r = FALSE, prop.t = FALSE, chisq = TRUE)
+```
+
+## Hypothesis Test: Jackson Heart Study
+
+- **Hypotheses**
+
+    - $H_0$: The proportion of males and females that drink is equal
+    - $H_1$: The proportion of males and females that drink is not equal.
+
+- **Test Statistic and *p*-Value**
+
+    - $\chi_0^2=89.297$
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the proportion of male and female drinkers is different.
+
+## Fisher's Exact
+
+- What happens if we do not meet the assumption for the $\chi^2$ test?
+
+- We can use Fisher's Exact test.
+
+- This directly computes a probability using the contingency table.
+
+    - i.e., we will not have a test statistic.
+    
+- These are difficult to calculate by hand due to large factorials.
+
+    - We will skip formulae and trust R :)
+    
+## Hypothesis Test: R Syntax
+
+- If given the contingency table, we can enter it in a `matrix()` (see example) and use the `fisher.test()` function.
+
+```{r, echo = TRUE, eval = FALSE}
+chisq.test([matrix name])
+```
+
+- If given raw data, we can use the [`CrossTable()`](https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1/topics/CrossTable) function in the [`gmodels`](https://www.rdocumentation.org/packages/gmodels/versions/2.18.1.1) package.
+
+    - Note: this function replicates PROC FREQ from SAS :)
+
+```{r, echo = TRUE, eval = FALSE}
+CrossTable([dataset$row var], [dataset$col var], 
+           prop.chisq= FALSE,  # turn off proportion contributed to chi-square statistic
+           prop.r = FALSE,  # turn off row proportions
+           prop.t = FALSE, # turn off total proportions
+           fisher = TRUE) # request Fisher's exact test
+```
+
+## Hypothesis Test: CVD Death and Diet
+
+- Consider the following data from a retrospective study examining cause of death (CVD vs. not CVD) and the type of diet the person ate (high vs. low salt).
+
+| | High Salt | Low Salt |
+|---|---|---|
+| Non-CVD | 2 | 23 |
+| CVD | 5 | 30 |
+
+- Is there a relationship between the two?
+
+```{r, echo = TRUE, warning = TRUE}
+observed_table <- matrix(c(2, 23,
+                           5, 30), 
+                         nrow = 2, ncol = 2, byrow = T)
+chisq.test(observed_table)
+```
+
+
+## Hypothesis Test: CVD Death and Diet
+
+- Consider the following data from a retrospective study examining cause of death (CVD vs. not CVD) and the type of diet the person ate (high vs. low salt).
+
+| | High Salt | Low Salt |
+|---|---|---|
+| Non-CVD | 2 | 23 |
+| CVD | 5 | 30 |
+
+- Is there a relationship between the two?
+
+```{r, echo = TRUE}
+observed_table <- matrix(c(2, 23,
+                           5, 30), 
+                         nrow = 2, ncol = 2, byrow = T)
+fisher.test(observed_table)
+```
+
+## Hypothesis Test: CVD Death and Diet
+
+- **Hypotheses**
+
+    - $H_0$: CVD death does not depend on low or high salt diet.
+    - $H_1$: CVD death does depend on low or high salt diet.
+
+- ***p*-Value**
+
+    - $p = 0.688$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Fail to reject $H_0$ at the $\alpha=0.05$ level. There is not sufficient evidence to suggest that CVD death depends on amount of salt in diet.
+
+## Hypothesis Test: Jackson Heart Study
+
+- Let's apply the Fisher's exact test to the JHS data (even though it is not needed):
+
+```{r, echo = TRUE}
+CrossTable(data$alc, data$sex, prop.chisq= FALSE, prop.r = FALSE, prop.t = FALSE, fisher = TRUE)
+```
+
+## Hypothesis Test: Jackson Heart Study
+
+- **Hypotheses**
+
+    - $H_0$: The proportion of males and females that drink is equal
+    - $H_1$: The proportion of males and females that drink is not equal.
+
+- ***p*-Value**
+
+    - $p < 0.001$
+
+- **Rejection Region**
+
+    - Reject $H_0$ if $p < \alpha$; $\alpha=0.05$
+
+- **Conclusion/Interpretation**
+
+    - Reject $H_0$ at the $\alpha=0.05$ level. There is sufficient evidence to suggest that the proportion of male and female drinkers is different.
+
+        
+    
+    
+    
+    
+
+
+
+
+
